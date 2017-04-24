@@ -1,0 +1,504 @@
+fileFormatVersion: 2
+guid: f22bc39f1904043fab1b12be86e87adc
+timeCreated: 1464106898
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Armature
+    100002: //RootNode
+    100004: CarlHead
+    100006: CarlMidGeo
+    100008: Head
+    100010: HeadTop_End
+    100012: Hips
+    100014: Jaw
+    100016: JawEND
+    100018: LeftArm
+    100020: LeftCheek
+    100022: LeftEye
+    100024: LeftEyelidLower
+    100026: LeftEyelidUpper
+    100028: LeftFoot
+    100030: LeftFootToeBase_End
+    100032: LeftForeArm
+    100034: LeftHand
+    100036: LeftHandIndex1
+    100038: LeftHandIndex2
+    100040: LeftHandIndex3
+    100042: LeftHandIndex4
+    100044: LeftHandMiddle1
+    100046: LeftHandMiddle2
+    100048: LeftHandMiddle3
+    100050: LeftHandMiddle4
+    100052: LeftHandPinky1
+    100054: LeftHandPinky2
+    100056: LeftHandPinky3
+    100058: LeftHandPinky4
+    100060: LeftHandRing1
+    100062: LeftHandRing2
+    100064: LeftHandRing3
+    100066: LeftHandRing4
+    100068: LeftHandThumb1
+    100070: LeftHandThumb2
+    100072: LeftHandThumb3
+    100074: LeftHandThumb4
+    100076: LeftInnerBrow
+    100078: LeftIOuterBrow
+    100080: LeftLeg
+    100082: LeftLipCorner
+    100084: LeftLipLower
+    100086: LeftLipUpper
+    100088: LeftNostril
+    100090: LeftShoulder
+    100092: LeftToeBase
+    100094: LeftUpLeg
+    100096: Neck
+    100098: Neck1
+    100100: RightArm
+    100102: RightCheek
+    100104: RightEye
+    100106: RightEyelidLower
+    100108: RightEyelidUpper
+    100110: RightFoot
+    100112: RightFootToeBase_End
+    100114: RightForeArm
+    100116: RightHand
+    100118: RightHandIndex1
+    100120: RightHandIndex2
+    100122: RightHandIndex3
+    100124: RightHandIndex4
+    100126: RightHandMiddle1
+    100128: RightHandMiddle2
+    100130: RightHandMiddle3
+    100132: RightHandMiddle4
+    100134: RightHandPinky1
+    100136: RightHandPinky2
+    100138: RightHandPinky3
+    100140: RightHandPinky4
+    100142: RightHandRing1
+    100144: RightHandRing2
+    100146: RightHandRing3
+    100148: RightHandRing4
+    100150: RightHandThumb1
+    100152: RightHandThumb2
+    100154: RightHandThumb3
+    100156: RightHandThumb4
+    100158: RightInnerBrow
+    100160: RightIOuterBrow
+    100162: RightLeg
+    100164: RightLipCorner
+    100166: RightLipLower
+    100168: RightLipUpper
+    100170: RightNostril
+    100172: RightShoulder
+    100174: RightToeBase
+    100176: RightUpLeg
+    100178: Spine
+    100180: Spine1
+    100182: Spine2
+    100184: TongueBack
+    100186: TongueTip
+    400000: Armature
+    400002: //RootNode
+    400004: CarlHead
+    400006: CarlMidGeo
+    400008: Head
+    400010: HeadTop_End
+    400012: Hips
+    400014: Jaw
+    400016: JawEND
+    400018: LeftArm
+    400020: LeftCheek
+    400022: LeftEye
+    400024: LeftEyelidLower
+    400026: LeftEyelidUpper
+    400028: LeftFoot
+    400030: LeftFootToeBase_End
+    400032: LeftForeArm
+    400034: LeftHand
+    400036: LeftHandIndex1
+    400038: LeftHandIndex2
+    400040: LeftHandIndex3
+    400042: LeftHandIndex4
+    400044: LeftHandMiddle1
+    400046: LeftHandMiddle2
+    400048: LeftHandMiddle3
+    400050: LeftHandMiddle4
+    400052: LeftHandPinky1
+    400054: LeftHandPinky2
+    400056: LeftHandPinky3
+    400058: LeftHandPinky4
+    400060: LeftHandRing1
+    400062: LeftHandRing2
+    400064: LeftHandRing3
+    400066: LeftHandRing4
+    400068: LeftHandThumb1
+    400070: LeftHandThumb2
+    400072: LeftHandThumb3
+    400074: LeftHandThumb4
+    400076: LeftInnerBrow
+    400078: LeftIOuterBrow
+    400080: LeftLeg
+    400082: LeftLipCorner
+    400084: LeftLipLower
+    400086: LeftLipUpper
+    400088: LeftNostril
+    400090: LeftShoulder
+    400092: LeftToeBase
+    400094: LeftUpLeg
+    400096: Neck
+    400098: Neck1
+    400100: RightArm
+    400102: RightCheek
+    400104: RightEye
+    400106: RightEyelidLower
+    400108: RightEyelidUpper
+    400110: RightFoot
+    400112: RightFootToeBase_End
+    400114: RightForeArm
+    400116: RightHand
+    400118: RightHandIndex1
+    400120: RightHandIndex2
+    400122: RightHandIndex3
+    400124: RightHandIndex4
+    400126: RightHandMiddle1
+    400128: RightHandMiddle2
+    400130: RightHandMiddle3
+    400132: RightHandMiddle4
+    400134: RightHandPinky1
+    400136: RightHandPinky2
+    400138: RightHandPinky3
+    400140: RightHandPinky4
+    400142: RightHandRing1
+    400144: RightHandRing2
+    400146: RightHandRing3
+    400148: RightHandRing4
+    400150: RightHandThumb1
+    400152: RightHandThumb2
+    400154: RightHandThumb3
+    400156: RightHandThumb4
+    400158: RightInnerBrow
+    400160: RightIOuterBrow
+    400162: RightLeg
+    400164: RightLipCorner
+    400166: RightLipLower
+    400168: RightLipUpper
+    400170: RightNostril
+    400172: RightShoulder
+    400174: RightToeBase
+    400176: RightUpLeg
+    400178: Spine
+    400180: Spine1
+    400182: Spine2
+    400184: TongueBack
+    400186: TongueTip
+    4300000: CarlHead
+    4300002: CarlMidGeo
+    7400000: RightFootToeBase_End|Armature|Take 001|Take 001:BaseAnimation
+    7400002: RightFootToeBase_End|CarlMidGeo|Take 001|Take 001:BaseAnimation
+    7400004: RightFootToeBase_End|HeadTop_End|Take 001|Take 001:BaseAnimation
+    7400006: RightFootToeBase_End|LeftFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400008: RightFootToeBase_End|LeftHandIndex4|Take 001|Take 001:BaseAnimation
+    7400010: RightFootToeBase_End|LeftHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400012: RightFootToeBase_End|LeftHandPinky4|Take 001|Take 001:BaseAnimation
+    7400014: RightFootToeBase_End|LeftHandRing4|Take 001|Take 001:BaseAnimation
+    7400016: RightFootToeBase_End|LeftHandThumb4|Take 001|Take 001:BaseAnimation
+    7400018: RightFootToeBase_End|RightFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400020: RightFootToeBase_End|RightHandIndex4|Take 001|Take 001:BaseAnimation
+    7400022: RightFootToeBase_End|RightHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400024: RightFootToeBase_End|RightHandPinky4|Take 001|Take 001:BaseAnimation
+    7400026: RightFootToeBase_End|RightHandRing4|Take 001|Take 001:BaseAnimation
+    7400028: RightFootToeBase_End|RightHandThumb4|Take 001|Take 001:BaseAnimation
+    7400030: LeftFootToeBase_End|Armature|Take 001|Take 001:BaseAnimation
+    7400032: LeftFootToeBase_End|CarlMidGeo|Take 001|Take 001:BaseAnimation
+    7400034: LeftFootToeBase_End|HeadTop_End|Take 001|Take 001:BaseAnimation
+    7400036: LeftFootToeBase_End|LeftFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400038: LeftFootToeBase_End|LeftHandIndex4|Take 001|Take 001:BaseAnimation
+    7400040: LeftFootToeBase_End|LeftHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400042: LeftFootToeBase_End|LeftHandPinky4|Take 001|Take 001:BaseAnimation
+    7400044: LeftFootToeBase_End|LeftHandRing4|Take 001|Take 001:BaseAnimation
+    7400046: LeftFootToeBase_End|LeftHandThumb4|Take 001|Take 001:BaseAnimation
+    7400048: LeftFootToeBase_End|RightFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400050: LeftFootToeBase_End|RightHandIndex4|Take 001|Take 001:BaseAnimation
+    7400052: LeftFootToeBase_End|RightHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400054: LeftFootToeBase_End|RightHandPinky4|Take 001|Take 001:BaseAnimation
+    7400056: LeftFootToeBase_End|RightHandRing4|Take 001|Take 001:BaseAnimation
+    7400058: LeftFootToeBase_End|RightHandThumb4|Take 001|Take 001:BaseAnimation
+    7400060: RightHandPinky4|Armature|Take 001|Take 001:BaseAnimation
+    7400062: RightHandPinky4|CarlMidGeo|Take 001|Take 001:BaseAnimation
+    7400064: RightHandPinky4|HeadTop_End|Take 001|Take 001:BaseAnimation
+    7400066: RightHandPinky4|LeftFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400068: RightHandPinky4|LeftHandIndex4|Take 001|Take 001:BaseAnimation
+    7400070: RightHandPinky4|LeftHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400072: RightHandPinky4|LeftHandPinky4|Take 001|Take 001:BaseAnimation
+    7400074: RightHandPinky4|LeftHandRing4|Take 001|Take 001:BaseAnimation
+    7400076: RightHandPinky4|LeftHandThumb4|Take 001|Take 001:BaseAnimation
+    7400078: RightHandPinky4|RightFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400080: RightHandPinky4|RightHandIndex4|Take 001|Take 001:BaseAnimation
+    7400082: RightHandPinky4|RightHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400084: RightHandPinky4|RightHandPinky4|Take 001|Take 001:BaseAnimation
+    7400086: RightHandPinky4|RightHandRing4|Take 001|Take 001:BaseAnimation
+    7400088: RightHandPinky4|RightHandThumb4|Take 001|Take 001:BaseAnimation
+    7400090: RightHandRing4|Armature|Take 001|Take 001:BaseAnimation
+    7400092: RightHandRing4|CarlMidGeo|Take 001|Take 001:BaseAnimation
+    7400094: RightHandRing4|HeadTop_End|Take 001|Take 001:BaseAnimation
+    7400096: RightHandRing4|LeftFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400098: RightHandRing4|LeftHandIndex4|Take 001|Take 001:BaseAnimation
+    7400100: RightHandRing4|LeftHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400102: RightHandRing4|LeftHandPinky4|Take 001|Take 001:BaseAnimation
+    7400104: RightHandRing4|LeftHandRing4|Take 001|Take 001:BaseAnimation
+    7400106: RightHandRing4|LeftHandThumb4|Take 001|Take 001:BaseAnimation
+    7400108: RightHandRing4|RightFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400110: RightHandRing4|RightHandIndex4|Take 001|Take 001:BaseAnimation
+    7400112: RightHandRing4|RightHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400114: RightHandRing4|RightHandPinky4|Take 001|Take 001:BaseAnimation
+    7400116: RightHandRing4|RightHandRing4|Take 001|Take 001:BaseAnimation
+    7400118: RightHandRing4|RightHandThumb4|Take 001|Take 001:BaseAnimation
+    7400120: RightHandMiddle4|Armature|Take 001|Take 001:BaseAnimation
+    7400122: RightHandMiddle4|CarlMidGeo|Take 001|Take 001:BaseAnimation
+    7400124: RightHandMiddle4|HeadTop_End|Take 001|Take 001:BaseAnimation
+    7400126: RightHandMiddle4|LeftFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400128: RightHandMiddle4|LeftHandIndex4|Take 001|Take 001:BaseAnimation
+    7400130: RightHandMiddle4|LeftHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400132: RightHandMiddle4|LeftHandPinky4|Take 001|Take 001:BaseAnimation
+    7400134: RightHandMiddle4|LeftHandRing4|Take 001|Take 001:BaseAnimation
+    7400136: RightHandMiddle4|LeftHandThumb4|Take 001|Take 001:BaseAnimation
+    7400138: RightHandMiddle4|RightFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400140: RightHandMiddle4|RightHandIndex4|Take 001|Take 001:BaseAnimation
+    7400142: RightHandMiddle4|RightHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400144: RightHandMiddle4|RightHandPinky4|Take 001|Take 001:BaseAnimation
+    7400146: RightHandMiddle4|RightHandRing4|Take 001|Take 001:BaseAnimation
+    7400148: RightHandMiddle4|RightHandThumb4|Take 001|Take 001:BaseAnimation
+    7400150: RightHandIndex4|Armature|Take 001|Take 001:BaseAnimation
+    7400152: RightHandIndex4|CarlMidGeo|Take 001|Take 001:BaseAnimation
+    7400154: RightHandIndex4|HeadTop_End|Take 001|Take 001:BaseAnimation
+    7400156: RightHandIndex4|LeftFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400158: RightHandIndex4|LeftHandIndex4|Take 001|Take 001:BaseAnimation
+    7400160: RightHandIndex4|LeftHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400162: RightHandIndex4|LeftHandPinky4|Take 001|Take 001:BaseAnimation
+    7400164: RightHandIndex4|LeftHandRing4|Take 001|Take 001:BaseAnimation
+    7400166: RightHandIndex4|LeftHandThumb4|Take 001|Take 001:BaseAnimation
+    7400168: RightHandIndex4|RightFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400170: RightHandIndex4|RightHandIndex4|Take 001|Take 001:BaseAnimation
+    7400172: RightHandIndex4|RightHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400174: RightHandIndex4|RightHandPinky4|Take 001|Take 001:BaseAnimation
+    7400176: RightHandIndex4|RightHandRing4|Take 001|Take 001:BaseAnimation
+    7400178: RightHandIndex4|RightHandThumb4|Take 001|Take 001:BaseAnimation
+    7400180: RightHandThumb4|Armature|Take 001|Take 001:BaseAnimation
+    7400182: RightHandThumb4|CarlMidGeo|Take 001|Take 001:BaseAnimation
+    7400184: RightHandThumb4|HeadTop_End|Take 001|Take 001:BaseAnimation
+    7400186: RightHandThumb4|LeftFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400188: RightHandThumb4|LeftHandIndex4|Take 001|Take 001:BaseAnimation
+    7400190: RightHandThumb4|LeftHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400192: RightHandThumb4|LeftHandPinky4|Take 001|Take 001:BaseAnimation
+    7400194: RightHandThumb4|LeftHandRing4|Take 001|Take 001:BaseAnimation
+    7400196: RightHandThumb4|LeftHandThumb4|Take 001|Take 001:BaseAnimation
+    7400198: RightHandThumb4|RightFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400200: RightHandThumb4|RightHandIndex4|Take 001|Take 001:BaseAnimation
+    7400202: RightHandThumb4|RightHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400204: RightHandThumb4|RightHandPinky4|Take 001|Take 001:BaseAnimation
+    7400206: RightHandThumb4|RightHandRing4|Take 001|Take 001:BaseAnimation
+    7400208: RightHandThumb4|RightHandThumb4|Take 001|Take 001:BaseAnimation
+    7400210: LeftHandPinky4|Armature|Take 001|Take 001:BaseAnimation
+    7400212: LeftHandPinky4|CarlMidGeo|Take 001|Take 001:BaseAnimation
+    7400214: LeftHandPinky4|HeadTop_End|Take 001|Take 001:BaseAnimation
+    7400216: LeftHandPinky4|LeftFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400218: LeftHandPinky4|LeftHandIndex4|Take 001|Take 001:BaseAnimation
+    7400220: LeftHandPinky4|LeftHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400222: LeftHandPinky4|LeftHandPinky4|Take 001|Take 001:BaseAnimation
+    7400224: LeftHandPinky4|LeftHandRing4|Take 001|Take 001:BaseAnimation
+    7400226: LeftHandPinky4|LeftHandThumb4|Take 001|Take 001:BaseAnimation
+    7400228: LeftHandPinky4|RightFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400230: LeftHandPinky4|RightHandIndex4|Take 001|Take 001:BaseAnimation
+    7400232: LeftHandPinky4|RightHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400234: LeftHandPinky4|RightHandPinky4|Take 001|Take 001:BaseAnimation
+    7400236: LeftHandPinky4|RightHandRing4|Take 001|Take 001:BaseAnimation
+    7400238: LeftHandPinky4|RightHandThumb4|Take 001|Take 001:BaseAnimation
+    7400240: LeftHandRing4|Armature|Take 001|Take 001:BaseAnimation
+    7400242: LeftHandRing4|CarlMidGeo|Take 001|Take 001:BaseAnimation
+    7400244: LeftHandRing4|HeadTop_End|Take 001|Take 001:BaseAnimation
+    7400246: LeftHandRing4|LeftFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400248: LeftHandRing4|LeftHandIndex4|Take 001|Take 001:BaseAnimation
+    7400250: LeftHandRing4|LeftHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400252: LeftHandRing4|LeftHandPinky4|Take 001|Take 001:BaseAnimation
+    7400254: LeftHandRing4|LeftHandRing4|Take 001|Take 001:BaseAnimation
+    7400256: LeftHandRing4|LeftHandThumb4|Take 001|Take 001:BaseAnimation
+    7400258: LeftHandRing4|RightFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400260: LeftHandRing4|RightHandIndex4|Take 001|Take 001:BaseAnimation
+    7400262: LeftHandRing4|RightHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400264: LeftHandRing4|RightHandPinky4|Take 001|Take 001:BaseAnimation
+    7400266: LeftHandRing4|RightHandRing4|Take 001|Take 001:BaseAnimation
+    7400268: LeftHandRing4|RightHandThumb4|Take 001|Take 001:BaseAnimation
+    7400270: LeftHandIndex4|Armature|Take 001|Take 001:BaseAnimation
+    7400272: LeftHandIndex4|CarlMidGeo|Take 001|Take 001:BaseAnimation
+    7400274: LeftHandIndex4|HeadTop_End|Take 001|Take 001:BaseAnimation
+    7400276: LeftHandIndex4|LeftFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400278: LeftHandIndex4|LeftHandIndex4|Take 001|Take 001:BaseAnimation
+    7400280: LeftHandIndex4|LeftHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400282: LeftHandIndex4|LeftHandPinky4|Take 001|Take 001:BaseAnimation
+    7400284: LeftHandIndex4|LeftHandRing4|Take 001|Take 001:BaseAnimation
+    7400286: LeftHandIndex4|LeftHandThumb4|Take 001|Take 001:BaseAnimation
+    7400288: LeftHandIndex4|RightFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400290: LeftHandIndex4|RightHandIndex4|Take 001|Take 001:BaseAnimation
+    7400292: LeftHandIndex4|RightHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400294: LeftHandIndex4|RightHandPinky4|Take 001|Take 001:BaseAnimation
+    7400296: LeftHandIndex4|RightHandRing4|Take 001|Take 001:BaseAnimation
+    7400298: LeftHandIndex4|RightHandThumb4|Take 001|Take 001:BaseAnimation
+    7400300: LeftHandMiddle4|Armature|Take 001|Take 001:BaseAnimation
+    7400302: LeftHandMiddle4|CarlMidGeo|Take 001|Take 001:BaseAnimation
+    7400304: LeftHandMiddle4|HeadTop_End|Take 001|Take 001:BaseAnimation
+    7400306: LeftHandMiddle4|LeftFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400308: LeftHandMiddle4|LeftHandIndex4|Take 001|Take 001:BaseAnimation
+    7400310: LeftHandMiddle4|LeftHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400312: LeftHandMiddle4|LeftHandPinky4|Take 001|Take 001:BaseAnimation
+    7400314: LeftHandMiddle4|LeftHandRing4|Take 001|Take 001:BaseAnimation
+    7400316: LeftHandMiddle4|LeftHandThumb4|Take 001|Take 001:BaseAnimation
+    7400318: LeftHandMiddle4|RightFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400320: LeftHandMiddle4|RightHandIndex4|Take 001|Take 001:BaseAnimation
+    7400322: LeftHandMiddle4|RightHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400324: LeftHandMiddle4|RightHandPinky4|Take 001|Take 001:BaseAnimation
+    7400326: LeftHandMiddle4|RightHandRing4|Take 001|Take 001:BaseAnimation
+    7400328: LeftHandMiddle4|RightHandThumb4|Take 001|Take 001:BaseAnimation
+    7400330: LeftHandThumb4|Armature|Take 001|Take 001:BaseAnimation
+    7400332: LeftHandThumb4|CarlMidGeo|Take 001|Take 001:BaseAnimation
+    7400334: LeftHandThumb4|HeadTop_End|Take 001|Take 001:BaseAnimation
+    7400336: LeftHandThumb4|LeftFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400338: LeftHandThumb4|LeftHandIndex4|Take 001|Take 001:BaseAnimation
+    7400340: LeftHandThumb4|LeftHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400342: LeftHandThumb4|LeftHandPinky4|Take 001|Take 001:BaseAnimation
+    7400344: LeftHandThumb4|LeftHandRing4|Take 001|Take 001:BaseAnimation
+    7400346: LeftHandThumb4|LeftHandThumb4|Take 001|Take 001:BaseAnimation
+    7400348: LeftHandThumb4|RightFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400350: LeftHandThumb4|RightHandIndex4|Take 001|Take 001:BaseAnimation
+    7400352: LeftHandThumb4|RightHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400354: LeftHandThumb4|RightHandPinky4|Take 001|Take 001:BaseAnimation
+    7400356: LeftHandThumb4|RightHandRing4|Take 001|Take 001:BaseAnimation
+    7400358: LeftHandThumb4|RightHandThumb4|Take 001|Take 001:BaseAnimation
+    7400360: HeadTop_End|Armature|Take 001|Take 001:BaseAnimation
+    7400362: HeadTop_End|CarlMidGeo|Take 001|Take 001:BaseAnimation
+    7400364: HeadTop_End|HeadTop_End|Take 001|Take 001:BaseAnimation
+    7400366: HeadTop_End|LeftFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400368: HeadTop_End|LeftHandIndex4|Take 001|Take 001:BaseAnimation
+    7400370: HeadTop_End|LeftHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400372: HeadTop_End|LeftHandPinky4|Take 001|Take 001:BaseAnimation
+    7400374: HeadTop_End|LeftHandRing4|Take 001|Take 001:BaseAnimation
+    7400376: HeadTop_End|LeftHandThumb4|Take 001|Take 001:BaseAnimation
+    7400378: HeadTop_End|RightFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400380: HeadTop_End|RightHandIndex4|Take 001|Take 001:BaseAnimation
+    7400382: HeadTop_End|RightHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400384: HeadTop_End|RightHandPinky4|Take 001|Take 001:BaseAnimation
+    7400386: HeadTop_End|RightHandRing4|Take 001|Take 001:BaseAnimation
+    7400388: HeadTop_End|RightHandThumb4|Take 001|Take 001:BaseAnimation
+    7400390: Armature|Armature|Take 001|Take 001:BaseAnimation
+    7400392: Armature|CarlMidGeo|Take 001|Take 001:BaseAnimation
+    7400394: Armature|HeadTop_End|Take 001|Take 001:BaseAnimation
+    7400396: Armature|LeftFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400398: Armature|LeftHandIndex4|Take 001|Take 001:BaseAnimation
+    7400400: Armature|LeftHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400402: Armature|LeftHandPinky4|Take 001|Take 001:BaseAnimation
+    7400404: Armature|LeftHandRing4|Take 001|Take 001:BaseAnimation
+    7400406: Armature|LeftHandThumb4|Take 001|Take 001:BaseAnimation
+    7400408: Armature|RightFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400410: Armature|RightHandIndex4|Take 001|Take 001:BaseAnimation
+    7400412: Armature|RightHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400414: Armature|RightHandPinky4|Take 001|Take 001:BaseAnimation
+    7400416: Armature|RightHandRing4|Take 001|Take 001:BaseAnimation
+    7400418: Armature|RightHandThumb4|Take 001|Take 001:BaseAnimation
+    7400420: CarlHead|Armature|Take 001|Take 001:BaseAnimation
+    7400422: CarlHead|CarlMidGeo|Take 001|Take 001:BaseAnimation
+    7400424: CarlHead|HeadTop_End|Take 001|Take 001:BaseAnimation
+    7400426: CarlHead|LeftFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400428: CarlHead|LeftHandIndex4|Take 001|Take 001:BaseAnimation
+    7400430: CarlHead|LeftHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400432: CarlHead|LeftHandPinky4|Take 001|Take 001:BaseAnimation
+    7400434: CarlHead|LeftHandRing4|Take 001|Take 001:BaseAnimation
+    7400436: CarlHead|LeftHandThumb4|Take 001|Take 001:BaseAnimation
+    7400438: CarlHead|RightFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400440: CarlHead|RightHandIndex4|Take 001|Take 001:BaseAnimation
+    7400442: CarlHead|RightHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400444: CarlHead|RightHandPinky4|Take 001|Take 001:BaseAnimation
+    7400446: CarlHead|RightHandRing4|Take 001|Take 001:BaseAnimation
+    7400448: CarlHead|RightHandThumb4|Take 001|Take 001:BaseAnimation
+    7400450: CarlMidGeo|Armature|Take 001|Take 001:BaseAnimation
+    7400452: CarlMidGeo|CarlMidGeo|Take 001|Take 001:BaseAnimation
+    7400454: CarlMidGeo|HeadTop_End|Take 001|Take 001:BaseAnimation
+    7400456: CarlMidGeo|LeftFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400458: CarlMidGeo|LeftHandIndex4|Take 001|Take 001:BaseAnimation
+    7400460: CarlMidGeo|LeftHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400462: CarlMidGeo|LeftHandPinky4|Take 001|Take 001:BaseAnimation
+    7400464: CarlMidGeo|LeftHandRing4|Take 001|Take 001:BaseAnimation
+    7400466: CarlMidGeo|LeftHandThumb4|Take 001|Take 001:BaseAnimation
+    7400468: CarlMidGeo|RightFootToeBase_End|Take 001|Take 001:BaseAnimation
+    7400470: CarlMidGeo|RightHandIndex4|Take 001|Take 001:BaseAnimation
+    7400472: CarlMidGeo|RightHandMiddle4|Take 001|Take 001:BaseAnimation
+    7400474: CarlMidGeo|RightHandPinky4|Take 001|Take 001:BaseAnimation
+    7400476: CarlMidGeo|RightHandRing4|Take 001|Take 001:BaseAnimation
+    7400478: CarlMidGeo|RightHandThumb4|Take 001|Take 001:BaseAnimation
+    9500000: //RootNode
+    13700000: CarlHead
+    13700002: CarlMidGeo
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
