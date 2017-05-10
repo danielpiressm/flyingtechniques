@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PointAndGo : MonoBehaviour {
+public class GazeOriented : MonoBehaviour {
 
     public Transform head;
     public Transform hand;
     public float speed = 3.0f;
     public GameObject target;
     public float raySize = 3.0f;
+	public Camera camera;
 
 	// Use this for initialization
 	void Start () {
@@ -20,31 +21,32 @@ public class PointAndGo : MonoBehaviour {
         //TODO: Implement drag & go
         //Also: Point to the place & fix the direction & use a button
         //Gaze oriented
-        Vector3 dir = head.position - hand.position;
 
-        Debug.DrawRay(head.transform.position, -dir, Color.red);
 
-		if(Input.GetKey(KeyCode.Space))
+        Debug.DrawRay(head.transform.position, head.transform.forward, Color.red);
+
+        if (Input.GetKey(KeyCode.Space))
         {
-            Vector3 desiredMove = -dir * speed * Time.deltaTime;
+            Vector3 dir =  head.position - hand.position;
+            Vector3 desiredMove = head.transform.forward * speed * Time.deltaTime;
             this.transform.position += desiredMove;
             RaycastHit hit;
-           // target.SetActive(true);
-            //Debug.DrawRay(this.transform.position, this.transform.forward,Color.red);
-            if (Physics.Raycast(head.position, -dir, out hit, raySize))
+            //target.SetActive(true);
+            //Debug.DrawRay(head.transform.position, head.transform.forward,Color.red);
+            if (Physics.Raycast(head.position, head.transform.forward, out hit, raySize))
             {
                 //target.transform.position = hit.transform.position;
                 
             }
             else
             {
-              //  target.transform.position = head.transform.TransformPoint(new Vector3(0, 0, raySize));
+                //target.transform.position = head.transform.TransformPoint(new Vector3(0, 0, raySize));
                
             }
         }
         else
         {
-            //target.SetActive(false);
+           // target.SetActive(false);
         }
 	}
 }
