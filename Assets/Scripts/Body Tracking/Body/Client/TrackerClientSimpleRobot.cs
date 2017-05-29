@@ -75,7 +75,7 @@ public class TrackerClientSimpleRobot : MonoBehaviour
     private Transform boneLeftHip, boneLeftThigh, boneLeftCalf;
     private Transform boneRightHip, boneRightThigh, boneRightCalf;
 
-    public TestTask testTaskScript;
+    public FullbodyReport testTaskScript;
 
     void AssignJointsForLogReasons()
     {

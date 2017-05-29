@@ -1,548 +1,168 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
-public enum Tasks { Task1, Task2, Task3, Task4, ReachGreenLollipop0thTime, ReachRedLollipop1stTime, ReachRedLollipop2ndTime, ReachGreenLollipop1stTime, ReachGreenLollipop2ndTime, ThrowingObjects, Completed };
+public class TestTask : MonoBehaviour
+{
 
-public enum BodyLog {  rightFoot, leftFoot, rightHand, leftHand, head, rightShin, leftShin , hip, torso, };
+    [SerializeField]
+    private GameObject[] rings;
 
-public enum AvatarType { carlFirstPerson, carlThirdPerson, robotFirstPerson, robotThirdPerson, pointCloudFirstPerson, pointCloudThirdPerson };
+    private float[] magnitudes;
+    private Vector3[] ringPositionsWhenCrossed;
+    private int[] numberOfPathPointsPerRing;
 
-public class TestTask : MonoBehaviour {
+    private int currentRing;
 
-    public AvatarType avatarType;
+    private string testReport = "";
+    private string testReportPath = "";
+    private string testOptimalPath = "";
+    private float lastTime;
 
-    public string collisionLogfileName = "collisionLog";
-    public string logFileName = "log";
-    public string pathLogFileName = "logPath";
+    private List<Vector3> optimalDiscretizedPathList;
 
-    private string pathDirectory = "";
+    [SerializeField]
+    private string reportOutputFile = "report.csv";
 
-    private string collisionLogStr = "";
-    private string logStr = "";
-    private string pathStr = "";
+    [SerializeField]
+    private string pathReportOutputFile = "reportPath.csv";
 
-    public string separator = ";";
+    [SerializeField]
+    private string optimalPathOutputFile = "optimalPath.csv";
 
-    public Tasks currentTask;
+    private Vector3 lastPos;
 
-    
-    public GameObject objectsTask1; 
-    public GameObject objectsTask2;
-    public GameObject objectsTask3;
-    public GameObject objectTask4;
-    public GameObject pirulito;
+    [SerializeField]
+    private Texture2D arrow;
 
-    Vector3 lastPos;
+    [SerializeField]
+    private float threshold = 0.05f;
 
-    Camera _trackedObj;
+    private Camera mainCamera;
 
-    public Transform head;
-    public Transform rightHand;
-    public Transform leftHand;
-    public Transform rightFoot;
-    public Transform leftFoot;
-    public Transform rightShin; //shin=canela
-    public Transform leftShin;
+    //testes
+    private int countPointsInPath = 0;
 
-    private Vector3[] lastBodyPos;
-    private string[] bodyStr;
-    private string[] bodyStrPath;
+    private bool completed = false;
 
-    public bool fullbodyLog = false;
+    private string pathDirectory;
 
-    int currentTrigger = 0;
+    private List<Vector3> cameraPath;
 
-    float threshold = 0.00000f;
-
-    float lastTimeBetweenTasks = 0.0f;
-    float lastTimeBetweenTriggers = 0.0f;
-    float lastTimeBetweenCollisions = 0.0f;
-    float startTime = 0.0f;
-    int countFullBodiesStr = 0;
-    private string pathHeaderStr;
-
-    // Use this for initialization
-    void Start () {
-        //currentTask = Tasks.Task1;
-        //uncomment this for the task
-        currentTask = Tasks.ReachGreenLollipop0thTime;
-        //with avatars, change for torso tracking
-        _trackedObj = Camera.main;
-        lastPos = _trackedObj.transform.position;
+    private void Start()
+    {
+        mainCamera = Camera.main;
+        magnitudes = new float[42];
+        numberOfPathPointsPerRing = new int[42];
+        optimalDiscretizedPathList = new List<Vector3>();
+        InitializeRings();
         InitializeReport();
-        
+
+        cameraPath = new List<Vector3>();
+
         int i = 1;
-        
-        while(Directory.Exists(Directory.GetCurrentDirectory()+"/user"+i+avatarType.ToString()))
+
+        while (Directory.Exists(Directory.GetCurrentDirectory() + "/user" + i))
         {
             i++;
         }
         //se nao houver diretorios
 
         System.IO.Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/test");
-        System.IO.Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/user"+i+ avatarType.ToString());
+        System.IO.Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/user" + i);
         //System.IO.StreamWriter
-        pathDirectory = Directory.GetCurrentDirectory() + "/user" + i + avatarType.ToString() + "/";
-        if(fullbodyLog)
-            InitializeFullbodyReport();
+        pathDirectory = Directory.GetCurrentDirectory() + "/user" + i + "/";
 
-
-        //Debug.Log("log");
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (currentTask != Tasks.Completed )
-        {
-            if(fullbodyLog)
-            {
-                updateFullbodyReport();
-            }
-            UpdatePathReport();
-        }
-        
     }
 
-    float getTaskTime(float time)
+    private void OnGUI()
     {
-        if (time - startTime < 0)
-            return 0;
-        else
-            return time - startTime;
+        if (arrow == null)
+            return;
+
+        if (currentRing < rings.Length && !rings[currentRing].GetComponent<Renderer>().isVisible)
+            DrawArrow();
     }
 
-    void serializeCollision(string str)
+    public string getPathDirectory()
     {
-        float currentTime = Time.realtimeSinceStartup;
-        //"$" means collision
-        logStr += "$"+currentTask.ToString() + "," + (getTaskTime(currentTime - lastTimeBetweenCollisions)) +  ","+ getTaskTime(currentTime) +   "\n";
-        //lastTimeBetweenTasks = currentTime;
-        collisionLogStr += str + "," + (getTaskTime(currentTime) - getTaskTime(lastTimeBetweenCollisions)) + "," + getTaskTime(currentTime)+ "," + currentTask + "\n";
-        Debug.Log("Time : " + currentTime + " startTime : " + startTime + "lastCollision" + lastTimeBetweenCollisions);
-        lastTimeBetweenCollisions = currentTime;
+        return pathDirectory;
     }
 
-    void serializeBallCollision(string str)
+    private void DrawArrow()
     {
-        float currentTime = Time.realtimeSinceStartup;
-        logStr += currentTask.ToString() + "," + (currentTime - lastTimeBetweenCollisions) + ","+ currentTime + "\n";
-        //lastTimeBetweenTasks = currentTime;
-        collisionLogStr += str;
-        //Debug.Log("&&" + str);
+        Vector3 screenPosition = mainCamera.WorldToScreenPoint(rings[currentRing].transform.position);
+        if (screenPosition.z < 0)
+            screenPosition *= -1;
+
+        Vector3 screenCenter = new Vector3(Screen.width, Screen.height, 0) / 2.0f;
+        screenPosition -= screenCenter;
+        screenPosition = screenPosition.normalized;
+
+        float angle = Mathf.Atan2(screenPosition.x, screenPosition.y) * Mathf.Rad2Deg;
+
+        Matrix4x4 matrixBackup = GUI.matrix;
+        GUIUtility.RotateAroundPivot(angle, new Vector2(mainCamera.pixelWidth / 2, mainCamera.pixelHeight / 2));
+        GUI.DrawTexture(new Rect(mainCamera.pixelWidth / 2 - 100, mainCamera.pixelHeight / 2 - 100, 200, 200), arrow, ScaleMode.ScaleToFit, true);
+        GUI.matrix = matrixBackup;
     }
 
-    void logBallThrow(float time)
+
+
+    private void InitializeReport()
     {
-        lastTimeBetweenCollisions = time;
-        Debug.Log("BetweenCollisions : " + time + ","+ Time.realtimeSinceStartup);
+        testReport += "Ring,Hit,Time,Error,PosRingX,PosRingY,PosRingZ\n";
+        lastTime = Time.realtimeSinceStartup;
+        testReportPath += "Ring,currentPosX,currentPosY,currentPosZ,pathElapsedX,pathElapsedY,pathElapsedZ,magnitude,rotX,rotY,rotZ,navSpeed\n";
+        lastTime = Time.realtimeSinceStartup;
+        lastPos = new Vector3(Camera.main.transform.position.x,
+                              Camera.main.transform.position.y,
+                              Camera.main.transform.position.z);
+        testReport += ("-1,True,0,0," + ringPositionsWhenCrossed[0].x + "," + ringPositionsWhenCrossed[0].y + "," + ringPositionsWhenCrossed[0].z + "\n");
+
     }
 
-
-    void InitializeReport()
+    private float Average(float[] array)
     {
-        collisionLogStr = "Joint" + separator + "PosX" + separator + "PosY" + separator + "PosZ" + separator + "RotX" + separator + "RotY" + separator + "RotZ" + separator +
-                        "ColliderName" + separator + "PosColliderX" + separator + "PosColliderY" + separator + "PosColliderZ" + separator + "RotColliderX" + separator + "RotColliderY" +
-                        separator + "RotColliderZ" + separator + "ErrorX" + separator + "ErrorY" + separator + "ErrorZ" + separator+ "PositionColliderTransformedX"+ separator + "PositionColliderTransformedY"+separator+"PositionColliderTransformedZ"+ separator +
-                        "CameraPositionX"+ separator + "CameraPositionY" + separator + "CameraPositionZ" + separator + "CameraRotationX" + separator + "CameraRotationY" + separator + "CameraRotationZ" + separator + 
-                        "TimeElapsed"+ separator + "CurrentTime"+ separator + "CurrentTask"+"\n";
-        logStr = "TriggerNum" + separator + "TimeElapsed" + separator + "CurrentTime\n";
-        pathStr = "Task,Trigger,currentPosX,currentPosY,currentPosZ,pathElapsedX,pathElapsedY,pathElapsedZ,rotX,rotY,rotZ,magnitude\n";
-        pathHeaderStr = "Task,Trigger,currentPosX,currentPosY,currentPosZ,pathElapsedX,pathElapsedY,pathElapsedZ,rotX,rotY,rotZ,magnitude,CameraPosX,CameraPosY,CameraPosZ,CameraRotX,CameraRotY,CameraRotZ\n";
+        float sum = 0;
+        for (int i = 0; i < array.Length; i++)
+        {
+            sum += array[i];
+        }
+        return (sum) / array.Length;
     }
 
-    void CompleteReport()
-    {
-
-        logStr += "TotalTime" + getTaskTime(Time.realtimeSinceStartup)+"\n";
-        System.IO.File.WriteAllText( pathDirectory+"/"+ collisionLogfileName + ".csv",collisionLogStr);
-        System.IO.File.WriteAllText( pathDirectory+"/"+logFileName + ".csv", logStr);
-        if(fullbodyLog)
-        {
-            for (int i = 0; i < 9; i++)
-            {
-                //System.IO.File.WriteAllText(pathDirectory + "/" + bodyStrPath[i] + ".csv", pathHeaderStr);
-                //System.IO.File.WriteAllText(pathDirectory + "/" + bodyStrPath[i] + ".csv", pathHeaderStr + bodyStr[i]);
-                //System.IO.File.AppendAllText(pathDirectory + "/" + bodyStrPath[i] + ".csv", "TimeTotal," + "0.355");
-            }
-            
-        }
-        //else
-        {
-            System.IO.File.WriteAllText(pathDirectory + "/" + pathLogFileName + ".csv", pathStr);
-        }
-        
-      
-    }
-
-    void UpdateReport( )
-    {
-        float currentTime = Time.realtimeSinceStartup;
-        logStr += currentTask.ToString() + "," + (getTaskTime(currentTime) - getTaskTime(lastTimeBetweenTasks))+ ","+ getTaskTime(currentTime)+"\n";
-        lastTimeBetweenTasks = currentTime;
-        lastTimeBetweenCollisions = currentTime;
-        lastTimeBetweenTriggers = currentTime;
-    }
-
-    
-
-    public void InitializeFullbodyReport()
-    {
-        lastBodyPos = new Vector3[9];
-        bodyStrPath = new string[9];
-        bodyStr = new string[9];
-        
-        for(int i = 0; i < 5; i++)
-        {
-            bodyStr[i] = pathHeaderStr;
-        }
-
-        if(rightFoot!=null)
-        {
-            lastBodyPos[0] = rightFoot.position;
-            bodyStrPath[0] = "rightFootLog.csv";
-            Debug.Log("rightFootLog");
-            //System.IO.File.WriteAllText(pathDirectory  + "rightFootLog.csv", "");
-            //create a file for each part of the body
-        }
-        if(leftFoot!=null)
-        {
-            //log this
-            lastBodyPos[1] = leftFoot.position;
-            bodyStrPath[1] = "leftFootLog.csv";
-            Debug.Log("leftFootLog");
-            //System.IO.File.WriteAllText(pathDirectory  + "leftFootLog.csv", "");
-        }
-        if(rightHand!=null)
-        {
-            lastBodyPos[2] = rightHand.position;
-            bodyStrPath[2] = "rightHandLog.csv";
-            //System.IO.File.WriteAllText(pathDirectory  + "rightHandLog.csv", "");
-        }
-        if(leftHand!=null)
-        {
-            lastBodyPos[3] = leftHand.position;
-            bodyStrPath[3] = "leftHandLog.csv";
-            //System.IO.File.WriteAllText(pathDirectory + "leftHandLog.csv", "");
-        }
-        if(rightShin!=null)
-        {
-            lastBodyPos[4] = rightShin.position;
-            bodyStrPath[4] = "rightShinLog.csv";
-            //System.IO.File.WriteAllText(pathDirectory + "rightShinLog.csv", "");
-        }
-        if(leftShin!=null)
-        {
-            lastBodyPos[5] = leftShin.position;
-            bodyStrPath[5] = "leftShinLog.csv";
-            //System.IO.File.WriteAllText(pathDirectory  + "leftShinLog.csv", "");
-        }
-        if(head!=null)
-        {
-            lastBodyPos[4] = head.position;
-            bodyStrPath[4] = "headLog.csv";
-            //System.IO.File.WriteAllText(pathDirectory  + "headLog.csv", "");
-        }
-        
-
-        
-    }
-
-    void updateFullbodyReport()
-    {
-        if(head == null)
-        {
-            GameObject headObj = new GameObject("head");
-            head = headObj.transform;
-            headObj.transform.position = Vector3.zero;
-        }
-        Vector3 currentPosVector = new Vector3();
-        if (rightFoot != null)
-        {
-            currentPosVector = rightFoot.transform.position - lastBodyPos[0];
-            if (true )
-            {
-                lastBodyPos[0] = rightFoot.transform.position;
-                bodyStr[0] += string.Join(",", new string[]
-                {
-                    currentTask.ToString(),
-                    currentTrigger.ToString(),
-                    rightFoot.transform.position.x.ToString(),
-                    rightFoot.transform.position.y.ToString(),
-                    rightFoot.transform.position.z.ToString(),
-                    currentPosVector.x.ToString(),
-                    currentPosVector.y.ToString(),
-                    currentPosVector.z.ToString(),
-                    rightFoot.transform.eulerAngles.x.ToString(),
-                    rightFoot.transform.eulerAngles.y.ToString(),
-                    rightFoot.transform.eulerAngles.z.ToString(),
-                    rightFoot.transform.position.magnitude.ToString(),
-                    head.transform.position.x.ToString(),
-                    head.transform.position.y.ToString(),
-                    head.transform.position.z.ToString(),
-                    Camera.main.transform.eulerAngles.x.ToString(),
-                    Camera.main.transform.eulerAngles.y.ToString(),
-                    Camera.main.transform.eulerAngles.z.ToString(),
-                    "\n"
-
-                });
-                //System.IO.File.WriteAllText(pathDirectory +  bodyStrPath[0] , bodyStr[0]);
-            }
-
-            //create a file for each part of the body
-        }
-        if (leftFoot != null)
-        {
-            currentPosVector = leftFoot.transform.position - lastBodyPos[1];
-            if (true)
-            {
-                //pathHeaderStr = "Task,Trigger,currentPosX,currentPosY,currentPosZ,pathElapsedX,pathElapsedY,pathElapsedZ,rotX,rotY,rotZ,magnitude,CameraPosX,CameraPosY,CameraPosZ,CameraRotX,CameraRotY,CameraRotZ\n";
-                lastBodyPos[1] = leftFoot.transform.position;
-                bodyStr[1] +=  string.Join(",", new string[]
-                {
-                    currentTask.ToString(),
-                    currentTrigger.ToString(),
-                    leftFoot.transform.position.x.ToString(),
-                    leftFoot.transform.position.y.ToString(),
-                    leftFoot.transform.position.z.ToString(),
-                    currentPosVector.x.ToString(),
-                    currentPosVector.y.ToString(),
-                    currentPosVector.z.ToString(),
-                    leftFoot.transform.eulerAngles.x.ToString(),
-                    leftFoot.transform.eulerAngles.y.ToString(),
-                    leftFoot.transform.eulerAngles.z.ToString(),
-                    leftFoot.transform.position.magnitude.ToString(),
-                    head.transform.position.x.ToString(),
-                    head.transform.position.y.ToString(),
-                    head.transform.position.z.ToString(),
-                    Camera.main.transform.eulerAngles.x.ToString(),
-                    Camera.main.transform.eulerAngles.y.ToString(),
-                    Camera.main.transform.eulerAngles.z.ToString(),
-                    "\n"
-
-                });
-                //System.IO.File.WriteAllText(pathDirectory +  bodyStrPath[1] , bodyStr[1]);
-            }
-        }
-        if (rightHand != null)
-        {
-            currentPosVector = rightHand.transform.position - lastBodyPos[2];
-            //currentPosVector = head.transform.position - lastBodyPos[(int)BodyLog.head];
-            if (true)
-            {
-                
-
-                lastBodyPos[2] = rightHand.transform.position;
-                bodyStr[(int)BodyLog.rightHand] += string.Join(",", new string[]
-                {
-                    currentTask.ToString(),
-                    currentTrigger.ToString(),
-                    rightHand.transform.position.x.ToString(),
-                    rightHand.transform.position.y.ToString(),
-                    rightHand.transform.position.z.ToString(),
-                    currentPosVector.x.ToString(),
-                    currentPosVector.y.ToString(),
-                    currentPosVector.z.ToString(),
-                    rightHand.transform.eulerAngles.x.ToString(),
-                    rightHand.transform.eulerAngles.y.ToString(),
-                    rightHand.transform.eulerAngles.z.ToString(),
-                    rightHand.transform.position.magnitude.ToString(),
-                    head.transform.position.x.ToString(),
-                    head.transform.position.y.ToString(),
-                    head.transform.position.z.ToString(),
-                    Camera.main.transform.eulerAngles.x.ToString(),
-                    Camera.main.transform.eulerAngles.y.ToString(),
-                    Camera.main.transform.eulerAngles.z.ToString(),
-                    "\n"
-
-                });
-                //System.IO.File.WriteAllText(pathDirectory +  bodyStrPath[2] , bodyStr[2]);
-            }
-        }
-        if (leftHand != null)
-        {
-            lastBodyPos[(int)BodyLog.leftHand] = leftHand.transform.position;
-            currentPosVector = head.transform.position - lastBodyPos[(int)BodyLog.head];
-            if (true)
-            {
-                lastBodyPos[(int)BodyLog.leftHand] = rightHand.transform.position;
-                bodyStr[(int)BodyLog.leftHand] += string.Join(",", new string[]
-                {
-                    currentTask.ToString(),
-                    currentTrigger.ToString(),
-                    leftHand.transform.position.x.ToString(),
-                    leftHand.transform.position.y.ToString(),
-                    leftHand.transform.position.z.ToString(),
-                    currentPosVector.x.ToString(),
-                    currentPosVector.y.ToString(),
-                    currentPosVector.z.ToString(),
-                    leftHand.transform.eulerAngles.x.ToString(),
-                    leftHand.transform.eulerAngles.y.ToString(),
-                    leftHand.transform.eulerAngles.z.ToString(),
-                    leftHand.transform.position.magnitude.ToString(),
-                    head.transform.position.x.ToString(),
-                    head.transform.position.y.ToString(),
-                    head.transform.position.z.ToString(),
-                    Camera.main.transform.eulerAngles.x.ToString(),
-                    Camera.main.transform.eulerAngles.y.ToString(),
-                    Camera.main.transform.eulerAngles.z.ToString(),
-                    "\n"
-
-                });
-                //System.IO.File.WriteAllText(pathDirectory + bodyStrPath[3] , bodyStr[3]);
-            }
-        }
-        if (rightShin != null)
-        {
-            lastBodyPos[(int)BodyLog.rightShin] = rightShin.transform.position;
-            currentPosVector = head.transform.position - lastBodyPos[(int)BodyLog.rightShin];
-            if (true)
-            {
-                lastBodyPos[(int)BodyLog.rightShin] = rightShin.transform.position;
-                bodyStr[(int)BodyLog.rightShin]  += string.Join(",", new string[]
-                {
-                    currentTask.ToString(),
-                    currentTrigger.ToString(),
-                    rightShin.transform.position.x.ToString(),
-                    rightShin.transform.position.y.ToString(),
-                    rightShin.transform.position.z.ToString(),
-                    currentPosVector.x.ToString(),
-                    currentPosVector.y.ToString(),
-                    currentPosVector.z.ToString(),
-                    rightShin.transform.eulerAngles.x.ToString(),
-                    rightShin.transform.eulerAngles.y.ToString(),
-                    rightShin.transform.eulerAngles.z.ToString(),
-                    rightShin.transform.position.magnitude.ToString(),
-                    head.transform.position.x.ToString(),
-                    head.transform.position.y.ToString(),
-                    head.transform.position.z.ToString(),
-                    Camera.main.transform.eulerAngles.x.ToString(),
-                    Camera.main.transform.eulerAngles.y.ToString(),
-                    Camera.main.transform.eulerAngles.z.ToString(),
-                    "\n"
-
-                });
-                //System.IO.File.WriteAllText(pathDirectory + bodyStrPath[4] , bodyStr[4]);
-            }
-        }
-        if (leftShin != null)
-        {
-            lastBodyPos[(int)BodyLog.leftShin] = leftShin.transform.position;
-            currentPosVector = head.transform.position - lastBodyPos[(int)BodyLog.leftShin];
-            if (true)
-            {
-                lastBodyPos[(int)BodyLog.leftShin] = leftShin.transform.position;
-                bodyStr[(int)BodyLog.leftShin] += string.Join(",", new string[]
-                {
-                    currentTask.ToString(),
-                    currentTrigger.ToString(),
-                    leftShin.transform.position.x.ToString(),
-                    leftShin.transform.position.y.ToString(),
-                    leftShin.transform.position.z.ToString(),
-                    currentPosVector.x.ToString(),
-                    currentPosVector.y.ToString(),
-                    currentPosVector.z.ToString(),
-                    leftShin.transform.eulerAngles.x.ToString(),
-                    leftShin.transform.eulerAngles.y.ToString(),
-                    leftShin.transform.eulerAngles.z.ToString(),
-                    leftShin.transform.position.magnitude.ToString(),
-                    head.transform.position.x.ToString(),
-                    head.transform.position.y.ToString(),
-                    head.transform.position.z.ToString(),
-                    Camera.main.transform.eulerAngles.x.ToString(),
-                    Camera.main.transform.eulerAngles.y.ToString(),
-                    Camera.main.transform.eulerAngles.z.ToString(),
-                    "\n"
-
-                });
-                //System.IO.File.WriteAllText(pathDirectory +  bodyStrPath[5] , bodyStr[5]);
-            }
-        }
-        if (head != null)
-        {
-            lastBodyPos[(int)BodyLog.head] = head.transform.position;
-            currentPosVector = head.transform.position - lastBodyPos[(int)BodyLog.head];
-            if (true)
-            {
-                lastBodyPos[(int)BodyLog.head] = head.transform.position;
-                bodyStr[(int)BodyLog.head] += string.Join(",", new string[]
-                {
-                    currentTask.ToString(),
-                    currentTrigger.ToString(),
-                    head.transform.position.x.ToString(),
-                    head.transform.position.y.ToString(),
-                    head.transform.position.z.ToString(),
-                    currentPosVector.x.ToString(),
-                    currentPosVector.y.ToString(),
-                    currentPosVector.z.ToString(),
-                    head.transform.eulerAngles.x.ToString(),
-                    head.transform.eulerAngles.y.ToString(),
-                    head.transform.eulerAngles.z.ToString(),
-                    head.transform.position.magnitude.ToString(),
-                    head.transform.position.x.ToString(),
-                    head.transform.position.y.ToString(),
-                    head.transform.position.z.ToString(),
-                    Camera.main.transform.eulerAngles.x.ToString(),
-                    Camera.main.transform.eulerAngles.y.ToString(),
-                    Camera.main.transform.eulerAngles.z.ToString(),
-                    "\n"
-
-                });
-                //System.IO.File.WriteAllText(pathDirectory + bodyStrPath[6] , bodyStr[6]);
-            }
-        }
-        //flush the string into the file
-        if (countFullBodiesStr > 20)
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                try
-                {
-                    System.IO.File.AppendAllText(pathDirectory + "/"+bodyStrPath[i], bodyStr[i]);
-                    //Debug.Log("&&&&&");
-                }
-                catch(System.Exception ex)
-                {
-                    //Debug.LogError("@@@@@@@ : " + bodyStrPath[i]);
-                }
-                
-                bodyStr[i] = "";
-            }
-            countFullBodiesStr = 0;
-        }
-        else
-            countFullBodiesStr++;
-    }
-
-    void UpdatePathReport()
+    private void UpdatePathReport()
     {
         Vector3 currentPos = Camera.main.transform.position;
         Vector3 currentPosVector = currentPos - lastPos;
         if (currentPosVector.magnitude > threshold)
         {
             lastPos = Camera.main.transform.position;
-            pathStr += string.Join(",", new string[]
+            testReportPath += currentRing + "," + currentPos.x + "," + currentPos.y + "," + currentPos.z + "," + currentPosVector.x + "," + currentPosVector.y + "," +
+                              currentPosVector.z + "," + currentPosVector.magnitude + "," + Camera.main.transform.localEulerAngles.x + "," + Camera.main.transform.localEulerAngles.y + "," + Camera.main.transform.localEulerAngles.z + "\n";
+            //Debug.Log("MAGNITUDE + " + currentPosVector.magnitude);
+            countPointsInPath++;
+            cameraPath.Add(new Vector3(currentPos.x, currentPos.y, currentPos.z));
+
+            if (!completed)
             {
-                currentTask.ToString(),
-                currentTrigger.ToString(),
-                _trackedObj.transform.position.x.ToString(),
-                _trackedObj.transform.position.y.ToString(),
-                _trackedObj.transform.position.z.ToString(),
-                currentPosVector.x.ToString(),
-                currentPosVector.y.ToString(),
-                currentPosVector.z.ToString(),
-                _trackedObj.transform.eulerAngles.x.ToString(),
-                _trackedObj.transform.eulerAngles.y.ToString(),
-                _trackedObj.transform.eulerAngles.z.ToString(),
-                currentPosVector.magnitude.ToString(),
-                "\n"
+                try
+                {
+                    magnitudes[currentRing] += currentPosVector.magnitude;
+                }
+                catch (Exception e)
+                {
 
-            }); 
-                
-            //countPointsInPath++;
-            //cameraPath.Add(new Vector3(currentPos.x, currentPos.y, currentPos.z));
+                }
 
-           
+            }
+            else
+            {
+                magnitudes[currentRing] += currentPosVector.magnitude;
+            }
         }
         else
         {
@@ -550,103 +170,143 @@ public class TestTask : MonoBehaviour {
         }
     }
 
-    
-
-    void SetActiveChildren(GameObject obj, bool state)
+    private void UpdateReport(bool hit, float distanceToRingCenter)
     {
-        obj.SetActive(state);
-        for(int i = 0; i < obj.transform.childCount; i++)
+        float currentTime = Time.realtimeSinceStartup;
+        float ringTime = currentTime - lastTime;
+        lastTime = currentTime;
+
+        testReport += string.Join(",", new string[]{
+            currentRing.ToString(),
+            hit.ToString(),
+            ringTime.ToString(),
+            distanceToRingCenter.ToString(),
+            ringPositionsWhenCrossed[currentRing].x.ToString(),
+            ringPositionsWhenCrossed[currentRing].y.ToString(),
+            ringPositionsWhenCrossed[currentRing].z.ToString()
+        }) + "\n";
+    }
+
+    private List<Vector3> discretizePath(Vector3 pointA, Vector3 pointB, int averagePointsPerRing)
+    {
+        Vector3 aux = pointB - pointA;
+        //List<Vector3> discretizedPath = new List<Vector3>();
+        aux = new Vector3(aux.x / averagePointsPerRing, aux.y / averagePointsPerRing, aux.z / averagePointsPerRing);
+        for (int j = 0; j <= averagePointsPerRing; j++)
         {
-            obj.transform.GetChild(i).gameObject.SetActive(state);
+            optimalDiscretizedPathList.Add(pointA + (aux * j));
+        }
+        return optimalDiscretizedPathList;
+    }
+
+    private List<Vector3> discretizePath(Vector3[] points, int averagePointsPerRing)
+    {
+        List<Vector3> discretizedPath = new List<Vector3>();
+        for (int i = 0; i < points.Length - 1; i++)
+        {
+            Vector3 aux = points[i + 1] - points[i];
+            //discretizedPath.Add(points[i]);
+            aux = new Vector3(aux.x / averagePointsPerRing, aux.y / averagePointsPerRing, aux.z / averagePointsPerRing);
+
+            //aux.
+            for (int j = 0; j <= averagePointsPerRing; j++)
+            {
+                // aux = points[i] + (aux * j);
+                discretizedPath.Add(points[i] + (aux * j));
+                //Debug.Log(discretizedPath[j].ToString());
+            }
+        }
+        return discretizedPath;
+    }
+
+    private void CompleteReport()
+    {
+        System.IO.File.WriteAllText(reportOutputFile, testReport);
+        System.IO.File.WriteAllText(pathReportOutputFile, testReportPath);
+        completed = true;
+        //Debug.Log("countPointsInPath :" + countPointsInPath + " perRing : " + countPointsInPath / 42.0f);
+        //List<Vector3> optimalPathDiscretizedList1 = discretizePath(ringPositionsWhenCrossed, countPointsInPath / 42);
+
+        printPathToFile(optimalDiscretizedPathList, "optimalPath");
+
+    }
+
+    private void CompletePathReport()
+    {
+        for (int i = 0; i < 42; i++)
+        {
+            testReportPath += i + " (TOTAL)," + "," + "," + "," + "," + "," + "," + magnitudes[i] + "," + "," + "," + "\n";
+        }
+        System.IO.File.WriteAllText(pathReportOutputFile, testReportPath);
+    }
+
+    private void printPathToFile(List<Vector3> listPoints, string nameOfPointArray)
+    {
+        string str = "";
+        str += (nameOfPointArray + "posX," + nameOfPointArray + "posY," + nameOfPointArray + "posZ," + "Ring\n");
+        for (int i = 0; i < listPoints.Count; i++)
+        {
+            Vector3 vec = listPoints[i];
+            str += vec.x + "," + vec.y + "," + vec.z + "," + (i / 78) + "\n";//TESTE
+        }
+        System.IO.File.WriteAllText(nameOfPointArray + ".csv", str);
+    }
+
+    private void InitializeRings()
+    {
+        currentRing = 0;
+        for (int i = 0; i < rings.Length; i++)
+        {
+            bool activated = (i == currentRing);
+            rings[i].SetActive(activated);
+        }
+        ringPositionsWhenCrossed = new Vector3[rings.Length + 1];
+        //first we store the initial position of the guy
+        //remember!!! this array has a length of numOfRings+1, so here the variable currentRing here is represented by currentRing+1
+        ringPositionsWhenCrossed[0] = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, Camera.main.transform.position.z);
+    }
+
+    public void Next(bool hit, float distanceToRingCenter)
+    {
+        rings[currentRing].SetActive(false);
+
+        try
+        {
+            ringPositionsWhenCrossed[currentRing] = new Vector3(rings[currentRing].transform.position.x, rings[currentRing].transform.position.y, rings[currentRing].transform.position.z);
+            if (currentRing != 0)
+            {
+                discretizePath(ringPositionsWhenCrossed[currentRing - 1], ringPositionsWhenCrossed[currentRing], 78);
+            }
+        }
+        catch (Exception e)
+        {
+
+        }
+        UpdateReport(hit, distanceToRingCenter);
+
+        currentRing++;
+
+        //UpdatePathReport();
+        if (rings.Length > currentRing)
+            rings[currentRing].SetActive(true);
+        else
+        {
+            CompleteReport();
+            CompletePathReport();
+        }
+
+    }
+
+    public void Update()
+    {
+        if (completed == false)
+        {
+            UpdatePathReport();
         }
     }
 
-    void nextTask(string triggerId)
+    public int getCurrentRing()
     {
-        if(triggerId == "walkTrigger1")
-        {
-            if(currentTask == Tasks.Task2)
-            {
-                UpdateReport();
-                currentTask = Tasks.ReachGreenLollipop1stTime;
-                Debug.Log(currentTask.ToString());
-                
-                //objectsTask2.SetActive(false);
-                //objectsTask3.SetActive(true);
-                //Debug.Log("TEST OVER");
-                //CompleteReport();
-            }
-        }
-
-        if(triggerId == "walkTrigger2")
-        {
-            if(currentTask == Tasks.Task1)
-            {
-                UpdateReport();
-                currentTask = Tasks.ReachRedLollipop1stTime;
-                Debug.Log(currentTask.ToString());
-            }
-            else if(currentTask == Tasks.Task3)
-            {
-                UpdateReport();
-                currentTask = Tasks.ReachRedLollipop2ndTime;
-                Debug.Log(currentTask.ToString());
-
-                //currentTask = Tasks.Completed;
-                //CompleteReport();
-            }
-        }
-        if(triggerId == "redLollipop")
-        {
-            
-            if(currentTask == Tasks.ReachRedLollipop1stTime)
-            {
-                UpdateReport();
-                currentTask = Tasks.Task2;
-                SetActiveChildren(objectsTask1, false);
-                SetActiveChildren(objectsTask2, true);
-                Debug.Log(currentTask.ToString());
-            }
-            else if(currentTask == Tasks.ReachRedLollipop2ndTime)
-            {
-                UpdateReport();
-                lastTimeBetweenCollisions = Time.realtimeSinceStartup;
-                currentTask = Tasks.ThrowingObjects;
-                Debug.Log("Start Throwing Object Task");
-                SetActiveChildren(objectsTask3, false);
-                SetActiveChildren(objectTask4,true);
-                SetActiveChildren(pirulito, false);
-                //CompleteReport();
-                //throwing objectsToBeImplemented
-            }
-        }
-        else if(triggerId == "greenLollipop")
-        {
-            if (currentTask == Tasks.ReachGreenLollipop0thTime)
-            {
-                currentTask = Tasks.Task1;
-                SetActiveChildren(objectsTask1, true);
-                Debug.Log(currentTask.ToString());
-                lastTimeBetweenTasks = Time.realtimeSinceStartup;
-                startTime = lastTimeBetweenTasks;
-                Debug.Log("startTime = " + startTime);
-            }
-            if (currentTask == Tasks.ReachGreenLollipop1stTime)
-            {
-                UpdateReport();
-                currentTask = Tasks.Task3;
-                SetActiveChildren(objectsTask2, false);
-                SetActiveChildren(objectsTask3, true);
-            }
-        }
-        else if( triggerId == "objectShooter")
-        {
-            if(currentTask == Tasks.ThrowingObjects)
-            {
-                SetActiveChildren(objectTask4, false);
-                CompleteReport();
-                currentTask = Tasks.Completed;
-            }
-        }
+        return currentRing;
     }
 }
