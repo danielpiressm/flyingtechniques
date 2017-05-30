@@ -1,4 +1,6 @@
-﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
 Shader "Custom/DepthGrayscale" {
 	SubShader{
@@ -30,7 +32,7 @@ Shader "Custom/DepthGrayscale" {
 	//Vertex Shader
 	v2f vert(appdata_base v) {
 		v2f o;
-		o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+		o.pos = UnityObjectToClipPos(v.vertex);
 		//o.wpos = mul(unity_ObjectToWorld, v.vertex).xyz;
 		o.scrPos = ComputeScreenPos(o.pos);
 		//for some reason, the y position of the depth texture comes out inverted

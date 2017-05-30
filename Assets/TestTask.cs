@@ -221,8 +221,8 @@ public class TestTask : MonoBehaviour
 
     private void CompleteReport()
     {
-        System.IO.File.WriteAllText(reportOutputFile, testReport);
-        System.IO.File.WriteAllText(pathReportOutputFile, testReportPath);
+        System.IO.File.WriteAllText(pathDirectory+reportOutputFile, testReport);
+        System.IO.File.WriteAllText(pathDirectory + pathReportOutputFile, testReportPath);
         completed = true;
         //Debug.Log("countPointsInPath :" + countPointsInPath + " perRing : " + countPointsInPath / 42.0f);
         //List<Vector3> optimalPathDiscretizedList1 = discretizePath(ringPositionsWhenCrossed, countPointsInPath / 42);
@@ -237,7 +237,7 @@ public class TestTask : MonoBehaviour
         {
             testReportPath += i + " (TOTAL)," + "," + "," + "," + "," + "," + "," + magnitudes[i] + "," + "," + "," + "\n";
         }
-        System.IO.File.WriteAllText(pathReportOutputFile, testReportPath);
+        System.IO.File.WriteAllText(pathDirectory + pathReportOutputFile, testReportPath);
     }
 
     private void printPathToFile(List<Vector3> listPoints, string nameOfPointArray)
@@ -249,7 +249,7 @@ public class TestTask : MonoBehaviour
             Vector3 vec = listPoints[i];
             str += vec.x + "," + vec.y + "," + vec.z + "," + (i / 78) + "\n";//TESTE
         }
-        System.IO.File.WriteAllText(nameOfPointArray + ".csv", str);
+        System.IO.File.WriteAllText(pathDirectory+ nameOfPointArray + ".csv", str);
     }
 
     private void InitializeRings()

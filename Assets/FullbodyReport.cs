@@ -19,7 +19,6 @@ public class FullbodyReport : MonoBehaviour {
     private string[] bodyStrPath;
 
     private int countFullBodiesStr = 0;
-    public string pathDirectory = "";
 
     public bool fullbodyLog = false;
 
