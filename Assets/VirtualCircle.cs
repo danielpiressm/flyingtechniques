@@ -14,6 +14,8 @@ public class VirtualCircle : MonoBehaviour {
 
     public GameObject meshCircle;
 
+    public Transform head;
+
     public Transform child;
 
     Vector2 userPosInsideCircle;
@@ -74,8 +76,14 @@ public class VirtualCircle : MonoBehaviour {
         else
         {
             //Debug.Log("Out of the Circle");
+
+            //Vector3 dir = this.transform.position - child.position;
+            //restrict to 4DOF
+            this.transform.eulerAngles = new Vector3(0, this.transform.eulerAngles.y, 0);
+
+            Vector3 dir = head.transform.position - child.position;
             Vector3 desiredMove = (this.transform.position - child.position) * speed * Time.deltaTime;
-            this.transform.Translate(desiredMove);
+            this.transform.position += desiredMove;
         }
 
         if (recalibrate)

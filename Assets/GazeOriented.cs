@@ -27,7 +27,7 @@ public class GazeOriented : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.Space))
         {
-            Vector3 dir =  head.position - hand.position;
+            //Vector3 dir =  head.position - hand.position;
             Vector3 desiredMove = head.transform.forward * speed * Time.deltaTime;
             this.transform.position += desiredMove;
             RaycastHit hit;
