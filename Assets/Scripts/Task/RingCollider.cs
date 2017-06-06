@@ -12,8 +12,9 @@ public class RingCollider : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        GameObject virtualCircle = GameObject.Find("VirtualCircle");
+        GameObject virtualCircle = GameObject.Find("Virtual_Circle");
         camera = (Camera)virtualCircle.GetComponentInChildren<Camera>();
+        testTask = (TestTask)virtualCircle.GetComponent<TestTask>();
     }
 
     // Update is called once per frame
@@ -21,7 +22,7 @@ public class RingCollider : MonoBehaviour
     {
         plane = new Plane(transform.up, transform.position);
         // has crossed plane
-        if (plane.GetSide(camera.transform.position))
+        if (!plane.GetSide(camera.transform.position))
         {
             // Pythagoras
             float distanceToPlane = plane.GetDistanceToPoint(camera.transform.position);

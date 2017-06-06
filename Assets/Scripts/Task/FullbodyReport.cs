@@ -29,12 +29,13 @@ public class FullbodyReport : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        tTask = this.GetComponent<TestTask>();	
+        tTask = this.GetComponent<TestTask>();
+        InitializeFullbodyReport();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+        updateFullbodyReport();
 	}
 
     public void InitializeFullbodyReport()
