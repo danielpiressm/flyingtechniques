@@ -6,6 +6,11 @@ using System.IO;
 
 public class TestTask : MonoBehaviour
 {
+    public enum Technique
+    {
+        HandSteering, GazeOriented, VirtualCircle, WalkingInPlace, HandGaze, Neutral;
+    };
+
 
     [SerializeField]
     private GameObject[] rings;
@@ -51,6 +56,8 @@ public class TestTask : MonoBehaviour
 
     private List<Vector3> cameraPath;
 
+    public Technique travelTechnique;
+
     private void Start()
     {
         mainCamera = Camera.main;
@@ -73,7 +80,7 @@ public class TestTask : MonoBehaviour
         System.IO.Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/test");
         System.IO.Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/user" + i);
         //System.IO.StreamWriter
-        pathDirectory = Directory.GetCurrentDirectory() + "/user" + i + "/";
+        pathDirectory = Directory.GetCurrentDirectory() + "/user" + i + "_"+ travelTechnique.ToString() +  "/";
 
     }
 
