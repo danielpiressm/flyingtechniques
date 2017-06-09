@@ -48,10 +48,10 @@ public class OSCReceiver : MonoBehaviour
 			roll1 = (float)oscMessage.Values [1];
 			pitch1 = (float)oscMessage.Values [2];
 			buttonB1 = (int)oscMessage.Values [3] == 1;
-			yaw2 = (float)oscMessage.Values [4];
+			/*yaw2 = (float)oscMessage.Values [4];
 			roll2 = (float)oscMessage.Values [5];
 			pitch2 = (float)oscMessage.Values [6];
-			buttonB2 = (int)oscMessage.Values [7] == 1;
+			buttonB2 = (int)oscMessage.Values [7] == 1;*/
 			break;
 		}
 	}
