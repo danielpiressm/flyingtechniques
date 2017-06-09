@@ -8,7 +8,7 @@ public class TestTask : MonoBehaviour
 {
     public enum Technique
     {
-        HandSteering, GazeOriented, VirtualCircle, WalkingInPlace, HandGaze, Neutral
+        HandSteering, GazeOriented, VirtualCircle, WalkingInPlace, HandGaze, Neutral, ElevatorGaze
     };
 
 

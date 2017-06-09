@@ -52,9 +52,10 @@ public class ElevatorGaze : MonoBehaviour {
             Vector3 desiredMove = dir * speed * Time.deltaTime;
             this.transform.position += desiredMove;
         }
-        else
+        else if(Input.GetKey(KeyCode.PageDown))
         {
-            // target.SetActive(false);
+            Vector3 desiredMove = -dir * speed * Time.deltaTime;
+            this.transform.position += desiredMove;
         }
     }
 }
