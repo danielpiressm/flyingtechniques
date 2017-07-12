@@ -31,7 +31,7 @@ public class HandSteering : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
         {
             //Vector3 dir =  head.position - hand.position;
-            Vector3 desiredMove = head.transform.forward * speed * Time.deltaTime;
+            Vector3 desiredMove = hand.transform.forward * speed * Time.deltaTime;
             this.transform.position += desiredMove;
             RaycastHit hit;
             //target.SetActive(true);

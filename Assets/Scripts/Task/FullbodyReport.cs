@@ -13,6 +13,7 @@ public class FullbodyReport : MonoBehaviour {
     public Transform leftFoot;
     public Transform rightShin; //shin=canela
     public Transform leftShin;
+    public Transform handTracker;
 
     private Vector3[] lastBodyPos;
     private string[] bodyStr;
@@ -26,6 +27,8 @@ public class FullbodyReport : MonoBehaviour {
 
     //public int currentRing;
     private TestTask tTask;
+
+
 
     // Use this for initialization
     void Start () {
@@ -111,8 +114,7 @@ public class FullbodyReport : MonoBehaviour {
         if (rightFoot != null)
         {
             currentPosVector = rightFoot.transform.position - lastBodyPos[0];
-            if (true)
-            {
+            
                 lastBodyPos[0] = rightFoot.transform.position;
                 bodyStr[0] += string.Join(",", new string[]
                 {
@@ -137,15 +139,14 @@ public class FullbodyReport : MonoBehaviour {
 
                 });
                 //System.IO.File.WriteAllText(pathDirectory +  bodyStrPath[0] , bodyStr[0]);
-            }
+            
 
             //create a file for each part of the body
         }
         if (leftFoot != null)
         {
             currentPosVector = leftFoot.transform.position - lastBodyPos[1];
-            if (true)
-            {
+            
                 //pathHeaderStr = "Task,Trigger,currentPosX,currentPosY,currentPosZ,pathElapsedX,pathElapsedY,pathElapsedZ,rotX,rotY,rotZ,magnitude,CameraPosX,CameraPosY,CameraPosZ,CameraRotX,CameraRotY,CameraRotZ\n";
                 lastBodyPos[1] = leftFoot.transform.position;
                 bodyStr[1] += string.Join(",", new string[]
@@ -171,15 +172,24 @@ public class FullbodyReport : MonoBehaviour {
 
                 });
                 //System.IO.File.WriteAllText(pathDirectory +  bodyStrPath[1] , bodyStr[1]);
-            }
+           
         }
         if (rightHand != null)
         {
             currentPosVector = rightHand.transform.position - lastBodyPos[2];
             //currentPosVector = head.transform.position - lastBodyPos[(int)BodyLog.head];
-            if (true)
-            {
+            
+                //Vector3 leftHandAngles = leftHand.eulerAngles;
+                Vector3 rightHandAngles = rightHand.eulerAngles;
 
+
+                if(tTask.travelTechnique == TestTask.Technique.HandSteering)
+                {
+                    if(tTask.rightHanded && handTracker!=null)
+                    {
+                        rightHandAngles = handTracker.eulerAngles;
+                    }
+                }
 
                 lastBodyPos[2] = rightHand.transform.position;
                 bodyStr[(int)BodyLog.rightHand] += string.Join(",", new string[]
@@ -191,9 +201,9 @@ public class FullbodyReport : MonoBehaviour {
                     currentPosVector.x.ToString(),
                     currentPosVector.y.ToString(),
                     currentPosVector.z.ToString(),
-                    rightHand.transform.eulerAngles.x.ToString(),
-                    rightHand.transform.eulerAngles.y.ToString(),
-                    rightHand.transform.eulerAngles.z.ToString(),
+                    rightHandAngles.x.ToString(),
+                    rightHandAngles.y.ToString(),
+                    rightHandAngles.z.ToString(),
                     rightHand.transform.position.magnitude.ToString(),
                     head.transform.position.x.ToString(),
                     head.transform.position.y.ToString(),
@@ -205,17 +215,27 @@ public class FullbodyReport : MonoBehaviour {
 
                 });
                 //System.IO.File.WriteAllText(pathDirectory +  bodyStrPath[2] , bodyStr[2]);
-            }
+            
         }
         if (leftHand != null)
         {
             lastBodyPos[(int)BodyLog.leftHand] = leftHand.transform.position;
             currentPosVector = head.transform.position - lastBodyPos[(int)BodyLog.head];
-            if (true)
+
+            Vector3 leftHandAngles = leftHand.eulerAngles;
+
+            if(tTask.travelTechnique == TestTask.Technique.HandSteering)
             {
-                lastBodyPos[(int)BodyLog.leftHand] = rightHand.transform.position;
-                bodyStr[(int)BodyLog.leftHand] += string.Join(",", new string[]
+                if(!tTask.rightHanded && handTracker !=null)
                 {
+                    leftHandAngles = handTracker.eulerAngles;
+                }
+            }
+           
+
+           lastBodyPos[(int)BodyLog.leftHand] = rightHand.transform.position;
+           bodyStr[(int)BodyLog.leftHand] += string.Join(",", new string[]
+           {
                     "ring"+tTask.getCurrentRing().ToString(),
                     leftHand.transform.position.x.ToString(),
                     leftHand.transform.position.y.ToString(),
@@ -223,9 +243,9 @@ public class FullbodyReport : MonoBehaviour {
                     currentPosVector.x.ToString(),
                     currentPosVector.y.ToString(),
                     currentPosVector.z.ToString(),
-                    leftHand.transform.eulerAngles.x.ToString(),
-                    leftHand.transform.eulerAngles.y.ToString(),
-                    leftHand.transform.eulerAngles.z.ToString(),
+                    leftHandAngles.x.ToString(),
+                    leftHandAngles.y.ToString(),
+                    leftHandAngles.z.ToString(),
                     leftHand.transform.position.magnitude.ToString(),
                     head.transform.position.x.ToString(),
                     head.transform.position.y.ToString(),
@@ -235,16 +255,15 @@ public class FullbodyReport : MonoBehaviour {
                     Camera.main.transform.eulerAngles.z.ToString(),
                     "\n"
 
-                });
+           });
                 //System.IO.File.WriteAllText(pathDirectory + bodyStrPath[3] , bodyStr[3]);
-            }
+            
         }
         if (rightShin != null)
         {
             lastBodyPos[(int)BodyLog.rightShin] = rightShin.transform.position;
             currentPosVector = head.transform.position - lastBodyPos[(int)BodyLog.rightShin];
-            if (true)
-            {
+            
                 lastBodyPos[(int)BodyLog.rightShin] = rightShin.transform.position;
                 bodyStr[(int)BodyLog.rightShin] += string.Join(",", new string[]
                 {
@@ -269,7 +288,7 @@ public class FullbodyReport : MonoBehaviour {
 
                 });
                 //System.IO.File.WriteAllText(pathDirectory + bodyStrPath[4] , bodyStr[4]);
-            }
+            
         }
         if (leftShin != null)
         {
@@ -307,8 +326,7 @@ public class FullbodyReport : MonoBehaviour {
         {
             lastBodyPos[(int)BodyLog.head] = head.transform.position;
             currentPosVector = head.transform.position - lastBodyPos[(int)BodyLog.head];
-            if (true)
-            {
+            
                 lastBodyPos[(int)BodyLog.head] = head.transform.position;
                 bodyStr[(int)BodyLog.head] += string.Join(",", new string[]
                 {
@@ -333,7 +351,7 @@ public class FullbodyReport : MonoBehaviour {
 
                 });
                 //System.IO.File.WriteAllText(pathDirectory + bodyStrPath[6] , bodyStr[6]);
-            }
+            
         }
         //flush the string into the file
         if (countFullBodiesStr > 20)

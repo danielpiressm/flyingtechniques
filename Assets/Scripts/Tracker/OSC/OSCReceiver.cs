@@ -3,6 +3,7 @@ using System.Collections;
 
 public class OSCReceiver : MonoBehaviour
 {
+    public GameObject obj;
 
 	public string RemoteIP = "127.0.0.1";
 	public int SendToPort = 9000;
@@ -19,6 +20,8 @@ public class OSCReceiver : MonoBehaviour
 	public bool buttonB2 = false;
 
 	private Osc handler;
+
+    public string messageToShow = "";
 	
 	// Use this for initialization
 	void Start ()
@@ -33,12 +36,18 @@ public class OSCReceiver : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		
-	}
+       // obj.transform.eulerAngles = new Vector3(pitch1, yaw1, roll1);
 
-	public void AllMessageHandler (OscMessage oscMessage)
+        Vector3 euler1 = new Vector3(-pitch1, yaw1, -roll1);
+        Quaternion newQuaternion1 = Quaternion.Euler(euler1);
+        obj.transform.rotation = newQuaternion1;
+
+    }
+
+    public void AllMessageHandler (OscMessage oscMessage)
 	{
 		string msgString = Osc.OscMessageToString (oscMessage);
+        messageToShow = msgString;
 		string msgAddress = oscMessage.Address;
 		//Debug.Log (msgString);
 

@@ -8,7 +8,7 @@ public class TestTask : MonoBehaviour
 {
     public enum Technique
     {
-        HandSteering, GazeOriented, VirtualCircle, WalkingInPlace, HandGaze, Neutral, ElevatorGaze
+        HandSteering, GazeOriented, VirtualCircle, WalkingInPlace, HandGaze, Neutral, ElevatorGaze, ImagePlane
     };
 
 
@@ -58,6 +58,8 @@ public class TestTask : MonoBehaviour
 
     public Technique travelTechnique;
 
+    public bool rightHanded = true;
+
     private void Start()
     {
         mainCamera = Camera.main;
@@ -80,7 +82,8 @@ public class TestTask : MonoBehaviour
         System.IO.Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/test");
         System.IO.Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/user" + i);
         //System.IO.StreamWriter
-        pathDirectory = Directory.GetCurrentDirectory() + "/user" + i + "_"+ travelTechnique.ToString() +  "/";
+        
+        pathDirectory = Directory.GetCurrentDirectory() + "/user" + i + "_"+ travelTechnique.ToString() + "/";
 
     }
 
@@ -91,6 +94,11 @@ public class TestTask : MonoBehaviour
 
         if (currentRing < rings.Length && !rings[currentRing].GetComponent<Renderer>().isVisible)
             DrawArrow();
+
+        if(Input.GetKeyDown(KeyCode.A))
+        {
+            rightHanded = !rightHanded;
+        }
     }
 
     public string getPathDirectory()
