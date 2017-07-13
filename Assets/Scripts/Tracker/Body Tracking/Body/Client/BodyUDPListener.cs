@@ -45,6 +45,10 @@ public class BodyUDPListener : MonoBehaviour
             {
                 gameObject.GetComponent<TrackerClientSimpleRobot>().SetNewFrame(bodies.ToArray());
             }
+            else if(gameObject.GetComponent<TrackerClientRobot>()!=null)
+            {
+                gameObject.GetComponent<TrackerClientRobot>().SetNewFrame(bodies.ToArray());
+            }
             else
             {
                 gameObject.GetComponent<TrackerClient>().SetNewFrame(bodies.ToArray());
