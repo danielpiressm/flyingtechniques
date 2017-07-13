@@ -155,8 +155,8 @@ public class TrackerClientRobot : MonoBehaviour
 		Vector3 spineRight = Utils.GetBoneDirection(rightShoulderJoint.Value, leftShoulderJoint.Value);
 		Vector3 spineForward = Vector3.Cross(spineRight, spineUp);
 
-		spineBase.position = spineBaseJoint.Value + new Vector3(0.0f, 0.15f, 0.0f);
-		spineBase.rotation = Quaternion.LookRotation(spineForward, spineUp);
+		spineBase.localPosition = spineBaseJoint.Value + new Vector3(0.0f, 0.15f, 0.0f);
+		spineBase.localRotation = Quaternion.LookRotation(spineForward, spineUp);
 
 		// Left Arm
 		leftShoulder.rotation = Utils.GetQuaternionFromUpRight(Utils.GetBoneDirection(leftShoulderJoint.Value, spineShoulderJoint.Value), spineRight);
