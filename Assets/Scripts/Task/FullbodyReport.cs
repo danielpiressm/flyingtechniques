@@ -59,7 +59,7 @@ public class FullbodyReport : MonoBehaviour {
             lastBodyPos[0] = rightFoot.position;
             bodyStrPath[0] = "rightFootLog.csv";
             Debug.Log("rightFootLog");
-            //System.IO.File.WriteAllText(pathDirectory  + "rightFootLog.csv", "");
+            //System.IO.File.WriteAllText(tTask.getPathDirectory() + "/"+ "rightFootLog.csv", "");
             //create a file for each part of the body
         }
         if (leftFoot != null)

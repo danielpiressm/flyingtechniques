@@ -37,6 +37,9 @@ public class TestTask : MonoBehaviour
     [SerializeField]
     private string optimalPathOutputFile = "optimalPath.csv";
 
+    [SerializeField]
+    private string collisionFile = "collisionLog.csv";
+
     private Vector3 lastPos;
 
     [SerializeField]
@@ -73,14 +76,14 @@ public class TestTask : MonoBehaviour
 
         int i = 1;
 
-        while (Directory.Exists(Directory.GetCurrentDirectory() + "/user" + i))
+        while (Directory.Exists(Directory.GetCurrentDirectory() + "/user" + i+"_"+travelTechnique.ToString()))
         {
             i++;
         }
         //se nao houver diretorios
 
-        System.IO.Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/test");
-        System.IO.Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/user" + i);
+        //System.IO.Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/test");
+        System.IO.Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/user" + i + "_" + travelTechnique.ToString() + "/");
         //System.IO.StreamWriter
         
         pathDirectory = Directory.GetCurrentDirectory() + "/user" + i + "_"+ travelTechnique.ToString() + "/";
@@ -236,7 +239,7 @@ public class TestTask : MonoBehaviour
 
     private void CompleteReport()
     {
-        System.IO.File.WriteAllText(pathDirectory+reportOutputFile, testReport);
+        System.IO.File.WriteAllText(pathDirectory+ reportOutputFile, testReport);
         System.IO.File.WriteAllText(pathDirectory + pathReportOutputFile, testReportPath);
         completed = true;
         //Debug.Log("countPointsInPath :" + countPointsInPath + " perRing : " + countPointsInPath / 42.0f);
@@ -318,6 +321,11 @@ public class TestTask : MonoBehaviour
         {
             UpdatePathReport();
         }
+    }
+
+    public void serializeCollision(string str)
+    {
+        System.IO.File.AppendAllText(pathDirectory + collisionFile, str);
     }
 
     public int getCurrentRing()

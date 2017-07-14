@@ -6,6 +6,7 @@ public class HandSteering : MonoBehaviour
 {
 
     public Transform head;
+    public Transform handTracker;
     public Transform hand;
     public float speed = 3.0f;
     public GameObject target;
@@ -26,12 +27,12 @@ public class HandSteering : MonoBehaviour
         //Gaze oriented
 
 
-        Debug.DrawRay(head.transform.position, head.transform.forward, Color.red);
+        Debug.DrawRay(hand.transform.position, handTracker.transform.forward, Color.red);
 
         if (Input.GetKey(KeyCode.Space))
         {
             //Vector3 dir =  head.position - hand.position;
-            Vector3 desiredMove = hand.transform.forward * speed * Time.deltaTime;
+            Vector3 desiredMove = handTracker.transform.forward * speed * Time.deltaTime;
             this.transform.position += desiredMove;
             RaycastHit hit;
             //target.SetActive(true);

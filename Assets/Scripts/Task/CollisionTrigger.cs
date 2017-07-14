@@ -5,9 +5,24 @@ public class CollisionTrigger : MonoBehaviour {
 
     public string Id;
     float lastTime = 0;
+    private TestTask tTask;
+
 	// Use this for initialization
 	void Start () {
-	
+        tTask = GameObject.Find("Virtual_Circle").GetComponent<TestTask>();
+        MeshCollider mCollider = this.GetComponent<MeshCollider>();
+        if (!mCollider)
+        {
+            BoxCollider bCollider = this.GetComponent<BoxCollider>();
+            bCollider.isTrigger = true;
+        }
+        else
+        {
+            mCollider.convex = true;
+            mCollider.isTrigger = true;
+        }
+            
+        
 	}
 	
 	// Update is called once per frame
@@ -50,7 +65,7 @@ public class CollisionTrigger : MonoBehaviour {
         Vector3 rot = new Vector3(collider.transform.eulerAngles.x, collider.transform.eulerAngles.y, collider.transform.eulerAngles.z);
         Vector3 vec = collider.transform.position - this.transform.position;
         Vector3 vec2 = Camera.main.transform.InverseTransformPoint(collider.transform.position);
-        Debug.Log("Collision between  " + this.Id + " and " + collider.gameObject.name);
+        Debug.Log("Collision between  " + this.gameObject.name + " and " + collider.gameObject.name);
         if (collider.gameObject.name == "Plane" || collider.gameObject.name.Contains("ground") || collider.gameObject.name == "triggerObject1" || collider.gameObject.name == "triggerObject2")
             return;
 
@@ -97,9 +112,12 @@ public class CollisionTrigger : MonoBehaviour {
             headPos.z.ToString(),
             Camera.main.transform.position.x.ToString(),
             Camera.main.transform.position.y.ToString(),
-            Camera.main.transform.position.z.ToString()
+            Camera.main.transform.position.z.ToString(),
+            "\n"
         });
-        SendMessageUpwards("serializeCollision", str);
+        if(tTask)
+            tTask.serializeCollision(str);
+        //SendMessageUpwards("serializeCollision", str);
         
 
     }
@@ -177,9 +195,12 @@ public class CollisionTrigger : MonoBehaviour {
             headPos.z.ToString(),
             Camera.main.transform.position.x.ToString(),
             Camera.main.transform.position.y.ToString(),
-            Camera.main.transform.position.z.ToString()
+            Camera.main.transform.position.z.ToString(),
+            "\n"
         });
-        SendMessageUpwards("serializeCollision", str);
+        if (tTask)
+            tTask.serializeCollision(str);
+        //SendMessageUpwards("serializeCollision", str);
 
     }
 
