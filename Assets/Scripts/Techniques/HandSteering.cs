@@ -13,10 +13,12 @@ public class HandSteering : MonoBehaviour
     public float raySize = 3.0f;
     public Camera camera;
 
+
+    TestTask tTask;
     // Use this for initialization
     void Start()
     {
-
+        tTask = GetComponent<TestTask>();
     }
 
     // Update is called once per frame
@@ -29,7 +31,7 @@ public class HandSteering : MonoBehaviour
 
         Debug.DrawRay(hand.transform.position, handTracker.transform.forward, Color.red);
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(tTask.getForwardButton()))
         {
             //Vector3 dir =  head.position - hand.position;
             Vector3 desiredMove = handTracker.transform.forward * speed * Time.deltaTime;

@@ -10,10 +10,10 @@ public class GazeOriented : MonoBehaviour {
     public GameObject target;
     public float raySize = 3.0f;
 	public Camera camera;
-
+    TestTask tTask;
 	// Use this for initialization
 	void Start () {
-		
+        tTask = GetComponent<TestTask>();
 	}
 	
 	// Update is called once per frame
@@ -25,7 +25,7 @@ public class GazeOriented : MonoBehaviour {
 
         Debug.DrawRay(head.transform.position, head.transform.forward, Color.red);
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(tTask.getForwardButton()))
         {
             //Vector3 dir =  head.position - hand.position;
             Vector3 desiredMove = head.transform.forward * speed * Time.deltaTime;

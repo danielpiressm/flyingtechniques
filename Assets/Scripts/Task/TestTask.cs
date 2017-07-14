@@ -63,6 +63,35 @@ public class TestTask : MonoBehaviour
 
     public bool rightHanded = true;
 
+    private KeyCode calibrateButton;
+
+    private KeyCode forwardButton;
+
+    private KeyCode upButton;
+
+    private KeyCode downButton;
+
+
+    public KeyCode getCalibrateButton()
+    {
+        return calibrateButton;
+    }
+
+    public KeyCode getForwardButton()
+    {
+        return forwardButton;
+    }
+
+    public KeyCode getUpButton()
+    {
+        return upButton;
+    }
+
+    public KeyCode getDownButton()
+    {
+        return downButton;
+    }
+
     private void Start()
     {
         mainCamera = Camera.main;
@@ -87,6 +116,13 @@ public class TestTask : MonoBehaviour
         //System.IO.StreamWriter
         
         pathDirectory = Directory.GetCurrentDirectory() + "/user" + i + "_"+ travelTechnique.ToString() + "/";
+
+        forwardButton = KeyCode.PageUp;
+        calibrateButton = KeyCode.PageDown;
+        upButton = KeyCode.UpArrow;
+        downButton = KeyCode.DownArrow;
+
+
 
     }
 

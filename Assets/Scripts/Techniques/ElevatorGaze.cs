@@ -10,6 +10,7 @@ public class ElevatorGaze : MonoBehaviour {
     public GameObject target;
     public float raySize = 3.0f;
     public Camera camera;
+    TestTask tTask;
 
     // Use this for initialization
     void Start () {
@@ -27,35 +28,35 @@ public class ElevatorGaze : MonoBehaviour {
 
         Debug.DrawRay(head.transform.position, Vector3.ProjectOnPlane(head.transform.forward,this.transform.up), Color.red);
 
-        if(Input.GetKey(KeyCode.UpArrow))
+        if(Input.GetKey(tTask.getUpButton()))
         {
             this.transform.position += new Vector3(0, speed * Time.deltaTime, 0);
         }
-        if(Input.GetKey(KeyCode.DownArrow))
+        if(Input.GetKey(tTask.getDownButton()))
         {
             this.transform.position -= new Vector3(0, speed * Time.deltaTime, 0);
         }
-        if(Input.GetKey(KeyCode.RightArrow))
+        /*if(Input.GetKey(KeyCode.RightArrow))
         {
             this.transform.position += new Vector3(speed * Time.deltaTime, 0, 0);
         }
         if(Input.GetKey(KeyCode.LeftArrow))
         {
             this.transform.position -= new Vector3(speed * Time.deltaTime, 0, 0);
-        }
+        }*/
 
 
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(tTask.getForwardButton()))
         {
             //Vector3 dir =  head.position - hand.position;
             Vector3 desiredMove = dir * speed * Time.deltaTime;
             this.transform.position += desiredMove;
         }
-        else if(Input.GetKey(KeyCode.PageDown))
+        /*else if(Input.GetKey(KeyCode.PageDown))
         {
             Vector3 desiredMove = -dir * speed * Time.deltaTime;
             this.transform.position += desiredMove;
-        }
+        }*/
     }
 }

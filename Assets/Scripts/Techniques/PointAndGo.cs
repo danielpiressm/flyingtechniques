@@ -35,7 +35,7 @@ public class PointAndGo : MonoBehaviour {
 
         Debug.DrawRay(head.transform.position, -dir, Color.red);
         //map another button
-		if(Input.GetKey(KeyCode.Space))
+		if(Input.GetKey(tTask.getForwardButton()))
         {
             Vector3 desiredMove = -dir * speed * Time.deltaTime;
             this.transform.position += desiredMove;
