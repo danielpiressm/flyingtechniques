@@ -83,7 +83,7 @@ public class TestTask : MonoBehaviour
     
     Dictionary<string, List<ActiveCollision>> activeCollisions;
     List<FinishedCollision> finishedCollisions;
-    List<FinishedCollision> finishedCollisionsAux;
+    Dictionary<string,FinishedCollision> finishedCollisionsAux;
 
     FinishedCollision finishedAux;
 
@@ -118,31 +118,38 @@ public class TestTask : MonoBehaviour
             {
                 if(activeCollisions[colliderName][i].jointName == jointName)
                 {
-                    if (finishedAux == null)
-                        finishedAux = new FinishedCollision("", 0);
-                    if(activeCollisions[colliderName][i].first)
+                    /*if (finishedAux == null)
+                        finishedAux = new FinishedCollision("", 0);*/
+                    if (activeCollisions[colliderName][i].first)
                     {
-                        finishedAux.startTime = activeCollisions[colliderName][i].timeInit;
-                        finishedAux.finishTime = time;
-                        finishedAux.colliderName = colliderName;
+                        if (finishedCollisionsAux[colliderName] == null)
+                            finishedCollisionsAux[colliderName] = new FinishedCollision("", 0);
+
+                        finishedCollisionsAux[colliderName].startTime = activeCollisions[colliderName][i].timeInit;
+                        finishedCollisionsAux[colliderName].finishTime = time;
+                        finishedCollisionsAux[colliderName].colliderName = colliderName;
+
+
                         activeCollisions[colliderName].Remove(activeCollisions[colliderName][i]);
                         
                     }
                     else
                     {
-                        finishedAux.finishTime = time;
-                        finishedAux.colliderName = colliderName;
+                        if (finishedCollisionsAux[colliderName] == null)
+                            finishedCollisionsAux[colliderName] = new FinishedCollision("", 0);
+                        finishedCollisionsAux[colliderName].finishTime = time;
+                        finishedCollisionsAux[colliderName].colliderName = colliderName;
                         activeCollisions[colliderName].Remove(activeCollisions[colliderName][i]);
                     }
                     
 
                     if (activeCollisions[colliderName].Count == 0)
                     {
-                        finishedCollisions.Add(finishedAux);
+                        finishedCollisions.Add(finishedCollisionsAux[colliderName]);
 
-                        timeCollidingWithStuff += (finishedAux.finishTime - finishedAux.startTime);
+                        timeCollidingWithStuff += (finishedCollisionsAux[colliderName].finishTime - finishedCollisionsAux[colliderName].startTime);
                         //finishedCollisions.FindIndex()
-                        finishedAux = null;
+                        finishedCollisionsAux[colliderName] = null;
                     }
                     
                 }
