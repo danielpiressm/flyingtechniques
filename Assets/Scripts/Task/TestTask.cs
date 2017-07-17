@@ -131,6 +131,7 @@ public class TestTask : MonoBehaviour
                     else
                     {
                         finishedAux.finishTime = time;
+                        finishedAux.colliderName = colliderName;
                         activeCollisions[colliderName].Remove(activeCollisions[colliderName][i]);
                     }
                     
@@ -138,6 +139,8 @@ public class TestTask : MonoBehaviour
                     if (activeCollisions[colliderName].Count == 0)
                     {
                         finishedCollisions.Add(finishedAux);
+
+                        timeCollidingWithStuff += (finishedAux.finishTime - finishedAux.startTime);
                         //finishedCollisions.FindIndex()
                         finishedAux = null;
                     }
@@ -239,7 +242,7 @@ public class TestTask : MonoBehaviour
 
         activeCollisions = new Dictionary<string, List<ActiveCollision>>();
         finishedCollisions = new List<FinishedCollision>();
-        
+        //optimalDiscretizedPathList = new List<Vector3>();
     }
 
     private void OnGUI()
@@ -396,6 +399,9 @@ public class TestTask : MonoBehaviour
     {
         System.IO.File.WriteAllText(pathDirectory+ reportOutputFile, testReport);
         System.IO.File.WriteAllText(pathDirectory + pathReportOutputFile, testReportPath);
+
+
+        testCollision += "!CollisionNumber,"+finishedCollisions.Count+",TotalTimeCollided(s)"+ timeCollidingWithStuff+"\n";
         System.IO.File.WriteAllText(pathDirectory + collisionFile, testCollision); 
         completed = true;
         //Debug.Log("countPointsInPath :" + countPointsInPath + " perRing : " + countPointsInPath / 42.0f);
