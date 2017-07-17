@@ -24,6 +24,7 @@ public class TestTask : MonoBehaviour
     private string testReport = "";
     private string testReportPath = "";
     private string testOptimalPath = "";
+    private string testCollision = "";
     private float lastTime;
 
     private List<Vector3> optimalDiscretizedPathList;
@@ -71,6 +72,99 @@ public class TestTask : MonoBehaviour
 
     private KeyCode downButton;
 
+    [SerializeField]
+    private int collisionCount;
+
+    [SerializeField]
+    private float timeCollidingWithStuff;
+
+    private string colliderName = "";
+
+    
+    Dictionary<string, List<ActiveCollision>> activeCollisions;
+    List<FinishedCollision> finishedCollisions;
+    List<FinishedCollision> finishedCollisionsAux;
+
+    FinishedCollision finishedAux;
+
+    public void collisionStarted(string colliderName, string jointName,float time)
+    {
+        if(activeCollisions.ContainsKey(colliderName))
+        {
+            if (activeCollisions[colliderName].Count > 0)
+            {
+                activeCollisions[colliderName].Add(new ActiveCollision(jointName, time, false));
+            }
+            else
+            {
+                activeCollisions[colliderName].Add(new ActiveCollision(jointName, time, true));
+            }
+        }
+        else
+        {
+            activeCollisions[colliderName] = new List<ActiveCollision>();
+            activeCollisions[colliderName].Add(new ActiveCollision(jointName, time,true));
+            Debug.Log("Empilhando " + jointName + " em " + colliderName + " no tempo : "+ time);
+
+        }
+    }
+
+    public void collisionEnded(string colliderName, string jointName, float time)
+    {
+        if(activeCollisions.ContainsKey(colliderName))
+        {
+            List<ActiveCollision> actColList = new List<ActiveCollision>(activeCollisions[colliderName]);
+            for(int i = 0; i < activeCollisions[colliderName].Count;i++)
+            {
+                if(activeCollisions[colliderName][i].jointName == jointName)
+                {
+                    if (finishedAux == null)
+                        finishedAux = new FinishedCollision("", 0);
+                    if(activeCollisions[colliderName][i].first)
+                    {
+                        finishedAux.startTime = activeCollisions[colliderName][i].timeInit;
+                        finishedAux.finishTime = time;
+                        finishedAux.colliderName = colliderName;
+                        activeCollisions[colliderName].Remove(activeCollisions[colliderName][i]);
+                        
+                    }
+                    else
+                    {
+                        finishedAux.finishTime = time;
+                        activeCollisions[colliderName].Remove(activeCollisions[colliderName][i]);
+                    }
+                    
+
+                    if (activeCollisions[colliderName].Count == 0)
+                    {
+                        finishedCollisions.Add(finishedAux);
+                        //finishedCollisions.FindIndex()
+                        finishedAux = null;
+                    }
+                    
+                }
+             }
+        }
+    }
+
+
+    /*public void incrementCollidedTime(float timeCollided,string colliderName,string jointName)
+    {
+        //if (colliderName != this.colliderName)
+        if(!collisionTimePerJoint.ContainsKey(jointName))
+        {
+            collisionTimePerJoint.Add(jointName, timeCollided);
+        }
+        else
+        {
+            collisionTimePerJoint[jointName] += timeCollided;
+        }
+
+            timeCollidingWithStuff += timeCollided;
+        Debug.Log("Collision between  " + colliderName + " and " + jointName);
+
+        colliderName = "";    
+    }*/
 
     public KeyCode getCalibrateButton()
     {
@@ -90,6 +184,27 @@ public class TestTask : MonoBehaviour
     public KeyCode getDownButton()
     {
         return downButton;
+    }
+
+    public void iamAnActiveCollision(string colliderName, string jointName)
+    {
+        if(activeCollisions.ContainsKey(jointName))
+        {
+            List<ActiveCollision> act = activeCollisions[jointName];
+            if (act == null)
+            {
+                act = new List<ActiveCollision>();
+                act.Add(new ActiveCollision(colliderName));
+            }
+            else
+            {
+                foreach (ActiveCollision activeCol in act)
+                {
+
+                }
+            }
+            
+        }
     }
 
     private void Start()
@@ -122,8 +237,9 @@ public class TestTask : MonoBehaviour
         upButton = KeyCode.UpArrow;
         downButton = KeyCode.DownArrow;
 
-
-
+        activeCollisions = new Dictionary<string, List<ActiveCollision>>();
+        finishedCollisions = new List<FinishedCollision>();
+        
     }
 
     private void OnGUI()
@@ -168,6 +284,9 @@ public class TestTask : MonoBehaviour
     private void InitializeReport()
     {
         testReport += "Ring,Hit,Time,Error,PosRingX,PosRingY,PosRingZ\n";
+        testCollision += "Joint,PosX,PosY,PosZ,RotX,RotY,RotZ,ColliderName,PosColliderX,PosColliderY,PosColliderZ,RotColliderX,RotColliderZ,ErrorX,ErrorY,ErrorZ,TimeElapsed";
+
+
         lastTime = Time.realtimeSinceStartup;
         testReportPath += "Ring,currentPosX,currentPosY,currentPosZ,pathElapsedX,pathElapsedY,pathElapsedZ,magnitude,rotX,rotY,rotZ,navSpeed\n";
         lastTime = Time.realtimeSinceStartup;
@@ -277,9 +396,10 @@ public class TestTask : MonoBehaviour
     {
         System.IO.File.WriteAllText(pathDirectory+ reportOutputFile, testReport);
         System.IO.File.WriteAllText(pathDirectory + pathReportOutputFile, testReportPath);
+        System.IO.File.WriteAllText(pathDirectory + collisionFile, testCollision); 
         completed = true;
         //Debug.Log("countPointsInPath :" + countPointsInPath + " perRing : " + countPointsInPath / 42.0f);
-        //List<Vector3> optimalPathDiscretizedList1 = discretizePath(ringPositionsWhenCrossed, countPointsInPath / 42);
+        List<Vector3> optimalPathDiscretizedList1 = discretizePath(ringPositionsWhenCrossed, countPointsInPath / 42);
 
         printPathToFile(optimalDiscretizedPathList, "optimalPath");
 
@@ -361,6 +481,7 @@ public class TestTask : MonoBehaviour
 
     public void serializeCollision(string str)
     {
+        testCollision += str;
         System.IO.File.AppendAllText(pathDirectory + collisionFile, str);
     }
 
