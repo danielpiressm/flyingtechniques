@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -122,13 +122,17 @@ public class TestTask : MonoBehaviour
                         finishedAux = new FinishedCollision("", 0);*/
                     if (activeCollisions[colliderName][i].first)
                     {
-                        if (finishedCollisionsAux.ContainsKey(colliderName))
+                        if (!finishedCollisionsAux.ContainsKey(colliderName))
                         {
                             finishedCollisionsAux.Add(colliderName,new FinishedCollision("", 0));
                         }
                         else if(finishedCollisionsAux[colliderName] == null)
                         {
                             finishedCollisionsAux[colliderName] = new FinishedCollision("", 0);
+                        }
+                        else
+                        {
+
                         }
 
                         finishedCollisionsAux[colliderName].startTime = activeCollisions[colliderName][i].timeInit;
@@ -155,7 +159,8 @@ public class TestTask : MonoBehaviour
 
                         timeCollidingWithStuff += (finishedCollisionsAux[colliderName].finishTime - finishedCollisionsAux[colliderName].startTime);
                         //finishedCollisions.FindIndex()
-                        finishedCollisionsAux[colliderName] = null;
+                        //finishedCollisionsAux[colliderName] = null;
+                        finishedCollisionsAux.Remove(colliderName);
                     }
                     
                 }
