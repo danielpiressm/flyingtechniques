@@ -122,8 +122,14 @@ public class TestTask : MonoBehaviour
                         finishedAux = new FinishedCollision("", 0);*/
                     if (activeCollisions[colliderName][i].first)
                     {
-                        if (finishedCollisionsAux[colliderName] == null)
+                        if (finishedCollisionsAux.ContainsKey(colliderName))
+                        {
+                            finishedCollisionsAux.Add(colliderName,new FinishedCollision("", 0));
+                        }
+                        else if(finishedCollisionsAux[colliderName] == null)
+                        {
                             finishedCollisionsAux[colliderName] = new FinishedCollision("", 0);
+                        }
 
                         finishedCollisionsAux[colliderName].startTime = activeCollisions[colliderName][i].timeInit;
                         finishedCollisionsAux[colliderName].finishTime = time;
@@ -249,6 +255,7 @@ public class TestTask : MonoBehaviour
 
         activeCollisions = new Dictionary<string, List<ActiveCollision>>();
         finishedCollisions = new List<FinishedCollision>();
+        finishedCollisionsAux = new Dictionary<string, FinishedCollision>();
         //optimalDiscretizedPathList = new List<Vector3>();
     }
 
@@ -414,7 +421,7 @@ public class TestTask : MonoBehaviour
         //Debug.Log("countPointsInPath :" + countPointsInPath + " perRing : " + countPointsInPath / 42.0f);
         List<Vector3> optimalPathDiscretizedList1 = discretizePath(ringPositionsWhenCrossed, countPointsInPath / 42);
 
-        printPathToFile(optimalDiscretizedPathList, "optimalPath");
+        printPathToFile(optimalDiscretizedPathList, optimalPathOutputFile);
 
     }
 
@@ -436,7 +443,7 @@ public class TestTask : MonoBehaviour
             Vector3 vec = listPoints[i];
             str += vec.x + "," + vec.y + "," + vec.z + "," + (i / 78) + "\n";//TESTE
         }
-        System.IO.File.WriteAllText(pathDirectory+ nameOfPointArray + ".csv", str);
+        System.IO.File.WriteAllText(pathDirectory+ nameOfPointArray, str);
     }
 
     private void InitializeRings()
