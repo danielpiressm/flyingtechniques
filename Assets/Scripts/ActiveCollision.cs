@@ -9,6 +9,8 @@ public class ActiveCollision  {
     public float timeInit;
     public bool first;
 
+    public int collisionCount = 0;//martelada para coisas
+
 
     public ActiveCollision(string jointName)
     {

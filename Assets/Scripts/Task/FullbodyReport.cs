@@ -43,7 +43,7 @@ public class FullbodyReport : MonoBehaviour {
 
     public void InitializeFullbodyReport()
     {
-        pathHeaderStr = "Ring,currentPosX,currentPosY,currentPosZ,pathElapsedX,pathElapsedY,pathElapsedZ,rotX,rotY,rotZ,magnitude,CameraPosX,CameraPosY,CameraPosZ,CameraRotX,CameraRotY,CameraRotZ\n";
+        pathHeaderStr = "Ring,currentPosX,currentPosY,currentPosZ,pathElapsedX,pathElapsedY,pathElapsedZ,rotX,rotY,rotZ,magnitude,CameraPosX,CameraPosY,CameraPosZ,CameraRotX,CameraRotY,CameraRotZ,Time\n";
 
         lastBodyPos = new Vector3[9];
         bodyStrPath = new string[9];
@@ -135,6 +135,7 @@ public class FullbodyReport : MonoBehaviour {
                     Camera.main.transform.eulerAngles.x.ToString(),
                     Camera.main.transform.eulerAngles.y.ToString(),
                     Camera.main.transform.eulerAngles.z.ToString(),
+                    Time.realtimeSinceStartup.ToString(),
                     "\n"
 
                 });
@@ -168,6 +169,7 @@ public class FullbodyReport : MonoBehaviour {
                     Camera.main.transform.eulerAngles.x.ToString(),
                     Camera.main.transform.eulerAngles.y.ToString(),
                     Camera.main.transform.eulerAngles.z.ToString(),
+                    Time.realtimeSinceStartup.ToString(),
                     "\n"
 
                 });
@@ -211,6 +213,7 @@ public class FullbodyReport : MonoBehaviour {
                     Camera.main.transform.eulerAngles.x.ToString(),
                     Camera.main.transform.eulerAngles.y.ToString(),
                     Camera.main.transform.eulerAngles.z.ToString(),
+                    Time.realtimeSinceStartup.ToString(),
                     "\n"
 
                 });
@@ -253,6 +256,7 @@ public class FullbodyReport : MonoBehaviour {
                     Camera.main.transform.eulerAngles.x.ToString(),
                     Camera.main.transform.eulerAngles.y.ToString(),
                     Camera.main.transform.eulerAngles.z.ToString(),
+                    Time.realtimeSinceStartup.ToString(),
                     "\n"
 
            });
@@ -284,6 +288,7 @@ public class FullbodyReport : MonoBehaviour {
                     Camera.main.transform.eulerAngles.x.ToString(),
                     Camera.main.transform.eulerAngles.y.ToString(),
                     Camera.main.transform.eulerAngles.z.ToString(),
+                    Time.realtimeSinceStartup.ToString(),
                     "\n"
 
                 });
@@ -316,6 +321,7 @@ public class FullbodyReport : MonoBehaviour {
                     Camera.main.transform.eulerAngles.x.ToString(),
                     Camera.main.transform.eulerAngles.y.ToString(),
                     Camera.main.transform.eulerAngles.z.ToString(),
+                    Time.realtimeSinceStartup.ToString(),
                     "\n"
 
                 });
@@ -347,6 +353,7 @@ public class FullbodyReport : MonoBehaviour {
                     Camera.main.transform.eulerAngles.x.ToString(),
                     Camera.main.transform.eulerAngles.y.ToString(),
                     Camera.main.transform.eulerAngles.z.ToString(),
+                    Time.realtimeSinceStartup.ToString(),
                     "\n"
 
                 });

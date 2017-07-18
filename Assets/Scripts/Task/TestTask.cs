@@ -87,6 +87,8 @@ public class TestTask : MonoBehaviour
 
     FinishedCollision finishedAux;
 
+    Dictionary<string, ActiveCollision> collisionsPerJoint;
+
     public void collisionStarted(string colliderName, string jointName,float time)
     {
         if(activeCollisions.ContainsKey(colliderName))
@@ -120,6 +122,22 @@ public class TestTask : MonoBehaviour
                 {
                     /*if (finishedAux == null)
                         finishedAux = new FinishedCollision("", 0);*/
+
+                    //add to joint collision dictionary
+                    if (!collisionsPerJoint.ContainsKey(jointName))
+                    {
+                        ActiveCollision colAux = new ActiveCollision(jointName);
+                        colAux.collisionCount++;
+                        colAux.timeInit += (time - activeCollisions[colliderName][i].timeInit);
+                        collisionsPerJoint.Add(jointName, colAux);
+                    }
+                    else
+                    {
+                        collisionsPerJoint[jointName].timeInit += (time - activeCollisions[colliderName][i].timeInit);
+                        collisionsPerJoint[jointName].collisionCount++;
+                    }
+
+
                     if (activeCollisions[colliderName][i].first)
                     {
                         if (!finishedCollisionsAux.ContainsKey(colliderName))
@@ -145,7 +163,7 @@ public class TestTask : MonoBehaviour
                     }
                     else
                     {
-                        if (finishedCollisionsAux[colliderName] == null)
+                        if (!finishedCollisionsAux.ContainsKey(colliderName))
                             finishedCollisionsAux[colliderName] = new FinishedCollision("", 0);
                         finishedCollisionsAux[colliderName].finishTime = time;
                         finishedCollisionsAux[colliderName].colliderName = colliderName;
@@ -228,6 +246,8 @@ public class TestTask : MonoBehaviour
         }
     }
 
+   
+
     private void Start()
     {
         mainCamera = Camera.main;
@@ -261,6 +281,7 @@ public class TestTask : MonoBehaviour
         activeCollisions = new Dictionary<string, List<ActiveCollision>>();
         finishedCollisions = new List<FinishedCollision>();
         finishedCollisionsAux = new Dictionary<string, FinishedCollision>();
+        collisionsPerJoint = new Dictionary<string, ActiveCollision>();
         //optimalDiscretizedPathList = new List<Vector3>();
     }
 
@@ -272,9 +293,19 @@ public class TestTask : MonoBehaviour
         if (currentRing < rings.Length && !rings[currentRing].GetComponent<Renderer>().isVisible)
             DrawArrow();
 
-        if(Input.GetKeyDown(KeyCode.A))
+        String txt = ";";
+        if(Input.GetKeyDown(KeyCode.Space))
         {
             rightHanded = !rightHanded;
+        }
+
+        if (rightHanded == true)
+        {
+            Debug.Log("#############rightHanded#############");
+        }
+        else
+        {
+            Debug.Log("############leftHanded##############");
         }
     }
 
@@ -305,8 +336,44 @@ public class TestTask : MonoBehaviour
 
     private void InitializeReport()
     {
-        testReport += "Ring,Hit,Time,Error,PosRingX,PosRingY,PosRingZ\n";
-        testCollision += "Joint,PosX,PosY,PosZ,RotX,RotY,RotZ,ColliderName,PosColliderX,PosColliderY,PosColliderZ,RotColliderX,RotColliderZ,ErrorX,ErrorY,ErrorZ,TimeElapsed";
+        testReport += "Ring,Hit,Time,Error,PosRingX,PosRingY,PosRingZ,RawTime\n";
+        testCollision += "Joint,PosX,PosY,PosZ,RotX,RotY,RotZ,ColliderName,PosColliderX,PosColliderY,PosColliderZ,RotColliderX,RotColliderY,RotColliderZ,ErrorX,ErrorY,ErrorZ,Error2X,Error2Y,Error2Z,headPosX,headPosY,headPosZ,cameraPosX,cameraPosY,cameraPosZ,TimeElapsed,TimeStart,TimeFinish\n";
+
+        /*string str = string.Join(",", new string[]
+        {
+            "#"+collider.gameObject.name,
+            //this.Id,
+            pos.x.ToString(),
+            pos.y.ToString(),
+            pos.z.ToString(),
+            rot.x.ToString(),
+            rot.y.ToString(),
+            rot.z.ToString(),
+            this.Id,
+            this.transform.position.x.ToString(),
+            this.transform.position.y.ToString(),
+            this.transform.position.z.ToString(),
+            this.transform.eulerAngles.x.ToString(),
+            this.transform.eulerAngles.y.ToString(),
+            this.transform.eulerAngles.z.ToString(),
+            vec.x.ToString(),
+            vec.y.ToString(),
+            vec.z.ToString(),
+            vec2.x.ToString(),
+            vec2.y.ToString(),
+            vec2.z.ToString(),
+            headPos.x.ToString(),
+            headPos.y.ToString(),
+            headPos.z.ToString(),
+            Camera.main.transform.position.x.ToString(),
+            Camera.main.transform.position.y.ToString(),
+            Camera.main.transform.position.z.ToString(),
+            triggerTime.ToString(),
+            timeWhenCollisionStarted.ToString(),
+            currentTime.ToString(),
+            "\n"
+        });*/
+
 
 
         lastTime = Time.realtimeSinceStartup;
@@ -350,7 +417,7 @@ public class TestTask : MonoBehaviour
                 }
                 catch (Exception e)
                 {
-
+                    Debug.Log("Exception on ring stuff");
                 }
 
             }
@@ -378,7 +445,8 @@ public class TestTask : MonoBehaviour
             distanceToRingCenter.ToString(),
             ringPositionsWhenCrossed[currentRing].x.ToString(),
             ringPositionsWhenCrossed[currentRing].y.ToString(),
-            ringPositionsWhenCrossed[currentRing].z.ToString()
+            ringPositionsWhenCrossed[currentRing].z.ToString(),
+            Time.realtimeSinceStartup.ToString()
         }) + "\n";
     }
 
@@ -420,7 +488,12 @@ public class TestTask : MonoBehaviour
         System.IO.File.WriteAllText(pathDirectory + pathReportOutputFile, testReportPath);
 
 
-        testCollision += "!CollisionNumber,"+finishedCollisions.Count+",TotalTimeCollided(s)"+ timeCollidingWithStuff+"\n";
+        testCollision += "!ObjectsCollided,"+finishedCollisions.Count+",TotalTimeCollided(s),"+ timeCollidingWithStuff+"\n";
+        foreach(KeyValuePair<string,ActiveCollision> collPerJoint in collisionsPerJoint)
+        {
+            testCollision += "%JointName," + collPerJoint.Key + "," + "CollisionCount," + collPerJoint.Value.collisionCount + ",TimeCollided," + collPerJoint.Value.timeInit + "\n";
+        }
+
         System.IO.File.WriteAllText(pathDirectory + collisionFile, testCollision); 
         completed = true;
         //Debug.Log("countPointsInPath :" + countPointsInPath + " perRing : " + countPointsInPath / 42.0f);

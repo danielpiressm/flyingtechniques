@@ -7,18 +7,25 @@ public class HandSteering : MonoBehaviour
 
     public Transform head;
     public Transform handTracker;
-    public Transform hand;
+    public Transform leftHand;
+    public Transform rightHand;
+
+    Transform hand;
+
     public float speed = 3.0f;
     public GameObject target;
     public float raySize = 3.0f;
     public Camera camera;
 
-
+    string text = "rightHand";
     TestTask tTask;
+    bool rightHanded = true;
+
     // Use this for initialization
     void Start()
     {
         tTask = GetComponent<TestTask>();
+        hand = rightHand;
     }
 
     // Update is called once per frame
@@ -28,6 +35,10 @@ public class HandSteering : MonoBehaviour
         //Also: Point to the place & fix the direction & use a button
         //Gaze oriented
 
+        if (tTask.rightHanded)
+            hand = rightHand;
+        else
+            hand = leftHand;
 
         Debug.DrawRay(hand.transform.position, handTracker.transform.forward, Color.red);
 
