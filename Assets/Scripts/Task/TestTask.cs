@@ -26,6 +26,8 @@ public class TestTask : MonoBehaviour
     private string testOptimalPath = "";
     private string testCollision = "";
     private float lastTime;
+    private float totalTime = 0;
+
 
     private List<Vector3> optimalDiscretizedPathList;
 
@@ -80,7 +82,6 @@ public class TestTask : MonoBehaviour
 
     private string colliderName = "";
 
-    
     Dictionary<string, List<ActiveCollision>> activeCollisions;
     List<FinishedCollision> finishedCollisions;
     Dictionary<string,FinishedCollision> finishedCollisionsAux;
@@ -88,7 +89,6 @@ public class TestTask : MonoBehaviour
     FinishedCollision finishedAux;
 
     Dictionary<string, ActiveCollision> collisionsPerJoint;
-
 
     string dominantHandText = "rightHanded";
 
@@ -327,7 +327,7 @@ public class TestTask : MonoBehaviour
 
     private void InitializeReport()
     {
-        testReport += "Ring,Hit,Time,Error,PosRingX,PosRingY,PosRingZ,RawTime,DominantHand\n";
+        testReport += "Ring,Hit,Time,Error,PosRingX,PosRingY,PosRingZ,RawTime,RingTime,DominantHand\n";
         testCollision += "Joint,PosX,PosY,PosZ,RotX,RotY,RotZ,ColliderName,PosColliderX,PosColliderY,PosColliderZ,RotColliderX,RotColliderY,RotColliderZ,ErrorX,ErrorY,ErrorZ,Error2X,Error2Y,Error2Z,headPosX,headPosY,headPosZ,cameraPosX,cameraPosY,cameraPosZ,TimeElapsed,TimeStart,TimeFinish\n";
 
         /*string str = string.Join(",", new string[]
@@ -366,14 +366,13 @@ public class TestTask : MonoBehaviour
         });*/
 
 
-
-        lastTime = Time.realtimeSinceStartup;
+        float initTime = Time.realtimeSinceStartup;
         testReportPath += "Ring,currentPosX,currentPosY,currentPosZ,pathElapsedX,pathElapsedY,pathElapsedZ,magnitude,rotX,rotY,rotZ\n";
-        lastTime = Time.realtimeSinceStartup;
+        //lastTime = Time.realtimeSinceStartup;
         lastPos = new Vector3(Camera.main.transform.position.x,
                               Camera.main.transform.position.y,
                               Camera.main.transform.position.z);
-        testReport += ("-1,True,0,0," + ringPositionsWhenCrossed[0].x + "," + ringPositionsWhenCrossed[0].y + "," + ringPositionsWhenCrossed[0].z + "\n");
+        testReport += ("-1,True,0,0," + ringPositionsWhenCrossed[0].x + "," + ringPositionsWhenCrossed[0].y + "," + ringPositionsWhenCrossed[0].z + ","+ initTime+ "\n");
 
     }
 
@@ -426,8 +425,12 @@ public class TestTask : MonoBehaviour
     private void UpdateReport(bool hit, float distanceToRingCenter)
     {
         float currentTime = Time.realtimeSinceStartup;
+        if (currentRing == 0)
+            lastTime = currentTime;
+
         float ringTime = currentTime - lastTime;
         lastTime = currentTime;
+        totalTime += ringTime;
 
         testReport += string.Join(",", new string[]{
             currentRing.ToString(),
@@ -437,7 +440,8 @@ public class TestTask : MonoBehaviour
             ringPositionsWhenCrossed[currentRing].x.ToString(),
             ringPositionsWhenCrossed[currentRing].y.ToString(),
             ringPositionsWhenCrossed[currentRing].z.ToString(),
-            Time.realtimeSinceStartup.ToString(),
+            currentTime.ToString(),
+            ringTime.ToString(),
             dominantHandText
         }) + "\n";
     }
@@ -476,6 +480,7 @@ public class TestTask : MonoBehaviour
 
     private void CompleteReport()
     {
+        testReport += ("Total,,,," + "" + "," + "" + "," + ","+ totalTime + "\n");
         System.IO.File.WriteAllText(pathDirectory+ reportOutputFile, testReport);
         System.IO.File.WriteAllText(pathDirectory + pathReportOutputFile, testReportPath);
 
