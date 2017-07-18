@@ -89,6 +89,9 @@ public class TestTask : MonoBehaviour
 
     Dictionary<string, ActiveCollision> collisionsPerJoint;
 
+
+    string dominantHandText = "rightHanded";
+
     public void collisionStarted(string colliderName, string jointName,float time)
     {
         if(activeCollisions.ContainsKey(colliderName))
@@ -293,20 +296,8 @@ public class TestTask : MonoBehaviour
         if (currentRing < rings.Length && !rings[currentRing].GetComponent<Renderer>().isVisible)
             DrawArrow();
 
-        String txt = ";";
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            rightHanded = !rightHanded;
-        }
+        GUI.Label(new Rect(10, 10, 100, 20), dominantHandText);
 
-        if (rightHanded == true)
-        {
-            Debug.Log("#############rightHanded#############");
-        }
-        else
-        {
-            Debug.Log("############leftHanded##############");
-        }
     }
 
     public string getPathDirectory()
@@ -336,7 +327,7 @@ public class TestTask : MonoBehaviour
 
     private void InitializeReport()
     {
-        testReport += "Ring,Hit,Time,Error,PosRingX,PosRingY,PosRingZ,RawTime\n";
+        testReport += "Ring,Hit,Time,Error,PosRingX,PosRingY,PosRingZ,RawTime,DominantHand\n";
         testCollision += "Joint,PosX,PosY,PosZ,RotX,RotY,RotZ,ColliderName,PosColliderX,PosColliderY,PosColliderZ,RotColliderX,RotColliderY,RotColliderZ,ErrorX,ErrorY,ErrorZ,Error2X,Error2Y,Error2Z,headPosX,headPosY,headPosZ,cameraPosX,cameraPosY,cameraPosZ,TimeElapsed,TimeStart,TimeFinish\n";
 
         /*string str = string.Join(",", new string[]
@@ -377,7 +368,7 @@ public class TestTask : MonoBehaviour
 
 
         lastTime = Time.realtimeSinceStartup;
-        testReportPath += "Ring,currentPosX,currentPosY,currentPosZ,pathElapsedX,pathElapsedY,pathElapsedZ,magnitude,rotX,rotY,rotZ,navSpeed\n";
+        testReportPath += "Ring,currentPosX,currentPosY,currentPosZ,pathElapsedX,pathElapsedY,pathElapsedZ,magnitude,rotX,rotY,rotZ\n";
         lastTime = Time.realtimeSinceStartup;
         lastPos = new Vector3(Camera.main.transform.position.x,
                               Camera.main.transform.position.y,
@@ -446,7 +437,8 @@ public class TestTask : MonoBehaviour
             ringPositionsWhenCrossed[currentRing].x.ToString(),
             ringPositionsWhenCrossed[currentRing].y.ToString(),
             ringPositionsWhenCrossed[currentRing].z.ToString(),
-            Time.realtimeSinceStartup.ToString()
+            Time.realtimeSinceStartup.ToString(),
+            dominantHandText
         }) + "\n";
     }
 
@@ -574,6 +566,21 @@ public class TestTask : MonoBehaviour
         if (completed == false)
         {
             UpdatePathReport();
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                rightHanded = !rightHanded;
+                if (rightHanded == true)
+                {
+                    Debug.Log("#############rightHanded#############");
+                    dominantHandText = "rightHanded";
+                }
+                else
+                {
+                    Debug.Log("############leftHanded##############");
+                    dominantHandText = "leftHanded";
+                }
+            }
+
         }
     }
 
