@@ -9,6 +9,7 @@ using System.Collections;
 public class HeadCameraController : MonoBehaviour
 {
     public Vector3 threshold;
+    public Vector3 thresholdRotation;
     //public Transform CarlHip;
 
     public Transform headTransform;
@@ -55,7 +56,14 @@ public class HeadCameraController : MonoBehaviour
     void LateUpdate()
     {
 
-
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            thresholdRotation = new Vector3(thresholdRotation.x, thresholdRotation.y + 5, thresholdRotation.z);
+        }
+        else if(Input.GetKeyDown(KeyCode.D))
+        {
+            thresholdRotation = new Vector3(thresholdRotation.x, thresholdRotation.y - 5, thresholdRotation.z);
+        }
         //CarlHip.position = new Vector3(UnityEngine.VR.InputTracking.GetLocalPosition(UnityEngine.VR.VRNode.Head).x,
         // CarlHip.position = new Vector3(CarlHip.position.x,
         //   CarlHip.position.y,
@@ -69,6 +77,12 @@ public class HeadCameraController : MonoBehaviour
                  (-UnityEngine.VR.InputTracking.GetLocalPosition(UnityEngine.VR.VRNode.CenterEye).y),
                  (-UnityEngine.VR.InputTracking.GetLocalPosition(UnityEngine.VR.VRNode.CenterEye).z)) +
                  (thirdPerson ? pivot3rd.position : pivot1st.position);
+
+        Quaternion rot = UnityEngine.VR.InputTracking.GetLocalRotation(UnityEngine.VR.VRNode.Head);
+        Vector3 eulerAnglesDoRift = rot.eulerAngles;
+
+
+        this.transform.eulerAngles = rot.eulerAngles + thresholdRotation;
         if (thirdPerson)
         {
          //   transform.rotation = Quaternion.Inverse(UnityEngine.VR.InputTracking.GetLocalRotation(UnityEngine.VR.VRNode.CenterEye));

@@ -12,6 +12,8 @@ public class PointAndGo : MonoBehaviour {
     public GameObject target;
     public float raySize = 3.0f;
 
+    Camera camera;
+
     TestTask tTask;
     bool rightHanded = true;
     Transform hand;
@@ -20,6 +22,7 @@ public class PointAndGo : MonoBehaviour {
 	void Start () {
         tTask = GetComponent<TestTask>();
         rightHanded = tTask.rightHanded;
+        camera = Camera.main;
 	}
 	
 	// Update is called once per frame
@@ -31,9 +34,9 @@ public class PointAndGo : MonoBehaviour {
         //TODO: Implement drag & go
         //Also: Point to the place & fix the direction & use a button
         //Gaze oriented
-        Vector3 dir = head.position - hand.position;
+        Vector3 dir = camera.transform.position - hand.position;
 
-        Debug.DrawRay(head.transform.position, -dir, Color.red);
+        Debug.DrawRay(camera.transform.position, -dir, Color.red);
         //map another button
 		if(Input.GetKey(tTask.getForwardButton()))
         {
@@ -42,16 +45,7 @@ public class PointAndGo : MonoBehaviour {
             RaycastHit hit;
            // target.SetActive(true);
             //Debug.DrawRay(this.transform.position, this.transform.forward,Color.red);
-            if (Physics.Raycast(head.position, -dir, out hit, raySize))
-            {
-                //target.transform.position = hit.transform.position;
-                
-            }
-            else
-            {
-              //  target.transform.position = head.transform.TransformPoint(new Vector3(0, 0, raySize));
-               
-            }
+            
         }
         else
         {

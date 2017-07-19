@@ -14,19 +14,20 @@ public class ElevatorGaze : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        tTask = GetComponent<TestTask>();
+        camera = Camera.main;
+    }
+
+    // Update is called once per frame
+    void Update () {
         //TODO: Implement drag & go
         //Also: Point to the place & fix the direction & use a button
         //Gaze oriented
 
-        Vector3 dir = Vector3.ProjectOnPlane(head.transform.forward, this.transform.up);
+        Vector3 dir = Vector3.ProjectOnPlane(camera.transform.forward, this.transform.up);
 
 
-        Debug.DrawRay(head.transform.position, Vector3.ProjectOnPlane(head.transform.forward,this.transform.up), Color.red);
+        Debug.DrawRay(head.transform.position, dir, Color.red);
 
         if(Input.GetKey(tTask.getUpButton()))
         {

@@ -48,7 +48,7 @@ public class OptiTrackTracking : MonoBehaviour
     {
         Vector3 pos = rigidBody.pos;
         pos.x *= -1;
-        transform.position = pos;
+        //transform.position = pos;
 
         if (applyCorrection)
             transform.position += new Vector3(0, 0.1f, 0);
@@ -56,7 +56,11 @@ public class OptiTrackTracking : MonoBehaviour
         // but from Gear VR's own sensors
         // Exception: in the Editor, there is no Gear VR sensors, we need the OptiTrack orientation
         if (useOrientation || Application.isEditor)
+        {
             transform.rotation = Quaternion.Inverse(rigidBody.ori);
+            
+        }
+            
     }
 
 }

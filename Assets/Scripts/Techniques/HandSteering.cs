@@ -24,6 +24,7 @@ public class HandSteering : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        camera = Camera.main;
         tTask = GetComponent<TestTask>();
         hand = rightHand;
     }
@@ -40,26 +41,16 @@ public class HandSteering : MonoBehaviour
         else
             hand = leftHand;
 
-        Debug.DrawRay(hand.transform.position, handTracker.transform.forward, Color.red);
+
+        Vector3 dir = handTracker.transform.forward;
+        Debug.DrawRay(hand.transform.position, -dir, Color.red);
 
         if (Input.GetKey(tTask.getForwardButton()))
         {
             //Vector3 dir =  head.position - hand.position;
-            Vector3 desiredMove = handTracker.transform.forward * speed * Time.deltaTime;
+            Vector3 desiredMove = -dir * speed * Time.deltaTime;
             this.transform.position += desiredMove;
-            RaycastHit hit;
-            //target.SetActive(true);
-            //Debug.DrawRay(head.transform.position, head.transform.forward,Color.red);
-            if (Physics.Raycast(head.position, hand.transform.forward, out hit, raySize))
-            {
-                //target.transform.position = hit.transform.position;
-
-            }
-            else
-            {
-                //target.transform.position = head.transform.TransformPoint(new Vector3(0, 0, raySize));
-
-            }
+           
         }
         else
         {
