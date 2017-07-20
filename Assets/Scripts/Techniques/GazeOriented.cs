@@ -12,15 +12,13 @@ public class GazeOriented : MonoBehaviour {
     public float speed = 3.0f;
 	Camera camera;
     TestTask tTask;
-    Quaternion initialrighttHandRotation;
-    Quaternion initialLeftHandRotation;
+    Vector3 initialrighttHandRotation = new Vector3(0, 8.995001f,0);
+    Vector3 initialLeftHandRotation = new Vector3(0,-8.995001f,0);
 
     // Use this for initialization
     void Start () {
         tTask = GetComponent<TestTask>();
         camera = Camera.main;
-        initialrighttHandRotation = rightHand.rotation;
-        initialLeftHandRotation = leftHand.rotation;
     }
 	
 	// Update is called once per frame
@@ -33,12 +31,12 @@ public class GazeOriented : MonoBehaviour {
             if (tTask.rightHanded)
             {
                 hand = rightHand;
-                leftHand.transform.rotation = Quaternion.identity;
+                leftHand.transform.localEulerAngles = initialLeftHandRotation;
             }
             else
             {
                 hand = leftHand;
-                rightHand.transform.rotation = Quaternion.identity;
+                rightHand.transform.localEulerAngles = initialrighttHandRotation;
             }
 
             if (tTask.rightHanded == true)
@@ -51,7 +49,7 @@ public class GazeOriented : MonoBehaviour {
         Debug.DrawRay(head.transform.position, camera.transform.forward, Color.red);
         
 
-        if (Input.GetKey(tTask.getForwardButton()))
+        if (Input.GetKey(KeyCode.PageUp))
         {
             //Vector3 dir =  head.position - hand.position;
             Vector3 desiredMove = camera.transform.forward * speed * Time.deltaTime;

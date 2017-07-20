@@ -11,8 +11,9 @@ public class HandSteering : MonoBehaviour
     public Transform rightHand;
 
     Transform hand;
-    Quaternion initialrighttHandRotation;
-    Quaternion initialLeftHandRotation;
+    Vector3 initialrighttHandRotation = new Vector3(0, 8.995001f, 0);
+    Vector3 initialLeftHandRotation = new Vector3(0, -8.995001f, 0);
+
 
     public float speed = 3.0f;
     public float raySize = 3.0f;
@@ -32,8 +33,6 @@ public class HandSteering : MonoBehaviour
         tTask = GetComponent<TestTask>();
         hand = rightHand;
         lRenderer = GetComponent<LineRenderer>();
-        initialrighttHandRotation = rightHand.rotation;
-        initialLeftHandRotation = leftHand.rotation;
     }
 
     // Update is called once per frame
@@ -48,14 +47,13 @@ public class HandSteering : MonoBehaviour
             if (tTask.rightHanded)
             {
                 hand = rightHand;
-                leftHand.transform.rotation = Quaternion.identity;
+                leftHand.transform.localEulerAngles = initialLeftHandRotation;
             }
             else
             {
                 hand = leftHand;
-                rightHand.transform.rotation = Quaternion.identity;
+                rightHand.transform.localEulerAngles = initialrighttHandRotation;
             }
-
 
 
             if (tTask.rightHanded == true)
@@ -85,7 +83,7 @@ public class HandSteering : MonoBehaviour
             lRenderer.endWidth = laserWidth;
         }
 
-        if (Input.GetKey(tTask.getForwardButton()))
+        if (Input.GetKey(KeyCode.PageUp))
         {
             //Vector3 dir =  head.position - hand.position;
             Vector3 desiredMove = dir * speed * Time.deltaTime;

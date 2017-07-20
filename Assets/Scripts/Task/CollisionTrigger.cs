@@ -69,7 +69,7 @@ public class CollisionTrigger : MonoBehaviour {
 
 
 
-        if(tTask && collider.gameObject.name.Contains("mixamo"))
+        if(tTask && collider.gameObject.name.Contains("mixamo") && tTask.enabled == true)
         {
             tTask.collisionStarted(this.Id, collider.gameObject.name, timeWhenCollisionStarted);
 
@@ -156,7 +156,7 @@ public class CollisionTrigger : MonoBehaviour {
             currentTime.ToString(),
             "\n"
         });
-        if (tTask)
+        if (tTask && tTask.enabled == true)
         {
             tTask.collisionEnded(this.Id, collider.gameObject.name, currentTime);
             tTask.serializeCollision(str);

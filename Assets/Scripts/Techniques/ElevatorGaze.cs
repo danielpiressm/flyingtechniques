@@ -10,19 +10,17 @@ public class ElevatorGaze : MonoBehaviour {
     public Transform leftHand;
     public float speed = 3.0f;
     public Transform handTracker;
-
+    Vector3 initialrighttHandRotation = new Vector3(0, 8.995001f, 0);
+    Vector3 initialLeftHandRotation = new Vector3(0, -8.995001f, 0);
 
     Camera camera;
     TestTask tTask;
-    Quaternion initialrighttHandRotation;
-    Quaternion initialLeftHandRotation;
+    
 
     // Use this for initialization
     void Start () {
         tTask = GetComponent<TestTask>();
         camera = Camera.main;
-        initialrighttHandRotation = rightHand.rotation;
-        initialLeftHandRotation = leftHand.rotation;
     }
 
     // Update is called once per frame
@@ -35,16 +33,15 @@ public class ElevatorGaze : MonoBehaviour {
             if (tTask.rightHanded)
             {
                 hand = rightHand;
-                leftHand.transform.rotation = Quaternion.identity;
+                leftHand.transform.localEulerAngles = initialLeftHandRotation;
             }
             else
             {
                 hand = leftHand;
-                rightHand.transform.rotation = Quaternion.identity;
+                rightHand.transform.localEulerAngles = initialrighttHandRotation;
             }
 
 
-           
             if (tTask.rightHanded == true)
                 hand.transform.rotation = Quaternion.LookRotation(handTracker.transform.up, handTracker.transform.forward);
             else if (tTask.rightHanded == false)
@@ -55,11 +52,11 @@ public class ElevatorGaze : MonoBehaviour {
         Vector3 dir = Vector3.ProjectOnPlane(camera.transform.forward, this.transform.up);
         Debug.DrawRay(head.transform.position, dir, Color.red);
 
-        if(Input.GetKey(tTask.getUpButton()))
+        if(Input.GetKey(KeyCode.UpArrow))
         {
             this.transform.position += new Vector3(0, speed * Time.deltaTime, 0);
         }
-        if(Input.GetKey(tTask.getDownButton()))
+        if(Input.GetKey(KeyCode.DownArrow))
         {
             this.transform.position -= new Vector3(0, speed * Time.deltaTime, 0);
         }
@@ -74,7 +71,7 @@ public class ElevatorGaze : MonoBehaviour {
 
 
 
-        if (Input.GetKey(tTask.getForwardButton()))
+        if (Input.GetKey(KeyCode.PageUp))
         {
             //Vector3 dir =  head.position - hand.position;
             Vector3 desiredMove = dir * speed * Time.deltaTime;

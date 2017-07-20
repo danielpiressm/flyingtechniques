@@ -16,16 +16,14 @@ public class PointAndGo : MonoBehaviour {
     TestTask tTask;
     bool rightHanded = true;
     Transform hand;
-    Quaternion initialrighttHandRotation;
-    Quaternion initialLeftHandRotation;
+    Vector3 initialrighttHandRotation = new Vector3(0, 8.995001f, 0);
+    Vector3 initialLeftHandRotation = new Vector3(0, -8.995001f, 0);
 
     // Use this for initialization
     void Start () {
         tTask = GetComponent<TestTask>();
         rightHanded = tTask.rightHanded;
         camera = Camera.main;
-        initialrighttHandRotation = rightHand.rotation;
-        initialLeftHandRotation = leftHand.rotation;
     }
 	
 	// Update is called once per frame
@@ -35,12 +33,12 @@ public class PointAndGo : MonoBehaviour {
             if (tTask.rightHanded)
             {
                 hand = rightHand;
-                leftHand.transform.rotation = Quaternion.identity;
+                leftHand.transform.localEulerAngles = initialLeftHandRotation;
             }
             else
             {
                 hand = leftHand;
-                rightHand.transform.rotation = Quaternion.identity;
+                rightHand.transform.localEulerAngles = initialrighttHandRotation;
             }
 
 
@@ -61,7 +59,7 @@ public class PointAndGo : MonoBehaviour {
 
         Debug.DrawRay(camera.transform.position, -dir, Color.red);
         //map another button
-		if(Input.GetKey(tTask.getForwardButton()))
+		if(Input.GetKey(KeyCode.PageUp))
         {
             Vector3 desiredMove = -dir * speed * Time.deltaTime;
             this.transform.position += desiredMove;

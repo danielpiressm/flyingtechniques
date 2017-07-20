@@ -102,19 +102,24 @@ public class TestTask : MonoBehaviour
     public Technique getCurrentTechnique()
     {
         Technique technique = Technique.Neutral;
-        if(GetComponent<GazeOriented>())
+        GazeOriented gaze = GetComponent<GazeOriented>();
+        ElevatorGaze elevator = GetComponent<ElevatorGaze>();
+        HandSteering handGaze = GetComponent<HandSteering>();
+        PointAndGo imgPlane = GetComponent<PointAndGo>();
+
+        if(gaze.enabled == true)
         {
             technique = Technique.GazeOriented;
         }
-        else if(GetComponent<HandSteering>())
+        else if(handGaze.enabled == true)
         {
             technique = Technique.HandSteering;
         }
-        else if(GetComponent<ElevatorGaze>())
+        else if(elevator.enabled == true)
         {
             technique = Technique.ElevatorGaze;
         }
-        else if(GetComponent<PointAndGo>())
+        else if(imgPlane.enabled == true)
         {
             technique = Technique.ImagePlane;
         }
@@ -482,7 +487,7 @@ public class TestTask : MonoBehaviour
     private List<Vector3> discretizePath(Vector3 pointA, Vector3 pointB, int averagePointsPerRing)
     {
         Vector3 aux = pointB - pointA;
-        //List<Vector3> discretizedPath = new List<Vector3>();
+        List<Vector3> discretizedPath = new List<Vector3>();
         aux = new Vector3(aux.x / averagePointsPerRing, aux.y / averagePointsPerRing, aux.z / averagePointsPerRing);
         for (int j = 0; j <= averagePointsPerRing; j++)
         {
@@ -552,6 +557,7 @@ public class TestTask : MonoBehaviour
             str += vec.x + "," + vec.y + "," + vec.z + "," + (i / 78) + "\n";//TESTE
         }
         System.IO.File.WriteAllText(pathDirectory+ nameOfPointArray, str);
+        Debug.Log("PRINTEI TUDOOO");
     }
 
     private void InitializeRings()
