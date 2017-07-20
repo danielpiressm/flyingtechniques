@@ -88,7 +88,7 @@ public class TrackerClient : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.C)) // Mouse tap
+		if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.PageDown)) // Mouse tap
 		{
 			string currentHumanId = GetHumanIdWithHandUp();
 
@@ -139,8 +139,8 @@ public class TrackerClient : MonoBehaviour
 
 		float userHeight = (trackedHuman.body.Joints[BodyJointType.head].y + 0.1f) - lowerFootY;
 		float scaleRatio = userHeight / avatarHeight;
-        bar.transform.position = new Vector3(bar.transform.position.x, userHeight - bardifference, bar.transform.position.z);
-		spineBase.transform.localScale = new Vector3(scaleRatio, scaleRatio, scaleRatio);
+        /*bar.transform.position = new Vector3(bar.transform.position.x, userHeight - bardifference, bar.transform.position.z);
+		spineBase.transform.localScale = new Vector3(scaleRatio, scaleRatio, scaleRatio);*/
 	}
 
 	/// <summary>

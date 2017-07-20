@@ -30,13 +30,15 @@ public class RingCollider : MonoBehaviour
             float flatennedDistanceToRingCenter = Mathf.Sqrt(Mathf.Pow(distanceToRingCenter, 2) - Mathf.Pow(distanceToPlane, 2));
             float normalizedDistanceToRingCenter = flatennedDistanceToRingCenter / (transform.lossyScale.x / 2.0f);
 
-            if (flatennedDistanceToRingCenter < (transform.lossyScale.x * 1.1))
+            if (flatennedDistanceToRingCenter < (transform.lossyScale.x * 0.75f))
             {
+                Debug.Log("ring "+testTask.getCurrentRing()+" :  true");
                 testTask.Next(true, normalizedDistanceToRingCenter);
                 //testRunner.Next(true, normalizedDistanceToRingCenter);
             }
             else
             {
+                Debug.Log("ring " + testTask.getCurrentRing() + " :  false");
                 testTask.Next(false, normalizedDistanceToRingCenter);
                 //testRunner.Next(false, normalizedDistanceToRingCenter);
             }

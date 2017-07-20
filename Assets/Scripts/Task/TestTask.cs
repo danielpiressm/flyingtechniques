@@ -64,7 +64,7 @@ public class TestTask : MonoBehaviour
 
     public Technique travelTechnique;
 
-    public bool rightHanded = true;
+    public bool rightHanded;// = true;
 
     private KeyCode calibrateButton;
 
@@ -91,6 +91,13 @@ public class TestTask : MonoBehaviour
     Dictionary<string, ActiveCollision> collisionsPerJoint;
 
     string dominantHandText = "rightHanded";
+
+    private float ringTolerance = 0.7f;
+
+    public float getRingTolerance()
+    {
+        return ringTolerance;
+    }
 
     public void collisionStarted(string colliderName, string jointName,float time)
     {

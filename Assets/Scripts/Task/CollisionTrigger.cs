@@ -12,7 +12,16 @@ public class CollisionTrigger : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        tTask = GameObject.Find("Virtual_Circle").GetComponent<TestTask>();
+        try
+        {
+            tTask = GameObject.Find("Virtual_Circle").GetComponent<TestTask>();
+        }
+        catch(System.Exception ex)
+        {
+
+
+        }
+
         MeshCollider mCollider = this.GetComponent<MeshCollider>();
         if (!mCollider)
         {
