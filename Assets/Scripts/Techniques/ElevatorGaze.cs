@@ -5,17 +5,24 @@ using UnityEngine;
 public class ElevatorGaze : MonoBehaviour {
 
     public Transform head;
-    public Transform hand;
+    Transform hand;
+    public Transform rightHand;
+    public Transform leftHand;
     public float speed = 3.0f;
-    public GameObject target;
-    public float raySize = 3.0f;
-    public Camera camera;
+    public Transform handTracker;
+
+
+    Camera camera;
     TestTask tTask;
+    Quaternion initialrighttHandRotation;
+    Quaternion initialLeftHandRotation;
 
     // Use this for initialization
     void Start () {
         tTask = GetComponent<TestTask>();
         camera = Camera.main;
+        initialrighttHandRotation = rightHand.rotation;
+        initialLeftHandRotation = leftHand.rotation;
     }
 
     // Update is called once per frame
@@ -23,10 +30,29 @@ public class ElevatorGaze : MonoBehaviour {
         //TODO: Implement drag & go
         //Also: Point to the place & fix the direction & use a button
         //Gaze oriented
+        if (tTask)
+        {
+            if (tTask.rightHanded)
+            {
+                hand = rightHand;
+                leftHand.transform.rotation = Quaternion.identity;
+            }
+            else
+            {
+                hand = leftHand;
+                rightHand.transform.rotation = Quaternion.identity;
+            }
+
+
+           
+            if (tTask.rightHanded == true)
+                hand.transform.rotation = Quaternion.LookRotation(handTracker.transform.up, handTracker.transform.forward);
+            else if (tTask.rightHanded == false)
+                hand.transform.rotation = Quaternion.LookRotation(-handTracker.transform.up, handTracker.transform.forward);
+
+        }
 
         Vector3 dir = Vector3.ProjectOnPlane(camera.transform.forward, this.transform.up);
-
-
         Debug.DrawRay(head.transform.position, dir, Color.red);
 
         if(Input.GetKey(tTask.getUpButton()))

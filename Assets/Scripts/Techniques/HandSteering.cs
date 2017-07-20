@@ -11,9 +11,10 @@ public class HandSteering : MonoBehaviour
     public Transform rightHand;
 
     Transform hand;
+    Quaternion initialrighttHandRotation;
+    Quaternion initialLeftHandRotation;
 
     public float speed = 3.0f;
-    public GameObject target;
     public float raySize = 3.0f;
     Camera camera;
     public float laserWidth; 
@@ -31,6 +32,8 @@ public class HandSteering : MonoBehaviour
         tTask = GetComponent<TestTask>();
         hand = rightHand;
         lRenderer = GetComponent<LineRenderer>();
+        initialrighttHandRotation = rightHand.rotation;
+        initialLeftHandRotation = leftHand.rotation;
     }
 
     // Update is called once per frame
@@ -40,19 +43,32 @@ public class HandSteering : MonoBehaviour
         //Also: Point to the place & fix the direction & use a button
         //Gaze oriented
 
-        if (tTask.rightHanded)
-            hand = rightHand;
-        else
-            hand = leftHand;
+        if (tTask)
+        {
+            if (tTask.rightHanded)
+            {
+                hand = rightHand;
+                leftHand.transform.rotation = Quaternion.identity;
+            }
+            else
+            {
+                hand = leftHand;
+                rightHand.transform.rotation = Quaternion.identity;
+            }
+
+
+
+            if (tTask.rightHanded == true)
+                hand.transform.rotation = Quaternion.LookRotation(handTracker.transform.up, handTracker.transform.forward);
+            else if (tTask.rightHanded == false)
+                hand.transform.rotation = Quaternion.LookRotation(-handTracker.transform.up, handTracker.transform.forward);
+
+        }
 
 
         Vector3 dir = handTracker.transform.forward;
         Debug.DrawRay(hand.transform.position, dir, Color.red);
-        if (tTask.rightHanded == true)
-            hand.transform.rotation = Quaternion.LookRotation(handTracker.transform.up, handTracker.transform.forward);
-        else if (tTask.rightHanded == false)
-            hand.transform.rotation = Quaternion.LookRotation(-handTracker.transform.up, handTracker.transform.forward);
-
+        
         if (lRenderer !=null)
         {
             lRenderer.enabled = true;

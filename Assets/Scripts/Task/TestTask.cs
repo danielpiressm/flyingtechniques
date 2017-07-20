@@ -99,6 +99,29 @@ public class TestTask : MonoBehaviour
         return ringTolerance;
     }
 
+    public Technique getCurrentTechnique()
+    {
+        Technique technique = Technique.Neutral;
+        if(GetComponent<GazeOriented>())
+        {
+            technique = Technique.GazeOriented;
+        }
+        else if(GetComponent<HandSteering>())
+        {
+            technique = Technique.HandSteering;
+        }
+        else if(GetComponent<ElevatorGaze>())
+        {
+            technique = Technique.ElevatorGaze;
+        }
+        else if(GetComponent<PointAndGo>())
+        {
+            technique = Technique.ImagePlane;
+        }
+
+        return technique;
+    }
+
     public void collisionStarted(string colliderName, string jointName,float time)
     {
         if(activeCollisions.ContainsKey(colliderName))
@@ -271,6 +294,8 @@ public class TestTask : MonoBehaviour
 
         int i = 1;
 
+        travelTechnique = getCurrentTechnique();
+
         while (Directory.Exists(Directory.GetCurrentDirectory() + "/user" + i+"_"+travelTechnique.ToString()))
         {
             i++;
@@ -292,6 +317,7 @@ public class TestTask : MonoBehaviour
         finishedCollisions = new List<FinishedCollision>();
         finishedCollisionsAux = new Dictionary<string, FinishedCollision>();
         collisionsPerJoint = new Dictionary<string, ActiveCollision>();
+       
         //optimalDiscretizedPathList = new List<Vector3>();
     }
 
