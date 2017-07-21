@@ -74,6 +74,8 @@ public class TestTask : MonoBehaviour
 
     private KeyCode downButton;
 
+    public bool training;
+
     [SerializeField]
     private int collisionCount;
 
@@ -308,10 +310,18 @@ public class TestTask : MonoBehaviour
         //se nao houver diretorios
 
         //System.IO.Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/test");
-        System.IO.Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/user" + i + "_" + travelTechnique.ToString() + "/");
-        //System.IO.StreamWriter
         
-        pathDirectory = Directory.GetCurrentDirectory() + "/user" + i + "_"+ travelTechnique.ToString() + "/";
+        //System.IO.StreamWriter
+
+        pathDirectory = Directory.GetCurrentDirectory() + "/user" + i + "_" + travelTechnique.ToString();// + "/";
+        if(training == true)
+        {
+            pathDirectory += "_training";
+        }
+
+
+        pathDirectory += "/";
+        System.IO.Directory.CreateDirectory(pathDirectory);
 
         forwardButton = KeyCode.PageUp;
         calibrateButton = KeyCode.PageDown;
