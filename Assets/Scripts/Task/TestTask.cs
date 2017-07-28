@@ -11,6 +11,11 @@ public class TestTask : MonoBehaviour
         HandSteering, GazeOriented, VirtualCircle, WalkingInPlace, HandGaze, Neutral, ElevatorGaze, ImagePlane
     };
 
+    public enum NavigationState
+    {
+        Idle, Walking, Flying
+    };
+
 
     [SerializeField]
     private GameObject[] rings;
@@ -96,9 +101,26 @@ public class TestTask : MonoBehaviour
 
     private float ringTolerance = 0.7f;
 
+    private float speed = 3.0f;
+
+    
+
+    private NavigationState currentNavState;
+
     public float getRingTolerance()
     {
         return ringTolerance;
+    }
+
+    public float getCurrentSpeed()
+    {
+        return speed;
+    }
+
+
+    public NavigationState getCurrentNavigationState()
+    {
+        return currentNavState;
     }
 
     public Technique getCurrentTechnique()
@@ -302,6 +324,7 @@ public class TestTask : MonoBehaviour
         int i = 1;
 
         travelTechnique = getCurrentTechnique();
+        currentNavState = NavigationState.Idle;
 
         while (Directory.Exists(Directory.GetCurrentDirectory() + "/user" + i+"_"+travelTechnique.ToString()))
         {

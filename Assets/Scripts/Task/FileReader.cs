@@ -17,35 +17,27 @@ public class FileReader : MonoBehaviour {
         dictionaryHeaders = new Dictionary<string, string>();
 
 
-        dictionary.Add("collisionlog.csv", "");
+        //dictionary.Add("collisionLog.csv", "");
+        //dictionary.Add("report.csv", "");
         //dictionary.Add("headLog.csv", "");
-       // dictionary.Add("leftFootLog.csv", "");
-        /*dictionary.Add("leftHandLog.csv", "");
-        dictionary.Add("pathlog.csv", "");
-        dictionary.Add("log.csv", "");
-        dictionary.Add("pathLog.csv", "");
+        //dictionary.Add("optimalPath.csv", "");
+        //dictionary.Add("leftFootLog.csv", "");
+        //dictionary.Add("leftHandLog.csv", "");
+        ///dictionary.Add("reportPath.csv", "");
+        //dictionary.Add("optimalPath.csv", "");
         dictionary.Add("rightFootLog.csv", "");
         dictionary.Add("rightHandLog.csv", "");
+        
 
-        dictionary2.Add("collisionlog.csv", 0);
-        dictionary2.Add("headLog.csv", 0);
-        dictionary2.Add("leftFootLog.csv",0);
-        dictionary2.Add("leftHandLog.csv", 0);
-        dictionary2.Add("pathlog.csv", 0);
-        dictionary2.Add("log.csv", 0);
-        dictionary2.Add("pathLog.csv", 0);
-        dictionary2.Add("rightFootLog.csv", 0);
-        dictionary2.Add("rightHandLog.csv", 0);
-        //dictionary["log.csv"] += "3333";*/
+        string rootPath = "F:\\Dropbox\\doutorado\\papers\\vrstFlying\\somerandomtest";
 
-        string rootPath = "F:\\Dropbox\\doutorado\\papers\\ismar2017\\somerandomtest";
-
-        string[] filePaths = Directory.GetFiles(@"F:\Dropbox\doutorado\papers\ismar2017\testes", "*.csv", SearchOption.AllDirectories);
-        string[] fileArray = Directory.GetDirectories(@"F:\Dropbox\doutorado\papers\ismar2017\testes");
+        string[] filePaths = Directory.GetFiles(@"F:\Dropbox\doutorado\papers\vrstFlying\userLogs", "*.csv", SearchOption.AllDirectories);
+        string[] fileArray = Directory.GetDirectories(@"F:\Dropbox\doutorado\papers\vrstFlying\userLogs");
 
         foreach (string fileName in filePaths)
         {
             FileInfo fInfo = new FileInfo(fileName);
+            
             string userName = fInfo.Directory.Parent.Name;
 
             try
@@ -81,39 +73,7 @@ public class FileReader : MonoBehaviour {
             System.IO.File.WriteAllText(rootPath + "\\" + word.Key, "User,Technique,"+dictionaryHeaders[word.Key]+word.Value);
         }
 
-        /*foreach(string str in fileArray)
-        {
-            DirectoryInfo info = new DirectoryInfo(str);
-            string userName = info.Name;
-            string[] tmp = Directory.GetDirectories(str);
-            int x = 2;
-            string tmpStr = "";
-
-            foreach(string str2 in tmp)
-            {
-                string[] filePaths2 = Directory.GetFiles(str2);
-                foreach(string file in filePaths2)
-                {
-                    try
-                    {
-                        FileInfo fInfo = new FileInfo(file);
-                        tmpStr = fInfo.Name;
-                        dictionary[fInfo.Name] += readFile(userName, file);
-                    }
-                    catch(Exception e)
-                    {
-                        Debug.Log("EXCEPTION = " + tmpStr);
-                    }
-                    
-                }
-            }
-        }*/
-
-
-
-        //DirectoryInfo info = new DirectoryInfo(fileArray[0]);
-
-        //Debug.Log(dictionary["log.csv"]);
+        
     }
 
 
@@ -131,7 +91,7 @@ public class FileReader : MonoBehaviour {
 		
 	}
 
-    string readFile(string name,string filePath)
+    string readFile(string name, string filePath)
     {
         int counter = 0;
         string header = "";
@@ -140,7 +100,7 @@ public class FileReader : MonoBehaviour {
 
         System.IO.StreamReader file = new System.IO.StreamReader(filePath);
         FileInfo fInfo = new FileInfo(filePath);
-        string dName = fInfo.Directory.Name;
+        string dName = fInfo.Directory.Name.Split('_')[1];
 
         header = file.ReadLine();
         if(!dictionaryHeaders.ContainsKey(fInfo.Name))

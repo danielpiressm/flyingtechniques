@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum BodyLog { rightFoot, leftFoot, rightHand, leftHand, head, rightShin, leftShin, hip, torso, };
+public enum BodyLog { rightFoot, leftFoot, rightHand, leftHand, head, circle, rightShin, leftShin, hip, torso,  };
 
 public class FullbodyReport : MonoBehaviour {
 
@@ -14,6 +14,7 @@ public class FullbodyReport : MonoBehaviour {
     public Transform rightShin; //shin=canela
     public Transform leftShin;
     public Transform handTracker;
+    public Transform circle;
 
     private Vector3[] lastBodyPos;
     private string[] bodyStr;
@@ -43,13 +44,13 @@ public class FullbodyReport : MonoBehaviour {
 
     public void InitializeFullbodyReport()
     {
-        pathHeaderStr = "Ring,currentPosX,currentPosY,currentPosZ,pathElapsedX,pathElapsedY,pathElapsedZ,rotX,rotY,rotZ,magnitude,CameraPosX,CameraPosY,CameraPosZ,CameraRotX,CameraRotY,CameraRotZ,Time\n";
+        pathHeaderStr = "Ring,currentPosX,currentPosY,currentPosZ,pathElapsedX,pathElapsedY,pathElapsedZ,rotX,rotY,rotZ,magnitude,CameraPosX,CameraPosY,CameraPosZ,CameraRotX,CameraRotY,CameraRotZ,Time,currentNavigationState\n";
 
-        lastBodyPos = new Vector3[9];
-        bodyStrPath = new string[9];
-        bodyStr = new string[9];
+        lastBodyPos = new Vector3[10];
+        bodyStrPath = new string[10];
+        bodyStr = new string[10];
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 6; i++)
         {
             bodyStr[i] = pathHeaderStr;
         }
@@ -100,6 +101,11 @@ public class FullbodyReport : MonoBehaviour {
             bodyStrPath[4] = "headLog.csv";
             //System.IO.File.WriteAllText(pathDirectory  + "headLog.csv", "");
         }
+        if(circle != null)
+        {
+            lastBodyPos[5] = circle.position;
+            bodyStrPath[5] = "circle.csv";
+        }
     }
 
     void updateFullbodyReport()
@@ -136,6 +142,7 @@ public class FullbodyReport : MonoBehaviour {
                     Camera.main.transform.eulerAngles.y.ToString(),
                     Camera.main.transform.eulerAngles.z.ToString(),
                     Time.realtimeSinceStartup.ToString(),
+                    tTask.getCurrentNavigationState().ToString(),
                     "\n"
 
                 });
@@ -170,6 +177,7 @@ public class FullbodyReport : MonoBehaviour {
                     Camera.main.transform.eulerAngles.y.ToString(),
                     Camera.main.transform.eulerAngles.z.ToString(),
                     Time.realtimeSinceStartup.ToString(),
+                    tTask.getCurrentNavigationState().ToString(),
                     "\n"
 
                 });
@@ -214,6 +222,7 @@ public class FullbodyReport : MonoBehaviour {
                     Camera.main.transform.eulerAngles.y.ToString(),
                     Camera.main.transform.eulerAngles.z.ToString(),
                     Time.realtimeSinceStartup.ToString(),
+                    tTask.getCurrentNavigationState().ToString(),
                     "\n"
 
                 });
@@ -257,6 +266,7 @@ public class FullbodyReport : MonoBehaviour {
                     Camera.main.transform.eulerAngles.y.ToString(),
                     Camera.main.transform.eulerAngles.z.ToString(),
                     Time.realtimeSinceStartup.ToString(),
+                    tTask.getCurrentNavigationState().ToString(),
                     "\n"
 
            });
@@ -289,6 +299,7 @@ public class FullbodyReport : MonoBehaviour {
                     Camera.main.transform.eulerAngles.y.ToString(),
                     Camera.main.transform.eulerAngles.z.ToString(),
                     Time.realtimeSinceStartup.ToString(),
+                    tTask.getCurrentNavigationState().ToString(),
                     "\n"
 
                 });
@@ -322,6 +333,7 @@ public class FullbodyReport : MonoBehaviour {
                     Camera.main.transform.eulerAngles.y.ToString(),
                     Camera.main.transform.eulerAngles.z.ToString(),
                     Time.realtimeSinceStartup.ToString(),
+                    tTask.getCurrentNavigationState().ToString(),
                     "\n"
 
                 });
@@ -354,16 +366,50 @@ public class FullbodyReport : MonoBehaviour {
                     Camera.main.transform.eulerAngles.y.ToString(),
                     Camera.main.transform.eulerAngles.z.ToString(),
                     Time.realtimeSinceStartup.ToString(),
+                    tTask.getCurrentNavigationState().ToString(),
                     "\n"
 
                 });
                 //System.IO.File.WriteAllText(pathDirectory + bodyStrPath[6] , bodyStr[6]);
             
         }
-        //flush the string into the file
-        if (countFullBodiesStr > 20)
+        if (circle != null)
         {
-            for (int i = 0; i < 5; i++)
+            lastBodyPos[(int)BodyLog.circle] = circle.transform.position;
+            currentPosVector = head.transform.position - lastBodyPos[(int)BodyLog.circle];
+
+            lastBodyPos[(int)BodyLog.circle] = head.transform.position;
+            bodyStr[(int)BodyLog.head] += string.Join(",", new string[]
+            {
+                    "ring"+tTask.getCurrentRing().ToString(),
+                    circle.transform.position.x.ToString(),
+                    circle.transform.position.y.ToString(),
+                    circle.transform.position.z.ToString(),
+                    currentPosVector.x.ToString(),
+                    currentPosVector.y.ToString(),
+                    currentPosVector.z.ToString(),
+                    circle.transform.eulerAngles.x.ToString(),
+                    circle.transform.eulerAngles.y.ToString(),
+                    circle.transform.eulerAngles.z.ToString(),
+                    circle.transform.position.magnitude.ToString(),
+                    head.transform.position.x.ToString(),
+                    head.transform.position.y.ToString(),
+                    head.transform.position.z.ToString(),
+                    Camera.main.transform.eulerAngles.x.ToString(),
+                    Camera.main.transform.eulerAngles.y.ToString(),
+                    Camera.main.transform.eulerAngles.z.ToString(),
+                    Time.realtimeSinceStartup.ToString(),
+                    tTask.getCurrentNavigationState().ToString(),
+                    "\n"
+
+            });
+            //System.IO.File.WriteAllText(pathDirectory + bodyStrPath[6] , bodyStr[6]);
+        }
+
+            //flush the string into the file
+            if (countFullBodiesStr > 20)
+        {
+            for (int i = 0; i < 6; i++)
             {
                 try
                 {
