@@ -629,7 +629,14 @@ public class TestTask : MonoBehaviour
 
         //UpdatePathReport();
         if (rings.Length > currentRing)
+        {
             rings[currentRing].SetActive(true);
+            if(currentRing+1 > rings.Length)
+            {
+                rings[currentRing].transform.LookAt(rings[currentRing + 1].transform, rings[currentRing].transform.up);
+            }
+        }
+            
         else
         {
             CompleteReport();

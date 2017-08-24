@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class VirtualCircle : MonoBehaviour {
 
-    public float speed = 3.0f;
 
     public Vector3 calibratedPos;
 
@@ -14,14 +13,35 @@ public class VirtualCircle : MonoBehaviour {
 
     public GameObject meshCircle;
 
-    public Transform head;
 
     public Transform child;
 
     Vector2 userPosInsideCircle;
 
-	// Use this for initialization
-	void Start () {
+    public Transform head;
+    public Transform handTracker;
+    public Transform leftHand;
+    public Transform rightHand;
+
+    public float analogButtonY = 1.0f;
+    public float analogButtonX = 0.0f;
+    public float speed = 3.0f;
+
+    Transform hand;
+    Vector3 initialrighttHandRotation = new Vector3(0, 8.995001f, 0);
+    Vector3 initialLeftHandRotation = new Vector3(0, -8.995001f, 0);
+
+
+    public float raySize = 3.0f;
+    Camera camera;
+    public float laserWidth;
+    string text = "rightHand";
+    TestTask tTask;
+    bool rightHanded = true;
+    LineRenderer lRenderer;
+
+    // Use this for initialization
+    void Start () {
         //calibratedPos = this.transform.position;
         //child = this.transform.GetChild(0).transform;
         calibratedPos = child.position; 
@@ -71,7 +91,61 @@ public class VirtualCircle : MonoBehaviour {
         if(insideCircle(userPosInsideCircle))
         {
             //Debug.Log("Inside Circle!");
-           
+            if (tTask)
+            {
+                if (tTask.rightHanded)
+                {
+                    hand = rightHand;
+                    leftHand.transform.localEulerAngles = initialLeftHandRotation;
+                }
+                else
+                {
+                    hand = leftHand;
+                    rightHand.transform.localEulerAngles = initialrighttHandRotation;
+                }
+
+
+                if (tTask.rightHanded == true)
+                    hand.transform.rotation = Quaternion.LookRotation(handTracker.transform.up, handTracker.transform.forward);
+                else if (tTask.rightHanded == false)
+                    hand.transform.rotation = Quaternion.LookRotation(-handTracker.transform.up, handTracker.transform.forward);
+
+            }
+
+
+            Vector3 dir = handTracker.transform.forward;
+            Debug.DrawRay(hand.transform.position, dir, Color.red);
+
+            if (lRenderer != null)
+            {
+                lRenderer.enabled = true;
+                //hand.transform.eulerAngles = new Vector3(handTracker.transform.eulerAngles.x, handTracker.transform.eulerAngles.z, handTracker.transform.eulerAngles.y);
+
+                //hand.transform.up = -handTracker.transform.forward;
+
+                //hand.transform.localEulerAngles = new Vector3(hand.transform.localEulerAngles.x, hand.transform.localEulerAngles.y, hand.transform.localEulerAngles.z);
+
+                if (analogButtonY > 1.0f)
+                    analogButtonY = 1.0f;
+
+                Vector3 endPosition = hand.transform.position + speed * dir * userPosInsideCircle.y;
+                lRenderer.SetPosition(0, hand.transform.position);
+                lRenderer.SetPosition(1, endPosition);
+                lRenderer.startWidth = laserWidth;
+                lRenderer.endWidth = laserWidth;
+            }
+
+            if (Input.GetKey(KeyCode.PageUp))
+            {
+                //Vector3 dir =  head.position - hand.position;
+                Vector3 desiredMove = dir * speed * Time.deltaTime * userPosInsideCircle.y; // verificar se essa ultima variavel ta entre 0 e 1
+                this.transform.position += desiredMove;
+
+            }
+            else
+            {
+                // target.SetActive(false);
+            }
         }
         else
         {
@@ -92,6 +166,8 @@ public class VirtualCircle : MonoBehaviour {
             child.localPosition = new Vector3(0, 0, 0);
             recalibrate = false;
         }
+
+
 
         /*if ((child.position - this.transform.position).magnitude > circleSize)
         {
