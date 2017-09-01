@@ -78,9 +78,12 @@ public class AnalogSteering : MonoBehaviour
             //hand.transform.up = -handTracker.transform.forward;
 
             //hand.transform.localEulerAngles = new Vector3(hand.transform.localEulerAngles.x, hand.transform.localEulerAngles.y, hand.transform.localEulerAngles.z);
-
-            if (analogButtonY > 1.0f)
-                analogButtonY = 1.0f;
+			analogButtonY = Input.GetAxis("Vertical");
+			if (analogButtonY > 1.0f)
+				analogButtonY = 1.0f;
+			else if (analogButtonY < 0.002f)
+				analogButtonY = 0.0f;
+			
 
             Vector3 endPosition = hand.transform.position + speed * dir *analogButtonY;
             lRenderer.SetPosition(0, hand.transform.position);
@@ -88,8 +91,8 @@ public class AnalogSteering : MonoBehaviour
             lRenderer.startWidth = laserWidth;
             lRenderer.endWidth = laserWidth;
         }
-
-        if (Input.GetKey(KeyCode.PageUp))
+		float triggerButton = Input.GetAxis ("Z Axis");
+		if (triggerButton > 0.002f)
         {
             //Vector3 dir =  head.position - hand.position;
             Vector3 desiredMove = dir * speed * Time.deltaTime * analogButtonY;

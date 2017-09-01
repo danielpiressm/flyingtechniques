@@ -59,6 +59,9 @@ public class TrackerClientRobot : MonoBehaviour
 	private PointSmoothing rightKneeJoint;
 	private PointSmoothing rightAnkleJoint;
 
+	public Vector3 rightKneeAvg;
+	public Vector3 leftKneeAvg;
+
 	void Start()
 	{
 		isNewFrame = false;
@@ -175,7 +178,32 @@ public class TrackerClientRobot : MonoBehaviour
 		// Right Leg
 		rightHip.rotation = Utils.GetQuaternionFromUpRight(Utils.GetBoneDirection(rightKneeJoint.Value, rightHipJoint.Value), -spineRight);
 		rightKnee.rotation = Utils.GetQuaternionFromUpRight(Utils.GetBoneDirection(rightAnkleJoint.Value, rightKneeJoint.Value), -spineRight);
-    }
+
+		/*try
+		{
+			if(trackedHuman.body.Joints.ContainsKey(BodyJointType.rightKneeAvg))
+			{
+				rightKneeAvg = trackedHuman.body.Joints [BodyJointType.rightKneeAvg];
+			}
+			else
+			{
+				rightKneeAvg = new Vector3(-1000.0f,-1000.0f,-1000.0f);
+			}
+
+			if(trackedHuman.body.Joints.ContainsKey(BodyJointType.leftKneeAvg))
+			{
+				rightKneeAvg = trackedHuman.body.Joints [BodyJointType.leftKneeAvg];
+			}
+			else
+			{
+				leftKneeAvg = new Vector3(-1000.0f,-1000.0f,-1000.0f);
+			}
+		}
+		catch(Exception ex) 
+		{
+		
+		}*/
+	}
 
     /// <summary>
     /// Applies the noise filter to joints.
