@@ -39,18 +39,25 @@ public class WIPSteering : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         Human h = this.GetComponent<TrackerClientRobot>().trackedHuman;
-        float rightKnee = 0.0f;
-        float leftKnee = 0.0f;
-        if (h)
+        Vector3 rightKnee = new Vector3();
+        Vector3 leftKnee = new Vector3();
+        Vector3 rightKneeAvg = new Vector3();
+        Vector3 leftKneeAvg = new Vector3();
+        if (h!=null)
         {
-            if(h.body)
+            if(h.body!=null)
             {
                 rightKnee = h.body.Joints[BodyJointType.rightKnee];
                 leftKnee = h.body.Joints[BodyJointType.leftKnee];
+                rightKneeAvg = h.body.Joints[BodyJointType.rightKneeAvg];
+                leftKneeAvg = h.body.Joints[BodyJointType.leftKneeAvg];
             }
         }
 
-        float speedWIP = wip.updateDaniel(rightKnee, leftKnee);
+        float speedWIP = wip.updateDaniel(rightKneeAvg.y, leftKneeAvg.y);
+        speedWIP = Mathf.Clamp(speedWIP, 0.0f, 1.0f);
+        //if(speedWIP > 0.0f)
+            Debug.Log("$$$$$ WIP WORKING ###### " + rightKnee.y + ","+ leftKnee.y + " AVG = "+ rightKneeAvg.y + ","+leftKneeAvg.y + " speed="+speedWIP);
         if (tTask)
         {
             if (tTask.rightHanded)
@@ -97,6 +104,7 @@ public class WIPSteering : MonoBehaviour {
             //Vector3 dir =  head.position - hand.position;
             Vector3 desiredMove = dir * speed * Time.deltaTime *speedWIP;
             this.transform.position += desiredMove;
+            Debug.Log("here");
 
         }
         else

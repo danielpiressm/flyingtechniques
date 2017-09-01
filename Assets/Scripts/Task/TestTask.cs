@@ -8,7 +8,7 @@ public class TestTask : MonoBehaviour
 {
     public enum Technique
     {
-        HandSteering, GazeOriented, VirtualCircle, WalkingInPlace, HandGaze, Neutral, ElevatorGaze, ImagePlane
+        HandSteering, GazeOriented, VirtualCircle, WalkingInPlace, HandGaze, Neutral, ElevatorGaze, ImagePlane,AnalogSteering
     };
 
     public enum NavigationState
@@ -130,23 +130,53 @@ public class TestTask : MonoBehaviour
         ElevatorGaze elevator = GetComponent<ElevatorGaze>();
         HandSteering handGaze = GetComponent<HandSteering>();
         PointAndGo imgPlane = GetComponent<PointAndGo>();
+        WIPSteering wip = GetComponent<WIPSteering>();
+        AnalogSteering analogSteering = GetComponent<AnalogSteering>();
+        VirtualCircle virtualCircle = GetComponent<VirtualCircle>();
 
-        if(gaze.enabled == true)
+        if (gaze)
         {
-            technique = Technique.GazeOriented;
+            if (gaze.enabled == true)
+            {
+                technique = Technique.GazeOriented;
+            }
         }
-        else if(handGaze.enabled == true)
+        else if (handGaze)
         {
-            technique = Technique.HandSteering;
+            if (handGaze.enabled == true)
+            {
+                technique = Technique.HandSteering;
+            }
         }
-        else if(elevator.enabled == true)
+        else if (elevator)
+        { 
+            if (elevator.enabled == true)
+            {
+                technique = Technique.ElevatorGaze;
+            }
+        }
+        else if(wip)
         {
-            technique = Technique.ElevatorGaze;
+            if(wip.enabled == true)
+            {
+                technique = Technique.WalkingInPlace;
+            }
         }
-        else if(imgPlane.enabled == true)
+        else if(virtualCircle)
         {
-            technique = Technique.ImagePlane;
+            if(virtualCircle.enabled == true)
+            {
+                technique = Technique.VirtualCircle;
+            }
         }
+        else if(analogSteering)
+        {
+            if(analogSteering.enabled == true)
+            {
+                technique = Technique.AnalogSteering;
+            }
+        }
+        
 
         return technique;
     }

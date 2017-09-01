@@ -12,7 +12,7 @@ public class TrackerClientRobot : MonoBehaviour
 
 	// Human
 	public float avatarHeight;
-	private Human trackedHuman;
+	public Human trackedHuman;
 	private string trackedHumanId;
 	private Dictionary<string, Human> humans;
 
@@ -62,7 +62,9 @@ public class TrackerClientRobot : MonoBehaviour
 	public Vector3 rightKneeAvg;
 	public Vector3 leftKneeAvg;
 
-	void Start()
+    
+
+    void Start()
 	{
 		isNewFrame = false;
 		frameTime = DateTime.Now;
@@ -106,7 +108,7 @@ public class TrackerClientRobot : MonoBehaviour
 
 		if (humans.ContainsKey(trackedHumanId)) 
 		{
-			trackedHuman = humans[trackedHumanId];
+            trackedHuman = humans[trackedHumanId];
 			UpdateAvatarBody();
 		}
 

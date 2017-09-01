@@ -45,8 +45,9 @@ public enum BodyJointType
 	rightAnkle,
 	rightFoot,
 
-	rightKneeAvg,
 	leftKneeAvg,
+    rightKneeAvg,
+
 }
 
 public enum BodyPropertiesType
