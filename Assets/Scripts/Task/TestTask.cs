@@ -19,6 +19,19 @@ public class TestTask : MonoBehaviour
 
     [SerializeField]
     private GameObject[] rings;
+    public GameObject[] Rings
+    {
+        get
+        {
+            return rings;
+        }
+
+        set
+        {
+            rings = value;
+        }
+    }
+
 
     private float[] magnitudes;
     private Vector3[] ringPositionsWhenCrossed;
@@ -106,6 +119,8 @@ public class TestTask : MonoBehaviour
     
 
     private NavigationState currentNavState;
+
+    
 
     public float getRingTolerance()
     {
