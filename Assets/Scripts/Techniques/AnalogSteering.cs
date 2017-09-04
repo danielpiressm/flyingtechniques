@@ -26,8 +26,27 @@ public class AnalogSteering : MonoBehaviour
     TestTask tTask;
     bool rightHanded = true;
     LineRenderer lRenderer;
+    float circleSize = 3;
+    public Transform referenceJoint;
+    float lastCircleSpeed = 0.0f;
+
+    float getSpeed(Vector2 localPosition)
+    {
+        float circleRadius = circleSize / 2;
+        float xN = localPosition.x / circleRadius;
+        float yN = localPosition.y / circleRadius;
 
 
+        //Debug.Log("xN = (" + xN + "," + yN + ")");
+        
+        float result = (float)Mathf.Sqrt(xN * xN + yN * yN);
+        if (xN < 0.0f || yN < 0.0f)
+            result = 0.0f;
+
+
+
+        return result;
+    }
 
     // Use this for initialization
     void Start()
@@ -41,9 +60,12 @@ public class AnalogSteering : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //TODO: Implement drag & go
-        //Also: Point to the place & fix the direction & use a button
-        //Gaze oriented
+        float circleSpeed = 0.0f;
+        if(referenceJoint)
+        {
+            Vector3 transformedPoint = this.transform.InverseTransformPoint(referenceJoint.transform.position);
+            circleSpeed = getSpeed(new Vector2(transformedPoint.x, transformedPoint.z));
+        }
 
         if (tTask)
         {
@@ -97,11 +119,15 @@ public class AnalogSteering : MonoBehaviour
             //Vector3 dir =  head.position - hand.position;
             Vector3 desiredMove = dir * speed * Time.deltaTime * analogButtonY;
             this.transform.position += desiredMove;
-
+            tTask.setSpeed(speed * analogButtonY);
+            tTask.setNavigationState(true, circleSpeed, lastCircleSpeed);
+            
         }
         else
         {
+            tTask.setSpeed(0.0f);
             // target.SetActive(false);
         }
+        lastCircleSpeed = circleSpeed;
     }
 }

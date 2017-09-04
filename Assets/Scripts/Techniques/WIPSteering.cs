@@ -10,6 +10,7 @@ public class WIPSteering : MonoBehaviour {
     public Transform handTracker;
     public Transform leftHand;
     public Transform rightHand;
+    public Transform referenceJoint;
 
     Transform hand;
     Vector3 initialrighttHandRotation = new Vector3(0, 8.995001f, 0);
@@ -24,8 +25,26 @@ public class WIPSteering : MonoBehaviour {
     TestTask tTask;
     bool rightHanded = true;
     LineRenderer lRenderer;
+    float circleSize = 3;
+    float lastSpeed = 0;
+
+    float getSpeed(Vector2 localPosition)
+    {
+        float circleRadius = circleSize / 2;
+        float xN = localPosition.x / circleRadius;
+        float yN = localPosition.y / circleRadius;
 
 
+        //Debug.Log("xN = (" + xN + "," + yN + ")");
+
+        float result = (float)Mathf.Sqrt(xN * xN + yN * yN);
+        if (xN < 0.0f || yN < 0.0f)
+            result = 0.0f;
+
+
+
+        return result;
+    }
 
     // Use this for initialization
     void Start () {
@@ -83,6 +102,7 @@ public class WIPSteering : MonoBehaviour {
         Vector3 dir = handTracker.transform.forward;
         Debug.DrawRay(hand.transform.position, dir, Color.red);
 
+
         if (lRenderer != null)
         {
             lRenderer.enabled = true;
@@ -105,10 +125,13 @@ public class WIPSteering : MonoBehaviour {
             Vector3 desiredMove = dir * speed * Time.deltaTime *speedWIP;
             this.transform.position += desiredMove;
             Debug.Log("here");
+            tTask.setNavigationState(NavigationState.Flying);
+            tTask.setSpeed(speedWIP * speed);
 
         }
         else
         {
+
             // target.SetActive(false);
         }
     }

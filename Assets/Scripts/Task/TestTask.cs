@@ -4,6 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
+public enum NavigationState
+{
+    Idle, Walking, Flying, WalkingAndFlying
+};
+
+
 public class TestTask : MonoBehaviour
 {
     public enum Technique
@@ -11,11 +17,7 @@ public class TestTask : MonoBehaviour
         HandSteering, GazeOriented, VirtualCircle, WalkingInPlace, HandGaze, Neutral, ElevatorGaze, ImagePlane,AnalogSteering
     };
 
-    public enum NavigationState
-    {
-        Idle, Walking, Flying
-    };
-
+    
 
     [SerializeField]
     private GameObject[] rings;
@@ -114,7 +116,7 @@ public class TestTask : MonoBehaviour
 
     private float ringTolerance = 0.7f;
 
-    private float speed = 3.0f;
+    private float currrentSpeed = 3.0f;
 
     
 
@@ -129,13 +131,60 @@ public class TestTask : MonoBehaviour
 
     public float getCurrentSpeed()
     {
-        return speed;
+        return currrentSpeed;
+    }
+
+    public void setSpeed(float speed)
+    {
+        this.currrentSpeed = speed;
     }
 
 
     public NavigationState getCurrentNavigationState()
     {
         return currentNavState;
+    }
+
+
+    public void setNavigationState(NavigationState navState)
+    {
+        currentNavState = navState;
+    }
+
+    public void setNavigationState(bool isFlying, float currentCircleSpeed, float lastCircleSpeed)
+    {
+        float threshold = 0.0f;
+        if(isFlying)
+        {
+            if(currentCircleSpeed > lastCircleSpeed - threshold)
+            {
+                currentNavState = NavigationState.WalkingAndFlying;
+            }
+            else if(currentCircleSpeed < lastCircleSpeed - threshold)
+            {
+                currentNavState = NavigationState.WalkingAndFlying;
+            }
+            else
+            {
+                currentNavState = NavigationState.Flying;
+            }
+        }
+        else
+        {
+            if (currentCircleSpeed > lastCircleSpeed - threshold)
+            {
+                currentNavState = NavigationState.Walking;
+            }
+            else if (currentCircleSpeed < lastCircleSpeed - threshold)
+            {
+                currentNavState = NavigationState.Walking;
+            }
+            else
+            {
+                currentNavState = NavigationState.Idle;
+            }
+        }
+        Debug.Log("Current Nav State +" + currentNavState.ToString());
     }
 
     public Technique getCurrentTechnique()
