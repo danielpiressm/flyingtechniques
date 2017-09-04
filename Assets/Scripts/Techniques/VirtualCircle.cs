@@ -127,6 +127,10 @@ public class VirtualCircle : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+        if (Input.GetKeyDown(KeyCode.Joystick1Button1)) 
+        {
+            Debug.Log("KEYY");
+        }
 
         meshCircle.transform.localScale = new Vector3(circleSize,circleSize,1);
         

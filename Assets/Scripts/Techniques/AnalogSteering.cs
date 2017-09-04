@@ -61,6 +61,7 @@ public class AnalogSteering : MonoBehaviour
     void Update()
     {
         float circleSpeed = 0.0f;
+        analogButtonY = Input.GetAxis("Vertical");
         if(referenceJoint)
         {
             Vector3 transformedPoint = this.transform.InverseTransformPoint(referenceJoint.transform.position);
