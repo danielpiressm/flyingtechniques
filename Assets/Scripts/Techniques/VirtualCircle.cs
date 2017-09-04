@@ -105,8 +105,8 @@ public class VirtualCircle : MonoBehaviour {
         float yN = localPosition.y / circleRadius;
         
         float result = (float)Mathf.Sqrt(xN * xN + yN * yN);
-        if (xN < 0.0f || yN < 0.0f)
-            result = 0.0f;
+        /*if (xN < 0.0f || yN < 0.0f)
+            result = -result;// 0.0f;*/
 
 
         return result;
@@ -119,9 +119,8 @@ public class VirtualCircle : MonoBehaviour {
         float yN = localPosition.y / circleRadius;
 
         float result = (float)Mathf.Sqrt(xN * xN + yN * yN);
-        if (xN < 0.0f || yN < 0.0f)
-            result = 0.0f;
-
+        /*if (xN < 0.0f || yN < 0.0f)
+            result = 0.0f;*/
 
         return result;
     }
@@ -187,7 +186,8 @@ public class VirtualCircle : MonoBehaviour {
 
             Vector3 dir = handTracker.transform.forward;
             Debug.DrawRay(hand.transform.position, dir, Color.red);
-            circleSpeed = getSpeed(userPosInsideCircle,circleSize-initialSpineZPos);
+            circleSpeed = getSpeed(userPosInsideCircle,circleSize+initialSpineZPos);
+            
 
             if (lRenderer != null)
             {
@@ -210,26 +210,33 @@ public class VirtualCircle : MonoBehaviour {
             if (Input.GetAxis("Z Axis") > 0.002f)
             {
                 //Vector3 dir =  head.position - hand.position;
-                if(dotProduct > 0.0f)
+                if(dotProduct > -0.01f)
                 {
-                    Vector3 desiredMove = dir * speed * Time.deltaTime * getSpeed(userPosInsideCircle);// userPosInsideCircle.y; // verificar se essa ultima variavel ta entre 0 e 1
+                    Vector3 desiredMove = dir * speed * Time.deltaTime * circleSpeed;// getSpeed(userPosInsideCircle);// userPosInsideCircle.y; // verificar se essa ultima variavel ta entre 0 e 1
                     this.transform.position += desiredMove;
                     tTask.setNavigationState(true, circleSpeed, previousSpeed);
                 }
                 else
                 {
+                    circleSpeed = -speed;
                     tTask.setNavigationState(false, circleSpeed, previousSpeed);
                 }
-                
+                previousSpeed = circleSpeed;
 
             }
             else
             {
+                previousSpeed = circleSpeed;
+                if (dotProduct < 0.0f)
+                    circleSpeed = -circleSpeed;
                 tTask.setNavigationState(false, circleSpeed, previousSpeed);
                 tTask.setSpeed(0.0f);
                 // target.SetActive(false);
             }
-            previousSpeed = circleSpeed;
+            
+
+            Debug.Log("speed = " + circleSpeed + "dot Product = "+dotProduct);
+            
             if (getSpeed(userPosInsideCircle) > 0.8f)
             {
                 refCircle.transform.Find("warningCircle").gameObject.SetActive(true);

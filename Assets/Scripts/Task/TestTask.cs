@@ -205,35 +205,35 @@ public class TestTask : MonoBehaviour
                 technique = Technique.GazeOriented;
             }
         }
-        else if (handGaze)
+        if (handGaze)
         {
             if (handGaze.enabled == true)
             {
                 technique = Technique.HandSteering;
             }
         }
-        else if (elevator)
+        if (elevator)
         { 
             if (elevator.enabled == true)
             {
                 technique = Technique.ElevatorGaze;
             }
         }
-        else if(wip)
+        if(wip)
         {
             if(wip.enabled == true)
             {
                 technique = Technique.WalkingInPlace;
             }
         }
-        else if(virtualCircle)
+        if(virtualCircle)
         {
             if(virtualCircle.enabled == true)
             {
                 technique = Technique.VirtualCircle;
             }
         }
-        else if(analogSteering)
+        if(analogSteering)
         {
             if(analogSteering.enabled == true)
             {
