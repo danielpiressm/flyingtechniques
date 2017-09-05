@@ -92,10 +92,13 @@ public class WIPSteering : MonoBehaviour {
 
         float speedWIP = wip.updateDaniel(rightDiff, leftDiff);
         speedWIP = Mathf.Clamp(speedWIP, 0.0f, 1.0f);
-        if (speedWIP > wipThreshold)
+        Debug.Log("$$$$$ WIP WORKING ###### " + rightKnee.y + "," + leftKnee.y + " AVG = " + rightKneeAvg.y + "," + leftKneeAvg.y + " speed=" + speedWIP + "Time = " + Time.realtimeSinceStartup + " GAit = " + wip._gait);
+
+        if (wip._gait == KinectClient.GaitState.MOVING)
             speedWIP = 1.0f;
+        /*if (speedWIP > wipThreshold)
+            speedWIP = 1.0f;*/
         //if(speedWIP > 0.0f)
-           // Debug.Log("$$$$$ WIP WORKING ###### " + rightKnee.y + ","+ leftKnee.y + " AVG = "+ rightKneeAvg.y + ","+leftKneeAvg.y + " speed="+speedWIP);
         if (tTask)
         {
             if (tTask.rightHanded)

@@ -229,7 +229,7 @@ namespace KinectClient
 
             angularVelocityMode = AngularVelocityMode.LINEAR_VARIABLE;
 
-            _positionThreshold = 0.1f;
+            _positionThreshold = 0.04f;
             _rightFoot = new WipFoot(Type.RIGHT);
             _leftFoot = new WipFoot(Type.LEFT);
 
@@ -883,7 +883,7 @@ namespace KinectClient
         {
 
             update(rightFoot, leftFoot);
-            UnityEngine.Debug.Log("# "+_gait);
+            //UnityEngine.Debug.Log("# "+_gait);
             return _dispatchVelocity;
         }
 
