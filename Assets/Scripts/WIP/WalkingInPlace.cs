@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics;
+using UnityEngine;
 
 namespace KinectClient
 {
@@ -228,7 +229,7 @@ namespace KinectClient
 
             angularVelocityMode = AngularVelocityMode.LINEAR_VARIABLE;
 
-            _positionThreshold = 0.035f;
+            _positionThreshold = 0.1f;
             _rightFoot = new WipFoot(Type.RIGHT);
             _leftFoot = new WipFoot(Type.LEFT);
 
@@ -826,11 +827,11 @@ namespace KinectClient
                 if (angularPosition < MinRotationThreshold && angularPosition > -MinRotationThreshold)
                 {
                     _rotationTime.Reset();
-                    Debug.WriteLine("RESTART");
+                    //Debug.WriteLine("RESTART");
                 }
                 else
                 {
-                    Debug.WriteLine("_");
+                    //Debug.WriteLine("_");
                 }
             }
             _angularPosition = angularPosition;
@@ -882,7 +883,7 @@ namespace KinectClient
         {
 
             update(rightFoot, leftFoot);
-
+            UnityEngine.Debug.Log("# "+_gait);
             return _dispatchVelocity;
         }
 
@@ -899,7 +900,7 @@ namespace KinectClient
         {
             if (this.OutputEnabled)
             {
-                Debug.WriteLine("[WalkingInPlace.cs] " + line);
+                //Debug.WriteLine("[WalkingInPlace.cs] " + line);
             }
         }
     }

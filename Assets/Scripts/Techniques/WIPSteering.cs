@@ -19,6 +19,7 @@ public class WIPSteering : MonoBehaviour {
 
     public float speed = 3.0f;
     public float raySize = 3.0f;
+    public float wipThreshold = 0.12f;
     Camera camera;
     public float laserWidth;
     string text = "rightHand";
@@ -73,10 +74,28 @@ public class WIPSteering : MonoBehaviour {
             }
         }
 
-        float speedWIP = wip.updateDaniel(rightKneeAvg.y, leftKneeAvg.y);
+
+        float rightDiff = 0f;
+        float leftDiff = 0f;
+        float rightKnee1 = rightKnee.y;
+        float leftKnee1 = leftKnee.y;
+
+        if (leftKnee1 > rightKnee1)
+        {
+            leftDiff = leftKnee1 - rightKnee1;
+        }
+        else
+        {
+            rightDiff = rightKnee1 - leftKnee1;
+        }
+
+
+        float speedWIP = wip.updateDaniel(rightDiff, leftDiff);
         speedWIP = Mathf.Clamp(speedWIP, 0.0f, 1.0f);
+        if (speedWIP > wipThreshold)
+            speedWIP = 1.0f;
         //if(speedWIP > 0.0f)
-            Debug.Log("$$$$$ WIP WORKING ###### " + rightKnee.y + ","+ leftKnee.y + " AVG = "+ rightKneeAvg.y + ","+leftKneeAvg.y + " speed="+speedWIP);
+           // Debug.Log("$$$$$ WIP WORKING ###### " + rightKnee.y + ","+ leftKnee.y + " AVG = "+ rightKneeAvg.y + ","+leftKneeAvg.y + " speed="+speedWIP);
         if (tTask)
         {
             if (tTask.rightHanded)
@@ -98,8 +117,9 @@ public class WIPSteering : MonoBehaviour {
 
         }
 
-
-        Vector3 dir = handTracker.transform.forward;
+        //TODO: see more
+        //Vector3 dir = handTracker.transform.forward;
+        Vector3 dir = Camera.main.transform.forward;
         Debug.DrawRay(hand.transform.position, dir, Color.red);
 
 
@@ -124,7 +144,6 @@ public class WIPSteering : MonoBehaviour {
             //Vector3 dir =  head.position - hand.position;
             Vector3 desiredMove = dir * speed * Time.deltaTime *speedWIP;
             this.transform.position += desiredMove;
-            Debug.Log("here");
             tTask.setNavigationState(NavigationState.Flying);
             tTask.setSpeed(speedWIP * speed);
 
