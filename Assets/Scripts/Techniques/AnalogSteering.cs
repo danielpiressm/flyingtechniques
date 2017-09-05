@@ -120,14 +120,19 @@ public class AnalogSteering : MonoBehaviour
             //Vector3 dir =  head.position - hand.position;
             Vector3 desiredMove = dir * speed * Time.deltaTime * analogButtonY;
             this.transform.position += desiredMove;
-            tTask.setSpeed(speed * analogButtonY);
-            tTask.setNavigationState(true, circleSpeed, lastCircleSpeed);
+            if (tTask)
+            {
+                tTask.setSpeed(speed * analogButtonY);
+                tTask.setNavigationState(true, circleSpeed, lastCircleSpeed);
+            }
             
         }
         else
         {
-            tTask.setSpeed(0.0f);
-            // target.SetActive(false);
+            if(tTask)
+            {
+                tTask.setSpeed(0.0f);
+            }
         }
         lastCircleSpeed = circleSpeed;
     }

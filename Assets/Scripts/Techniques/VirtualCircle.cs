@@ -218,23 +218,31 @@ public class VirtualCircle : MonoBehaviour {
                 {
                     Vector3 desiredMove = dir * speed * Time.deltaTime * circleSpeed;// getSpeed(userPosInsideCircle);// userPosInsideCircle.y; // verificar se essa ultima variavel ta entre 0 e 1
                     this.transform.position += desiredMove;
-                    tTask.setNavigationState(true, circleSpeed, previousSpeed);
+                    if (tTask)
+                    {
+                        tTask.setNavigationState(true, circleSpeed, previousSpeed);
+                    }
                 }
                 else
                 {
                     circleSpeed = -speed;
-                    tTask.setNavigationState(false, circleSpeed, previousSpeed);
+                    if (tTask)
+                    {
+                        tTask.setNavigationState(false, circleSpeed, previousSpeed);
+                    }
                 }
                 previousSpeed = circleSpeed;
-
             }
             else
             {
                 previousSpeed = circleSpeed;
                 if (dotProduct < 0.0f)
                     circleSpeed = -circleSpeed;
-                tTask.setNavigationState(false, circleSpeed, previousSpeed);
-                tTask.setSpeed(0.0f);
+                if (tTask)
+                {
+                    tTask.setNavigationState(false, circleSpeed, previousSpeed);
+                    tTask.setSpeed(0.0f);
+                }
                 // target.SetActive(false);
             }
             

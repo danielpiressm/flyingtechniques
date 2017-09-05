@@ -26,7 +26,7 @@ public class WIPSteering : MonoBehaviour {
     TestTask tTask;
     bool rightHanded = true;
     LineRenderer lRenderer;
-    float circleSize = 3;
+    float circleSize = 2;
     float lastSpeed = 0;
 
     float getSpeed(Vector2 localPosition)
@@ -96,6 +96,7 @@ public class WIPSteering : MonoBehaviour {
 
         if (wip._gait == KinectClient.GaitState.MOVING)
             speedWIP = 1.0f;
+        
         /*if (speedWIP > wipThreshold)
             speedWIP = 1.0f;*/
         //if(speedWIP > 0.0f)
@@ -147,13 +148,30 @@ public class WIPSteering : MonoBehaviour {
             //Vector3 dir =  head.position - hand.position;
             Vector3 desiredMove = dir * speed * Time.deltaTime *speedWIP;
             this.transform.position += desiredMove;
-            tTask.setNavigationState(NavigationState.Flying);
-            tTask.setSpeed(speedWIP * speed);
+            if (wip._gait == KinectClient.GaitState.MOVING)
+            {
+                if (tTask)
+                {
+                    tTask.setNavigationState(NavigationState.Flying);
+                    tTask.setSpeed(speed * speedWIP);
+                }
+            }
+            else
+            {
+                if(tTask)
+                    tTask.setNavigationState(NavigationState.Idle);
+            }
+                
+            
 
         }
         else
         {
-
+            if (tTask)
+            {
+                tTask.setNavigationState(NavigationState.Idle);
+                tTask.setSpeed(0.0f);
+            }
             // target.SetActive(false);
         }
     }
