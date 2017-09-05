@@ -62,6 +62,9 @@ public class TrackerClientRobot : MonoBehaviour
 	public Vector3 rightKneeAvg;
 	public Vector3 leftKneeAvg;
 
+    public Transform head;
+    public PointSmoothing headJoint;
+
     
 
     void Start()
@@ -88,6 +91,10 @@ public class TrackerClientRobot : MonoBehaviour
 		rightHipJoint = new PointSmoothing();
 		rightKneeJoint = new PointSmoothing();
 		rightAnkleJoint = new PointSmoothing();
+
+        headJoint = new PointSmoothing();
+
+
 	}
 
 	void Update()
@@ -279,4 +286,6 @@ public class TrackerClientRobot : MonoBehaviour
 			humans.Remove(h.id);
 		}
 	}
+
+    
 }

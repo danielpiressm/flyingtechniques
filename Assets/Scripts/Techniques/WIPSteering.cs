@@ -28,6 +28,10 @@ public class WIPSteering : MonoBehaviour {
     LineRenderer lRenderer;
     float circleSize = 2;
     float lastSpeed = 0;
+    public float wipMultiplier = 1;
+    Math3d math3d;
+
+    Vector3 inputAcc;
 
     float getSpeed(Vector2 localPosition)
     {
@@ -54,6 +58,7 @@ public class WIPSteering : MonoBehaviour {
         tTask = GetComponent<TestTask>();
         hand = rightHand;
         lRenderer = GetComponent<LineRenderer>();
+        Math3d.Init();
     }
 	
 	// Update is called once per frame
@@ -63,6 +68,9 @@ public class WIPSteering : MonoBehaviour {
         Vector3 leftKnee = new Vector3();
         Vector3 rightKneeAvg = new Vector3();
         Vector3 leftKneeAvg = new Vector3();
+
+       
+
         if (h!=null)
         {
             if(h.body!=null)
@@ -92,7 +100,13 @@ public class WIPSteering : MonoBehaviour {
 
         float speedWIP = wip.updateDaniel(rightDiff, leftDiff);
         speedWIP = Mathf.Clamp(speedWIP, 0.0f, 1.0f);
-        Debug.Log("$$$$$ WIP WORKING ###### " + rightKnee.y + "," + leftKnee.y + " AVG = " + rightKneeAvg.y + "," + leftKneeAvg.y + " speed=" + speedWIP + "Time = " + Time.realtimeSinceStartup + " GAit = " + wip._gait);
+
+        inputAcc = Camera.main.transform.localPosition;
+
+        Vector3 outVec = new Vector3();
+        Math3d.LinearAcceleration(out outVec, inputAcc, 10);
+        Debug.Log("acc = " + outVec);
+        //Debug.Log("$$$$$ WIP WORKING ###### " + " speed=" + speedWIP + "Time = " + Time.realtimeSinceStartup + " GAit = " + wip._gait + "multiplier = "+ speedWIP*wipMultiplier);
 
         if (wip._gait == KinectClient.GaitState.MOVING)
             speedWIP = 1.0f;
