@@ -127,10 +127,7 @@ public class VirtualCircle : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (Input.GetKeyDown(KeyCode.Joystick1Button1)) 
-        {
-            Debug.Log("KEYY");
-        }
+        Debug.Log("speed = " + circleSpeed + " previousSpedd = "+ previousSpeed + " diff = " + Mathf.Abs(circleSpeed - previousSpeed) + " NavState = " + tTask.getCurrentNavigationState().ToString());
 
         meshCircle.transform.localScale = new Vector3(circleSize,circleSize,1);
         
@@ -141,7 +138,6 @@ public class VirtualCircle : MonoBehaviour {
         
         Vector3 forwardTransformCircle = refCircle.InverseTransformDirection(referenceJoint.transform.forward);
 
-        //refJointCopy.transform.localEulerAngles = new Vector3(referenceJoint.transform.eulerAngles.x, 0, referenceJoint.transform.eulerAngles.z);
         refJointCopy.transform.position = new Vector3(referenceJoint.transform.position.x, refCircle.transform.position.y, referenceJoint.transform.position.z);
         Vector3 dirBetweenRefJointAndCircle = refJointCopy.transform.position - refCircle.transform.position;
 
@@ -235,7 +231,6 @@ public class VirtualCircle : MonoBehaviour {
             }
             else
             {
-                previousSpeed = circleSpeed;
                 if (dotProduct < 0.0f)
                     circleSpeed = -circleSpeed;
                 if (tTask)
@@ -243,11 +238,13 @@ public class VirtualCircle : MonoBehaviour {
                     tTask.setNavigationState(false, circleSpeed, previousSpeed);
                     tTask.setSpeed(0.0f);
                 }
+                previousSpeed = circleSpeed;
+
                 // target.SetActive(false);
             }
-            
 
-            Debug.Log("speed = " + circleSpeed + "dot Product = "+dotProduct);
+
+            
             
             if (getSpeed(userPosInsideCircle) > 0.8f)
             {

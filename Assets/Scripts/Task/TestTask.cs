@@ -153,14 +153,10 @@ public class TestTask : MonoBehaviour
 
     public void setNavigationState(bool isFlying, float currentCircleSpeed, float lastCircleSpeed)
     {
-        float threshold = 0.0f;
+        float threshold = 0.0001f;
         if(isFlying)
         {
-            if(currentCircleSpeed > lastCircleSpeed - threshold)
-            {
-                currentNavState = NavigationState.WalkingAndFlying;
-            }
-            else if(currentCircleSpeed < lastCircleSpeed - threshold)
+            if((Mathf.Abs(currentCircleSpeed - lastCircleSpeed) > threshold))
             {
                 currentNavState = NavigationState.WalkingAndFlying;
             }
@@ -171,11 +167,7 @@ public class TestTask : MonoBehaviour
         }
         else
         {
-            if (currentCircleSpeed > lastCircleSpeed - threshold)
-            {
-                currentNavState = NavigationState.Walking;
-            }
-            else if (currentCircleSpeed < lastCircleSpeed - threshold)
+            if ((Mathf.Abs(currentCircleSpeed - lastCircleSpeed) > threshold))
             {
                 currentNavState = NavigationState.Walking;
             }
@@ -184,7 +176,7 @@ public class TestTask : MonoBehaviour
                 currentNavState = NavigationState.Idle;
             }
         }
-        Debug.Log("Current Nav State +" + currentNavState.ToString());
+       // Debug.Log("Current Nav State +" + currentNavState.ToString() + " bla = "+ Mathf.Abs(currentCircleSpeed - lastCircleSpeed));
     }
 
     public Technique getCurrentTechnique()
@@ -381,7 +373,7 @@ public class TestTask : MonoBehaviour
         return downButton;
     }
 
-    public void iamAnActiveCollision(string colliderName, string jointName)
+    public void iAmAnActiveCollision(string colliderName, string jointName)
     {
         if(activeCollisions.ContainsKey(jointName))
         {

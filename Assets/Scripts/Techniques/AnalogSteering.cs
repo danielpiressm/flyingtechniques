@@ -26,7 +26,7 @@ public class AnalogSteering : MonoBehaviour
     TestTask tTask;
     bool rightHanded = true;
     LineRenderer lRenderer;
-    float circleSize = 3;
+    float circleSize = 2;
     public Transform referenceJoint;
     float lastCircleSpeed = 0.0f;
 
@@ -67,6 +67,8 @@ public class AnalogSteering : MonoBehaviour
             Vector3 transformedPoint = this.transform.InverseTransformPoint(referenceJoint.transform.position);
             circleSpeed = getSpeed(new Vector2(transformedPoint.x, transformedPoint.z));
         }
+
+        Debug.Log("speed = " + circleSpeed + " STATE = " + tTask.getCurrentNavigationState());
 
         if (tTask)
         {
@@ -131,7 +133,8 @@ public class AnalogSteering : MonoBehaviour
         {
             if(tTask)
             {
-                tTask.setSpeed(0.0f);
+                tTask.setNavigationState(false, circleSpeed, lastCircleSpeed);
+                //tTask.setSpeed(0.0f);
             }
         }
         lastCircleSpeed = circleSpeed;
