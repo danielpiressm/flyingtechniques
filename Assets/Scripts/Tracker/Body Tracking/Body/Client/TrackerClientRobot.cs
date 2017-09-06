@@ -99,7 +99,7 @@ public class TrackerClientRobot : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.PageDown) || Input.GetKeyDown(KeyCode.Joystick1Button1)) // Mouse tap
+		if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.PageDown) || Input.GetKeyDown(KeyCode.Joystick1Button1)) // Mouse tap
 		{
 			string currentHumanId = GetHumanIdWithHandUp();
 

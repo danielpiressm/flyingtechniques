@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using KinectClient;
+using UnityEngine.UI;
 
 public class WIPSteering : MonoBehaviour {
 
@@ -30,7 +31,7 @@ public class WIPSteering : MonoBehaviour {
     float lastSpeed = 0;
     public float wipMultiplier = 1;
     Math3d math3d;
-
+    GameObject textGO;
     Vector3 inputAcc;
 
     float getSpeed(Vector2 localPosition)
@@ -59,6 +60,7 @@ public class WIPSteering : MonoBehaviour {
         hand = rightHand;
         lRenderer = GetComponent<LineRenderer>();
         Math3d.Init();
+        textGO = GameObject.Find("Text");
     }
 	
 	// Update is called once per frame
@@ -105,15 +107,16 @@ public class WIPSteering : MonoBehaviour {
 
         Vector3 outVec = new Vector3();
         Math3d.LinearAcceleration(out outVec, inputAcc, 10);
-        Debug.Log("acc = " + outVec);
+        textGO.GetComponent<Text>().text = "SPEEDWIP = " + speedWIP * wipMultiplier;
+        // Debug.Log("acc = " + outVec);
         //Debug.Log("$$$$$ WIP WORKING ###### " + " speed=" + speedWIP + "Time = " + Time.realtimeSinceStartup + " GAit = " + wip._gait + "multiplier = "+ speedWIP*wipMultiplier);
 
         if (wip._gait == KinectClient.GaitState.MOVING)
-            speedWIP = 1.0f;
-        
-        /*if (speedWIP > wipThreshold)
-            speedWIP = 1.0f;*/
-        //if(speedWIP > 0.0f)
+        {
+            speedWIP = speedWIP * wipMultiplier;
+            //speedWIP = 1.0f;
+        }
+
         if (tTask)
         {
             if (tTask.rightHanded)
