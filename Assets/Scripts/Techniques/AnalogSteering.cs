@@ -68,10 +68,11 @@ public class AnalogSteering : MonoBehaviour
             circleSpeed = getSpeed(new Vector2(transformedPoint.x, transformedPoint.z));
         }
 
-        Debug.Log("speed = " + circleSpeed + " STATE = " + tTask.getCurrentNavigationState());
+
 
         if (tTask)
         {
+            Debug.Log("speed = " + circleSpeed + " STATE = " + tTask.getCurrentNavigationState());
             if (tTask.rightHanded)
             {
                 hand = rightHand;
