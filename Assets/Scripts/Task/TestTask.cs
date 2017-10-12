@@ -33,7 +33,7 @@ public class TestTask : MonoBehaviour
             rings = value;
         }
     }
-
+    public int countTriggersExit = 0;
 
     private float[] magnitudes;
     private Vector3[] ringPositionsWhenCrossed;

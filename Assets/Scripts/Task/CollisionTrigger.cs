@@ -12,6 +12,7 @@ public class CollisionTrigger : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        Id = this.name;
         try
         {
             tTask = GameObject.Find("Virtual_Circle").GetComponent<TestTask>();
@@ -82,6 +83,11 @@ public class CollisionTrigger : MonoBehaviour {
     {
         //float currentTime = Time.realtimeSinceStartup;
         //increm
+        if(collider.transform.gameObject.name.Contains("mixamo"))
+        {
+            tTask.countTriggersExit++;
+            return;
+        }
 
         Transform headTransform = null;
         HeadCameraController head;
@@ -158,8 +164,17 @@ public class CollisionTrigger : MonoBehaviour {
         });
         if (tTask && tTask.enabled == true)
         {
-            tTask.collisionEnded(this.Id, collider.gameObject.name, currentTime);
-            tTask.serializeCollision(str);
+            try
+            {
+                tTask.collisionEnded(this.Id, collider.gameObject.name, currentTime);
+                tTask.serializeCollision(str);
+
+            }
+            catch (System.Exception ex)
+            {
+                float x = 3;
+                string st = collider.gameObject.name;
+            }
             //tTask.incrementCollidedTime(triggerTime, this.Id,collider.gameObject.name);
         }
 

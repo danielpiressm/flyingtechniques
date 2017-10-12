@@ -254,6 +254,8 @@ public class VirtualCircle : MonoBehaviour {
             {
                 refCircle.transform.Find("warningCircle").gameObject.SetActive(false);
             }
+            float scaleSpeedCircle = Mathf.Sqrt(userPosInsideCircle.x * userPosInsideCircle.x + userPosInsideCircle.y * userPosInsideCircle.y);
+            refCircle.transform.Find("speedCircle").gameObject.transform.localScale = new Vector3(scaleSpeedCircle, scaleSpeedCircle, 0);
         }
         else
         {
