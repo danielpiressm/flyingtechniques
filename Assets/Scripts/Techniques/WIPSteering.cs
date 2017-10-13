@@ -147,7 +147,8 @@ public class WIPSteering : MonoBehaviour {
             lRenderer.endWidth = laserWidth;
         }
         
-        if (Input.GetAxis("Z Axis") > 0.002f)
+        //if (Input.GetAxis("Z Axis") > 0.002f)
+        if(true)
         {
             Vector3 desiredMove = dir * speed * Time.deltaTime *speedWIP;
             this.transform.position += desiredMove;
