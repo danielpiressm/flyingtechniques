@@ -45,6 +45,7 @@ public class VirtualCircle : MonoBehaviour {
     GameObject refJointCopy;
 
     float previousSpeed = 0.0f;
+    private bool started = false;
 
     // Use this for initialization
     void Start () {
@@ -127,7 +128,11 @@ public class VirtualCircle : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        Debug.Log("speed = " + circleSpeed + " previousSpedd = "+ previousSpeed + " diff = " + Mathf.Abs(circleSpeed - previousSpeed) + " NavState = " + tTask.getCurrentNavigationState().ToString());
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetAxis("Z Axis") > 0.002f)
+        {
+            started = true;
+        }
+        //Debug.Log("speed = " + circleSpeed + " previousSpedd = "+ previousSpeed + " diff = " + Mathf.Abs(circleSpeed - previousSpeed) + " NavState = " + tTask.getCurrentNavigationState().ToString());
 
         meshCircle.transform.localScale = new Vector3(circleSize,circleSize,1);
         
@@ -207,7 +212,7 @@ public class VirtualCircle : MonoBehaviour {
                 lRenderer.endWidth = laserWidth;
             }
 
-            if (Input.GetAxis("Z Axis") > 0.002f)
+            if (started)
             {
                 //Vector3 dir =  head.position - hand.position;
                 if(dotProduct > -0.01f)

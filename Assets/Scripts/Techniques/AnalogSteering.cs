@@ -29,7 +29,7 @@ public class AnalogSteering : MonoBehaviour
     float circleSize = 2;
     public Transform referenceJoint;
     float lastCircleSpeed = 0.0f;
-
+    bool started = false;
     float getSpeed(Vector2 localPosition)
     {
         float circleRadius = circleSize / 2;
@@ -60,6 +60,10 @@ public class AnalogSteering : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetAxis("Z Axis") > 0.002f)
+        {
+            started = true;
+        }
         float circleSpeed = 0.0f;
         analogButtonY = Input.GetAxis("Vertical");
         if(referenceJoint)
@@ -118,7 +122,7 @@ public class AnalogSteering : MonoBehaviour
             lRenderer.endWidth = laserWidth;
         }
 		float triggerButton = Input.GetAxis ("Z Axis");
-		if (triggerButton > 0.002f)
+		if (started)
         {
             //Vector3 dir =  head.position - hand.position;
             Vector3 desiredMove = dir * speed * Time.deltaTime * analogButtonY;

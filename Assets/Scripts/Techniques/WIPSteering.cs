@@ -32,6 +32,8 @@ public class WIPSteering : MonoBehaviour {
     public float wipMultiplier = 1;
     GameObject textGO;
 
+    bool started = false;
+
 
 
     float getSpeed(Vector2 localPosition)
@@ -60,6 +62,12 @@ public class WIPSteering : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        if(Input.GetKeyDown(KeyCode.Space) || Input.GetAxis("Z Axis") > 0.002f)
+        {
+            started = true;
+        }
+
         Human h = this.GetComponent<TrackerClientRobot>().trackedHuman;
         Vector3 rightKnee = new Vector3();
         Vector3 leftKnee = new Vector3();
@@ -96,21 +104,7 @@ public class WIPSteering : MonoBehaviour {
 
         float circleSpeed = getSpeed(new Vector2(transformedPoint.x, transformedPoint.z));
 
-        float speedWIP = wip.updateDaniel(rightDiff, leftDiff);
-        float speedWIP2 = speedWIP;
         
-        speedWIP = Mathf.Clamp(speedWIP * wipMultiplier, 0.0f, 1.0f);
-
-        textGO.GetComponent<Text>().text = "SPEEDWIP = " + speedWIP2;
-        
-        // Debug.Log("acc = " + outVec);
-        //Debug.Log("$$$$$ WIP WORKING ###### " + " speed=" + speedWIP + "Time = " + Time.realtimeSinceStartup + " GAit = " + wip._gait + "multiplier = "+ speedWIP*wipMultiplier);
-
-        if (wip._gait == KinectClient.GaitState.MOVING)
-        {
-            speedWIP = speedWIP * wipMultiplier;
-            //speedWIP = 1.0f;
-        }
 
         if (tTask)
         {
@@ -148,12 +142,27 @@ public class WIPSteering : MonoBehaviour {
             lRenderer.startWidth = laserWidth;
             lRenderer.endWidth = laserWidth;
         }
-        
+
+        float speedWIP = wip.updateDaniel(rightDiff, leftDiff);
+        float speedWIP2 = speedWIP;
+        float temp = speedWIP * wipMultiplier;
+        speedWIP = Mathf.Clamp(temp, 0.0f, 1.0f);
+
+        textGO.GetComponent<Text>().text = " SPEED WIP = " + temp + " clamp = " + speedWIP ;
+        // Debug.Log("acc = " + outVec);
+        //Debug.Log("$$$$$ WIP WORKING ###### " + " speed=" + speedWIP + "Time = " + Time.realtimeSinceStartup + " GAit = " + wip._gait + "multiplier = "+ speedWIP*wipMultiplier);
+
+        /*if (wip._gait == KinectClient.GaitState.MOVING)
+        {
+            speedWIP = speedWIP * wipMultiplier;
+            //speedWIP = 1.0f;
+        }*/
+
         //if (Input.GetAxis("Z Axis") > 0.002f)
-        if(true)
+        if (started)
         {
             Vector3 desiredMove = dir * speed * Time.deltaTime *speedWIP;
-            System.IO.File.AppendAllText(Application.dataPath + "wipDoido.csv" ,  rightDiff + "," + leftDiff + "," + speedWIP + "\n");
+            System.IO.File.AppendAllText("wipDoido.csv" ,  rightDiff + "," + leftDiff + "," + speedWIP + "\n");
             if (wip._gait == KinectClient.GaitState.MOVING)
             {
                 this.transform.position += desiredMove;
