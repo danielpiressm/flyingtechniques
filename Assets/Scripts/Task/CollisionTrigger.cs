@@ -85,7 +85,9 @@ public class CollisionTrigger : MonoBehaviour {
         //increm
         if(collider.transform.gameObject.name.Contains("mixamo"))
         {
-            tTask.countTriggersExit++;
+            if(tTask)
+                tTask.countTriggersExit++;
+
             return;
         }
 

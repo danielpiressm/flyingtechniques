@@ -216,7 +216,7 @@ namespace KinectClient
             _minRotationThreshold = 0.085f;
             _maxRotationThreshold = 0.90f;
 
-            _userHeight = 0f;
+            _userHeight = 1.8f;
 
             _initialVelocity = 0.24f;
             _maxVelocity = 3.0f;
@@ -360,12 +360,12 @@ namespace KinectClient
             if (distance > 0.13f)
             {
                 // user height $ distance $ foot vel $ speed
-                _virtualVelocity = (distance / 0.36f) * (1.95f / _userHeight) + (footVel / 1.45f);
-                velFileWriter.write("" + _userHeight + "$" + distance + "$" + footVel + "$" + _virtualVelocity);
+                //_virtualVelocity = (distance / 0.36f) * (1.95f / _userHeight) + (footVel / 1.45f);
+                //velFileWriter.write("" + _userHeight + "$" + distance + "$" + footVel + "$" + _virtualVelocity);
 
-                Console.WriteLine("--< " + _userHeight);
+                //Console.WriteLine("--< " + _userHeight);
 
-                //_virtualVelocity = footVel * distance / 0.13f;
+                _virtualVelocity = footVel * distance / 0.13f;
             }
             else
             {

@@ -97,9 +97,11 @@ public class WIPSteering : MonoBehaviour {
         float circleSpeed = getSpeed(new Vector2(transformedPoint.x, transformedPoint.z));
 
         float speedWIP = wip.updateDaniel(rightDiff, leftDiff);
-        speedWIP = Mathf.Clamp(speedWIP, 0.0f, 1.0f);
+        float speedWIP2 = speedWIP;
+        
+        speedWIP = Mathf.Clamp(speedWIP * wipMultiplier, 0.0f, 1.0f);
 
-        textGO.GetComponent<Text>().text = "SPEEDWIP = " + speedWIP * wipMultiplier;
+        textGO.GetComponent<Text>().text = "SPEEDWIP = " + speedWIP2;
         
         // Debug.Log("acc = " + outVec);
         //Debug.Log("$$$$$ WIP WORKING ###### " + " speed=" + speedWIP + "Time = " + Time.realtimeSinceStartup + " GAit = " + wip._gait + "multiplier = "+ speedWIP*wipMultiplier);
@@ -151,12 +153,15 @@ public class WIPSteering : MonoBehaviour {
         if(true)
         {
             Vector3 desiredMove = dir * speed * Time.deltaTime *speedWIP;
-            this.transform.position += desiredMove;
+            System.IO.File.AppendAllText(Application.dataPath + "wipDoido.csv" ,  rightDiff + "," + leftDiff + "," + speedWIP + "\n");
             if (wip._gait == KinectClient.GaitState.MOVING)
             {
+                this.transform.position += desiredMove;
                 if (tTask)
                 {
+
                     tTask.setNavigationState(true, circleSpeed, previousSpeed);
+
                     //tTask.setNavigationState(NavigationState.Flying);
                     tTask.setSpeed(speed * speedWIP);
                 }
