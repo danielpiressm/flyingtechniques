@@ -20,29 +20,34 @@ public class RingCollider : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        plane = new Plane(transform.up, transform.position);
-        // has crossed plane
-        if (!plane.GetSide(camera.transform.position))
+        if(!testTask.training)
         {
-            // Pythagoras
-            float distanceToPlane = plane.GetDistanceToPoint(camera.transform.position);
-            float distanceToRingCenter = Vector3.Distance(transform.position, camera.transform.position);
-            float flatennedDistanceToRingCenter = Mathf.Sqrt(Mathf.Pow(distanceToRingCenter, 2) - Mathf.Pow(distanceToPlane, 2));
-            float normalizedDistanceToRingCenter = flatennedDistanceToRingCenter / (transform.lossyScale.x / 2.0f);
-
-            if (flatennedDistanceToRingCenter < (transform.lossyScale.x * 0.75f))
+            plane = new Plane(transform.up, transform.position);
+            // has crossed plane
+            if (!plane.GetSide(camera.transform.position))
             {
-                Debug.Log("ring "+testTask.getCurrentRing()+" :  true");
-                testTask.Next(true, normalizedDistanceToRingCenter);
-                //testRunner.Next(true, normalizedDistanceToRingCenter);
-            }
-            else
-            {
-                Debug.Log("ring " + testTask.getCurrentRing() + " :  false");
-                testTask.Next(false, normalizedDistanceToRingCenter);
-                //testRunner.Next(false, normalizedDistanceToRingCenter);
-            }
+                // Pythagoras
+                float distanceToPlane = plane.GetDistanceToPoint(camera.transform.position);
+                float distanceToRingCenter = Vector3.Distance(transform.position, camera.transform.position);
+                float flatennedDistanceToRingCenter = Mathf.Sqrt(Mathf.Pow(distanceToRingCenter, 2) - Mathf.Pow(distanceToPlane, 2));
+                float normalizedDistanceToRingCenter = flatennedDistanceToRingCenter / (transform.lossyScale.x / 2.0f);
 
+                if (flatennedDistanceToRingCenter < (transform.lossyScale.x * 0.75f))
+                {
+                    Debug.Log("ring " + testTask.getCurrentRing() + " :  true");
+                    testTask.Next(true, normalizedDistanceToRingCenter);
+                    //testRunner.Next(true, normalizedDistanceToRingCenter);
+                }
+                else
+                {
+                    Debug.Log("ring " + testTask.getCurrentRing() + " :  false");
+                    testTask.Next(false, normalizedDistanceToRingCenter);
+                    //testRunner.Next(false, normalizedDistanceToRingCenter);
+                }
+
+            }
         }
+        
+        
     }
 }

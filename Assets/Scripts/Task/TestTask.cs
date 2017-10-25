@@ -48,6 +48,8 @@ public class TestTask : MonoBehaviour
     private float lastTime;
     private float totalTime = 0;
 
+    public bool started = false;
+
 
     private List<Vector3> optimalDiscretizedPathList;
 
@@ -394,6 +396,15 @@ public class TestTask : MonoBehaviour
         }
     }
 
+    void Awake()
+    {
+        if(training)
+        {
+            FullbodyReport fb = this.GetComponent<FullbodyReport>();
+            if (fb)
+                fb.enabled = false;
+        }
+    }
    
 
     private void Start()
@@ -402,8 +413,8 @@ public class TestTask : MonoBehaviour
         magnitudes = new float[42];
         numberOfPathPointsPerRing = new int[42];
         optimalDiscretizedPathList = new List<Vector3>();
-        InitializeRings();
-        InitializeReport();
+
+       
 
         cameraPath = new List<Vector3>();
 
@@ -423,14 +434,16 @@ public class TestTask : MonoBehaviour
         //System.IO.StreamWriter
 
         pathDirectory = Directory.GetCurrentDirectory() + "/user" + i + "_" + travelTechnique.ToString();// + "/";
-        if(training == true)
+        if(training == false)
         {
-            pathDirectory += "_training";
+            InitializeRings();
+            InitializeReport();
+            pathDirectory += "/";
+            System.IO.Directory.CreateDirectory(pathDirectory);
         }
 
 
-        pathDirectory += "/";
-        System.IO.Directory.CreateDirectory(pathDirectory);
+        
 
         forwardButton = KeyCode.PageUp;
         calibrateButton = KeyCode.PageDown;
@@ -585,11 +598,11 @@ public class TestTask : MonoBehaviour
         if (currentRing == 0)
             lastTime = currentTime;
 
-        float ringTime = currentTime - lastTime;
-        lastTime = currentTime;
-        totalTime += ringTime;
+            float ringTime = currentTime - lastTime;
+            lastTime = currentTime;
+            totalTime += ringTime;
 
-        testReport += string.Join(",", new string[]{
+            testReport += string.Join(",", new string[]{
             currentRing.ToString(),
             hit.ToString(),
             ringTime.ToString(),
@@ -709,6 +722,7 @@ public class TestTask : MonoBehaviour
         {
 
         }
+        
         UpdateReport(hit, distanceToRingCenter);
 
         currentRing++;
@@ -725,8 +739,12 @@ public class TestTask : MonoBehaviour
             
         else
         {
-            CompleteReport();
-            CompletePathReport();
+            if(training == false)
+            {
+                CompleteReport();
+                CompletePathReport();
+            }
+            
         }
 
     }
@@ -751,6 +769,10 @@ public class TestTask : MonoBehaviour
                 }
             }
 
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Z Axis") > 0.002f)
+        {
+            started = true;
         }
     }
 

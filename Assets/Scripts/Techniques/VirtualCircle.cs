@@ -129,10 +129,7 @@ public class VirtualCircle : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetAxis("Z Axis") > 0.002f)
-        {
-            started = true;
-        }
+        
         //Debug.Log("speed = " + circleSpeed + " previousSpedd = "+ previousSpeed + " diff = " + Mathf.Abs(circleSpeed - previousSpeed) + " NavState = " + tTask.getCurrentNavigationState().ToString());
 
         meshCircle.transform.localScale = new Vector3(circleSize,circleSize,1);
@@ -213,11 +210,12 @@ public class VirtualCircle : MonoBehaviour {
                 lRenderer.endWidth = laserWidth;
             }
 
-            if (started)
+            if (tTask.started)
             {
                 //Vector3 dir =  head.position - hand.position;
                 if(dotProduct > -0.01f)
                 {
+                    Debug.Log("entrei aqui?");
                     Vector3 desiredMove = dir * speed * Time.deltaTime * circleSpeed;// getSpeed(userPosInsideCircle);// userPosInsideCircle.y; // verificar se essa ultima variavel ta entre 0 e 1
                     this.transform.position += desiredMove;
                     if (tTask)

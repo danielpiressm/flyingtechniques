@@ -58,6 +58,11 @@ public class WIPSteering : MonoBehaviour {
         lRenderer = GetComponent<LineRenderer>();
         Math3d.Init();
         textGO = GameObject.Find("Text");
+        GameObject safeCircle = GameObject.Find("safeCircle");
+        if (safeCircle)
+        {
+            safeCircle.GetComponent<MeshRenderer>().enabled = false;
+        }
     }
 	
 	// Update is called once per frame
@@ -159,10 +164,10 @@ public class WIPSteering : MonoBehaviour {
         }*/
 
         //if (Input.GetAxis("Z Axis") > 0.002f)
-        if (started)
+        if (tTask.started)
         {
             Vector3 desiredMove = dir * speed * Time.deltaTime *speedWIP;
-            System.IO.File.AppendAllText("wipDoido.csv" ,  rightDiff + "," + leftDiff + "," + speedWIP + "\n");
+            System.IO.File.AppendAllText(tTask.getPathDirectory() +  "wipDoido.csv" ,  rightDiff + "," + leftDiff + "," + speedWIP + "," + wipMultiplier +  "\n");
             if (wip._gait == KinectClient.GaitState.MOVING)
             {
                 this.transform.position += desiredMove;
@@ -171,7 +176,6 @@ public class WIPSteering : MonoBehaviour {
 
                     tTask.setNavigationState(true, circleSpeed, previousSpeed);
 
-                    //tTask.setNavigationState(NavigationState.Flying);
                     tTask.setSpeed(speed * speedWIP);
                 }
             }

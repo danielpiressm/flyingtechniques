@@ -55,6 +55,13 @@ public class AnalogSteering : MonoBehaviour
         tTask = GetComponent<TestTask>();
         hand = rightHand;
         lRenderer = GetComponent<LineRenderer>();
+
+        GameObject safeCircle = GameObject.Find("safeCircle");
+        if(safeCircle)
+        {
+            safeCircle.GetComponent<MeshRenderer>().enabled = false;
+        }
+
     }
 
     // Update is called once per frame
@@ -70,9 +77,8 @@ public class AnalogSteering : MonoBehaviour
         {
             Vector3 transformedPoint = this.transform.InverseTransformPoint(referenceJoint.transform.position);
             circleSpeed = getSpeed(new Vector2(transformedPoint.x, transformedPoint.z));
+            
         }
-
-
 
         if (tTask)
         {
@@ -103,12 +109,7 @@ public class AnalogSteering : MonoBehaviour
         if (lRenderer != null)
         {
             lRenderer.enabled = true;
-            //hand.transform.eulerAngles = new Vector3(handTracker.transform.eulerAngles.x, handTracker.transform.eulerAngles.z, handTracker.transform.eulerAngles.y);
-
-            //hand.transform.up = -handTracker.transform.forward;
-
-            //hand.transform.localEulerAngles = new Vector3(hand.transform.localEulerAngles.x, hand.transform.localEulerAngles.y, hand.transform.localEulerAngles.z);
-			analogButtonY = Input.GetAxis("Vertical");
+            analogButtonY = Input.GetAxis("Vertical");
 			if (analogButtonY > 1.0f)
 				analogButtonY = 1.0f;
 			else if (analogButtonY < 0.002f)
@@ -122,7 +123,7 @@ public class AnalogSteering : MonoBehaviour
             lRenderer.endWidth = laserWidth;
         }
 		float triggerButton = Input.GetAxis ("Z Axis");
-		if (started)
+		if (tTask.started)
         {
             //Vector3 dir =  head.position - hand.position;
             Vector3 desiredMove = dir * speed * Time.deltaTime * analogButtonY;
