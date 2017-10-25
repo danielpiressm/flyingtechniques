@@ -127,7 +127,7 @@ public class VirtualCircle : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        Debug.Log("speed = " + circleSpeed + " previousSpedd = "+ previousSpeed + " diff = " + Mathf.Abs(circleSpeed - previousSpeed) + " NavState = " + tTask.getCurrentNavigationState().ToString());
+        //Debug.Log("speed = " + circleSpeed + " previousSpedd = "+ previousSpeed + " diff = " + Mathf.Abs(circleSpeed - previousSpeed) + " NavState = " + tTask.getCurrentNavigationState().ToString());
 
         meshCircle.transform.localScale = new Vector3(circleSize,circleSize,1);
         
@@ -254,8 +254,7 @@ public class VirtualCircle : MonoBehaviour {
             {
                 refCircle.transform.Find("warningCircle").gameObject.SetActive(false);
             }
-            float scaleSpeedCircle = Mathf.Sqrt(userPosInsideCircle.x * userPosInsideCircle.x + userPosInsideCircle.y * userPosInsideCircle.y);
-            refCircle.transform.Find("speedCircle").gameObject.transform.localScale = new Vector3(scaleSpeedCircle, scaleSpeedCircle, 0);
+            
         }
         else
         {
