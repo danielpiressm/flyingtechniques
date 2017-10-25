@@ -190,7 +190,8 @@ public class VirtualCircle : MonoBehaviour {
             Vector3 dir = handTracker.transform.forward;
             Debug.DrawRay(hand.transform.position, dir, Color.red);
             circleSpeed = getSpeed(userPosInsideCircle,circleSize+initialSpineZPos);
-            
+            if (circleSpeed < 0.3f)
+                circleSpeed = 0.0f;
 
             if (lRenderer != null)
             {
