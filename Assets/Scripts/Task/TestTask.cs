@@ -57,6 +57,9 @@ public class TestTask : MonoBehaviour
     private string reportOutputFile = "report.csv";
 
     [SerializeField]
+    private string reportOutputFile2 = "reportDiscriminateTimes.csv";
+
+    [SerializeField]
     private string pathReportOutputFile = "reportPath.csv";
 
     [SerializeField]
@@ -440,6 +443,7 @@ public class TestTask : MonoBehaviour
             InitializeReport();
             pathDirectory += "/";
             System.IO.Directory.CreateDirectory(pathDirectory);
+            System.IO.Directory.CreateDirectory(pathDirectory + "/fullbodyLog/");
         }
 
 

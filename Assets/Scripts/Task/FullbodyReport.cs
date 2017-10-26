@@ -634,6 +634,7 @@ public class FullbodyReport : MonoBehaviour
                     colliderCenter.x.ToString(),
                     colliderCenter.y.ToString(),
                     colliderCenter.z.ToString(),
+                    tTask.getCurrentSpeed().ToString(),
                     "\n"
 
             });
@@ -912,7 +913,10 @@ public class FullbodyReport : MonoBehaviour
                     try
                     {
                         if (bodyStr[i] != null && bodyStrPath[i] != null)
-                            System.IO.File.AppendAllText(tTask.getPathDirectory() + "/" + bodyStrPath[i], bodyStr[i]);
+                        {
+                            System.IO.File.AppendAllText(tTask.getPathDirectory() + "/fullbodyLog/" + bodyStrPath[i], bodyStr[i]);
+                        }
+                        
                         //Debug.Log("&&&&&");
                     }
                     catch (System.Exception ex)

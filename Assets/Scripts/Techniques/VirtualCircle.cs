@@ -222,6 +222,7 @@ public class VirtualCircle : MonoBehaviour {
                     if (tTask)
                     {
                         tTask.setNavigationState(true, circleSpeed, previousSpeed);
+                        tTask.setSpeed(speed * circleSpeed);
                     }
                 }
                 else
@@ -230,6 +231,7 @@ public class VirtualCircle : MonoBehaviour {
                     if (tTask)
                     {
                         tTask.setNavigationState(false, circleSpeed, previousSpeed);
+                        tTask.setSpeed(0);
                     }
                 }
                 previousSpeed = circleSpeed;

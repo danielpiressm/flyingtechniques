@@ -59,9 +59,14 @@ public class WIPSteering : MonoBehaviour {
         Math3d.Init();
         textGO = GameObject.Find("Text");
         GameObject safeCircle = GameObject.Find("safeCircle");
+        GameObject warningCircle = GameObject.Find("warningCircle");
         if (safeCircle)
         {
             safeCircle.GetComponent<MeshRenderer>().enabled = false;
+        }
+        if(warningCircle)
+        {
+            warningCircle.GetComponent<MeshRenderer>().enabled = false;
         }
     }
 	
@@ -184,6 +189,7 @@ public class WIPSteering : MonoBehaviour {
                 if(tTask)
                 {
                     tTask.setNavigationState(false, circleSpeed, previousSpeed);
+                    tTask.setSpeed(0);
                 }
                     
             }

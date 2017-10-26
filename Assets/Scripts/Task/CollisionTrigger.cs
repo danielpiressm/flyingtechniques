@@ -83,10 +83,10 @@ public class CollisionTrigger : MonoBehaviour {
     {
         //float currentTime = Time.realtimeSinceStartup;
         //increm
-        if(collider.transform.gameObject.name.Contains("mixamo"))
+        if(!collider.transform.gameObject.name.Contains("mixamo"))
         {
-            if(tTask)
-                tTask.countTriggersExit++;
+            /*if(tTask)
+                tTask.countTriggersExit++;*/
 
             return;
         }
@@ -164,7 +164,7 @@ public class CollisionTrigger : MonoBehaviour {
             currentTime.ToString(),
             "\n"
         });
-        if (tTask && tTask.enabled == true)
+        if (tTask && tTask.enabled == true &&tTask.training ==false)
         {
             try
             {
