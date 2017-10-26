@@ -61,6 +61,11 @@ public class AnalogSteering : MonoBehaviour
         {
             safeCircle.GetComponent<MeshRenderer>().enabled = false;
         }
+        GameObject warningCircle = GameObject.Find("warningCircle");
+        if(warningCircle)
+        {
+            warningCircle.GetComponent<MeshRenderer>().enabled = false;
+        }
 
     }
 
@@ -82,7 +87,7 @@ public class AnalogSteering : MonoBehaviour
 
         if (tTask)
         {
-            Debug.Log("speed = " + circleSpeed + " STATE = " + tTask.getCurrentNavigationState());
+           // Debug.Log("speed = " + circleSpeed + " STATE = " + tTask.getCurrentNavigationState());
             if (tTask.rightHanded)
             {
                 hand = rightHand;
@@ -130,19 +135,21 @@ public class AnalogSteering : MonoBehaviour
             this.transform.position += desiredMove;
             if (tTask)
             {
-                tTask.setSpeed(speed * analogButtonY);
-                tTask.setNavigationState(true, circleSpeed, lastCircleSpeed);
+                if(analogButtonY > 0)
+                {
+                    tTask.setSpeed(speed * analogButtonY);
+                    tTask.setNavigationState(true, circleSpeed, lastCircleSpeed);
+                }
+                else
+                {
+                    tTask.setSpeed(0);
+                    tTask.setNavigationState(false, circleSpeed, lastCircleSpeed);
+                }
+                
             }
             
         }
-        else
-        {
-            if(tTask)
-            {
-                tTask.setNavigationState(false, circleSpeed, lastCircleSpeed);
-                //tTask.setSpeed(0.0f);
-            }
-        }
+        
         lastCircleSpeed = circleSpeed;
     }
 }

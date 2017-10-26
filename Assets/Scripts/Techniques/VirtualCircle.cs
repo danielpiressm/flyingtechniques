@@ -47,6 +47,11 @@ public class VirtualCircle : MonoBehaviour {
     float previousSpeed = 0.0f;
     private bool started = false;
 
+    public float tolerance = 0.25f;
+    GameObject rightToe;
+    GameObject leftToe;
+
+
     // Use this for initialization
     void Start () {
         //calibratedPos = this.transform.position;
@@ -65,6 +70,9 @@ public class VirtualCircle : MonoBehaviour {
 
         initialSpineZPos = referenceJoint.transform.localPosition.z;
         recalibrate = false;
+
+        rightToe = GameObject.Find("mixamorig:RightToe_End");
+        leftToe = GameObject.Find("mixamorig:LeftToe_End");
 
     }
 
@@ -88,12 +96,11 @@ public class VirtualCircle : MonoBehaviour {
         float xN = localPosition.x / circleRadius;
         float yN = localPosition.y / circleRadius;
 
-
         //Debug.Log("xN = (" + xN + "," + yN + ")");
 
         float result = (float)Mathf.Sqrt(xN * xN + yN* yN);
         float squareRadius = circleRadius * circleRadius;
-        if (result < squareRadius)
+        if (result < (squareRadius+ tolerance))
             return true;
         else
             return false;
@@ -126,10 +133,29 @@ public class VirtualCircle : MonoBehaviour {
         return result;
     }
 
+    Vector2 getFrontFacingFeetPos()
+    {
+        Vector2 pos;
+
+        Vector3 transformedRight = meshCircle.transform.parent.transform.InverseTransformPoint(rightToe.transform.position);
+        Vector3 transformedLeft = meshCircle.transform.parent.transform.InverseTransformPoint(leftToe.transform.position);
+
+        float distance = transformedRight.z - transformedLeft.z;
+
+        Vector2 rightToeT = new Vector2(transformedRight.x, transformedRight.z);
+        Vector2 leftToeT = new Vector2(transformedLeft.x, transformedLeft.z);
+        if (distance > 0)
+            pos = rightToeT;
+        else
+            pos = leftToeT;
+       // Debug.Log("distance between toes = "+ distance + "RightToe = "+ transformedRight.ToString() + " LeftToe = " + transformedLeft.ToString());
+        return pos;
+    }
+
     // Update is called once per frame
     void Update () {
 
-        
+        Vector2 leadingFoot = getFrontFacingFeetPos();
         //Debug.Log("speed = " + circleSpeed + " previousSpedd = "+ previousSpeed + " diff = " + Mathf.Abs(circleSpeed - previousSpeed) + " NavState = " + tTask.getCurrentNavigationState().ToString());
 
         meshCircle.transform.localScale = new Vector3(circleSize,circleSize,1);
@@ -162,7 +188,7 @@ public class VirtualCircle : MonoBehaviour {
                                  transformedPoint.z);//Compensation for feet position
         //Vector2 normalized = 
 
-        if(insideCircle(userPosInsideCircle))
+        if(insideCircle(leadingFoot))
         {
             //Debug.Log("Inside Circle!");
             if (tTask)
@@ -189,7 +215,7 @@ public class VirtualCircle : MonoBehaviour {
 
             Vector3 dir = handTracker.transform.forward;
             Debug.DrawRay(hand.transform.position, dir, Color.red);
-            circleSpeed = getSpeed(userPosInsideCircle,circleSize+initialSpineZPos);
+            circleSpeed = getSpeed(leadingFoot,circleSize);
             if (circleSpeed < 0.3f)
                 circleSpeed = 0.0f;
 
@@ -236,19 +262,7 @@ public class VirtualCircle : MonoBehaviour {
                 }
                 previousSpeed = circleSpeed;
             }
-            else
-            {
-                if (dotProduct < 0.0f)
-                    circleSpeed = -circleSpeed;
-                if (tTask)
-                {
-                    tTask.setNavigationState(false, circleSpeed, previousSpeed);
-                    tTask.setSpeed(0.0f);
-                }
-                previousSpeed = circleSpeed;
-
-                // target.SetActive(false);
-            }
+            
 
 
             
@@ -256,6 +270,7 @@ public class VirtualCircle : MonoBehaviour {
             if (getSpeed(userPosInsideCircle) > 0.8f)
             {
                 refCircle.transform.Find("warningCircle").gameObject.SetActive(true);
+                refCircle.transform.Find("warningCircle").gameObject.transform.localScale = new Vector3(circleSize+ tolerance, circleSize + tolerance, 1) ;
             }
             else
             {

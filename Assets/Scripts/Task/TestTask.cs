@@ -417,7 +417,7 @@ public class TestTask : MonoBehaviour
         numberOfPathPointsPerRing = new int[42];
         optimalDiscretizedPathList = new List<Vector3>();
 
-       
+        setSpeed(0);
 
         cameraPath = new List<Vector3>();
 

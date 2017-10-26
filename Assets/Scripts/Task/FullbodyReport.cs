@@ -94,6 +94,8 @@ public class FullbodyReport : MonoBehaviour
                     "colliderCenterX",
                     "colliderCenterY",
                     "colliderCenterZ",
+                    "Speed",
+                    "NavigationState",
                     "\n"
 
                 });
@@ -545,6 +547,8 @@ public class FullbodyReport : MonoBehaviour
                     colliderCenter.x.ToString(),
                     colliderCenter.y.ToString(),
                     colliderCenter.z.ToString(),
+                    tTask.getCurrentSpeed().ToString(),
+                    tTask.getCurrentNavigationState().ToString(),
                     "\n"
 
             });
@@ -635,6 +639,7 @@ public class FullbodyReport : MonoBehaviour
                     colliderCenter.y.ToString(),
                     colliderCenter.z.ToString(),
                     tTask.getCurrentSpeed().ToString(),
+                    tTask.getCurrentNavigationState().ToString(),
                     "\n"
 
             });
