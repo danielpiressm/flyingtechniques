@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class TimePerRing  {
 
-    private float timeIdle;
-    private float timeIdleTotal;
-    private float timeWalking;
-    private float timeWalkingAndFlying;
-    private float timeFlying;
-    private float timeFlyingTotal;
+    private float timeIdle = 0;
+    private float timeIdleTotal = 0;
+    private float timeWalking = 0;
+    private float timeWalkingAndFlying = 0;
+    private float timeFlying = 0;
+    private float timeFlyingTotal = 0;
 
 	public void Add(NavigationState state, float time)
     {
@@ -34,6 +34,8 @@ public class TimePerRing  {
             timeIdleTotal += time;
         }
     }
+
+    
 
     public string getFormattedString()
     {
