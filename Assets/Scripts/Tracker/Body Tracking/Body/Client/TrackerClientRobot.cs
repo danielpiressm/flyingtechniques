@@ -97,6 +97,7 @@ public class TrackerClientRobot : MonoBehaviour
 
 	}
 
+    
 	void Update()
 	{
 		if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.PageDown) || Input.GetKeyDown(KeyCode.Joystick1Button1)) // Mouse tap
@@ -110,6 +111,7 @@ public class TrackerClientRobot : MonoBehaviour
 
 				AdjustAvatarHeight();
 				InputTracking.Recenter();
+                SendMessage("recalibrateCircle");
 			}
 		}
 
@@ -161,6 +163,7 @@ public class TrackerClientRobot : MonoBehaviour
 	private void UpdateAvatarBody()
 	{
 		ApplyFilterToJoints();
+        Vector3 headRot = Camera.main.transform.forward;
 
 		// Spine
 		Vector3 spineUp = Utils.GetBoneDirection(spineShoulderJoint.Value, spineBaseJoint.Value);

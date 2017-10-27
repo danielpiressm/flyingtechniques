@@ -152,6 +152,13 @@ public class VirtualCircle : MonoBehaviour {
         return pos;
     }
 
+    void recalibrateCircle()
+    {
+        recalibrate = true;
+        Debug.Log("recalibrating circle");
+    }
+
+
     // Update is called once per frame
     void Update () {
 
@@ -188,7 +195,7 @@ public class VirtualCircle : MonoBehaviour {
                                  transformedPoint.z);//Compensation for feet position
         //Vector2 normalized = 
 
-        if(insideCircle(leadingFoot))
+        if(insideCircle(userPosInsideCircle))
         {
             //Debug.Log("Inside Circle!");
             if (tTask)
@@ -215,7 +222,7 @@ public class VirtualCircle : MonoBehaviour {
 
             Vector3 dir = handTracker.transform.forward;
             Debug.DrawRay(hand.transform.position, dir, Color.red);
-            circleSpeed = getSpeed(leadingFoot,circleSize);
+            circleSpeed = getSpeed(userPosInsideCircle,circleSize);
             if (circleSpeed < 0.3f)
                 circleSpeed = 0.0f;
 
@@ -240,7 +247,7 @@ public class VirtualCircle : MonoBehaviour {
             if (tTask.started)
             {
                 //Vector3 dir =  head.position - hand.position;
-                if(dotProduct > -0.01f)
+                if(dotProduct > -0.01f && insideCircle(userPosInsideCircle))
                 {
                     Debug.Log("entrei aqui?");
                     Vector3 desiredMove = dir * speed * Time.deltaTime * circleSpeed;// getSpeed(userPosInsideCircle);// userPosInsideCircle.y; // verificar se essa ultima variavel ta entre 0 e 1
@@ -296,9 +303,17 @@ public class VirtualCircle : MonoBehaviour {
 
         if (recalibrate)
         {
-            this.transform.position = referenceJoint.position;
-            referenceJoint.localPosition = new Vector3(0, 0, 0);
+            Vector3 refJointPosCopy = referenceJoint.transform.position;
+            Quaternion refJointRotCopy = referenceJoint.transform.rotation;
+            this.transform.position = new Vector3(referenceJoint.transform.position.x, this.transform.position.y, referenceJoint.transform.position.z);
+
+           
+
+
+
+            refCircle.localPosition = new Vector3(0, 0, 0);
             recalibrate = false;
+            Debug.Log("roger roger");
         }
 
 
