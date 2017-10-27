@@ -145,11 +145,11 @@ public class AnalogSteering : MonoBehaviour
                     tTask.setSpeed(0);
                     tTask.setNavigationState(false, circleSpeed, lastCircleSpeed);
                 }
-                
+                lastCircleSpeed = circleSpeed;
             }
             
         }
         
-        lastCircleSpeed = circleSpeed;
+       
     }
 }

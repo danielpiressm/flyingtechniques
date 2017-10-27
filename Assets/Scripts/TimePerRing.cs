@@ -10,6 +10,7 @@ public class TimePerRing  {
     private float timeWalkingAndFlying = 0;
     private float timeFlying = 0;
     private float timeFlyingTotal = 0;
+    private float timeNeutral = 0;
 
 	public void Add(NavigationState state, float time)
     {
@@ -33,6 +34,10 @@ public class TimePerRing  {
             timeIdle += time;
             timeIdleTotal += time;
         }
+        else if(state == NavigationState.Neutral)
+        {
+            timeNeutral += time;
+        }
     }
 
     
@@ -42,7 +47,7 @@ public class TimePerRing  {
         string header = "ring,timeIdle,timeFlying,timeWalking,timeWalkingAndFlying," +
                         "timeFlyingTotal,TimeIdleTotal\n";
         string str = timeIdle + "," + timeFlying + "," + timeWalking + "," + timeWalkingAndFlying + "," +
-                     timeFlyingTotal + "," + timeIdleTotal + "\n";
+                     timeFlyingTotal + "," + timeIdleTotal + "," + timeNeutral +  "\n";
         return str;
 
     }

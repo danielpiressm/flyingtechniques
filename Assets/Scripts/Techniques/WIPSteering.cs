@@ -178,9 +178,7 @@ public class WIPSteering : MonoBehaviour {
                 this.transform.position += desiredMove;
                 if (tTask)
                 {
-
                     tTask.setNavigationState(true, circleSpeed, previousSpeed);
-
                     tTask.setSpeed(speed * speedWIP);
                 }
             }
@@ -193,18 +191,9 @@ public class WIPSteering : MonoBehaviour {
                 }
                     
             }
-                
-            
-
+            previousSpeed = circleSpeed;
         }
-        else
-        {
-            if (tTask)
-            {
-                tTask.setNavigationState(false, circleSpeed, previousSpeed);
-            }
-            // target.SetActive(false);
-        }
-        previousSpeed = circleSpeed;
+        
+        
     }
 }

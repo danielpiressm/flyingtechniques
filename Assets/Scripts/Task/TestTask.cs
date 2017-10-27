@@ -1,12 +1,12 @@
-using UnityEngine;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 
 public enum NavigationState
 {
-    Idle, Walking, Flying, WalkingAndFlying
+    Idle, Walking, Flying, WalkingAndFlying,
+    Neutral
 };
 
 
@@ -45,7 +45,7 @@ public class TestTask : MonoBehaviour
     private string testReportPath = "";
     private string testOptimalPath = "";
     private string testCollision = "";
-    private float lastTime;
+    private float lastRingTime;
     private float lastTime2;
     private float totalTime = 0;
 
@@ -129,8 +129,8 @@ public class TestTask : MonoBehaviour
     
 
     private NavigationState currentNavState;
-
-    
+    private float lastTimeIdle;
+    private float lastTimeFlying;
 
     public float getRingTolerance()
     {
@@ -161,37 +161,35 @@ public class TestTask : MonoBehaviour
 
     public void setNavigationState(bool isFlying, float currentCircleSpeed, float lastCircleSpeed)
     {
-        float threshold = 0.0001f;
+        float threshold = 0.001f;
         NavigationState navStateTemp = currentNavState;
         float timestamp = Time.realtimeSinceStartup;
         if(isFlying)
         {
-            if((Mathf.Abs(currentCircleSpeed - lastCircleSpeed) > threshold))
-            {
-                currentNavState = NavigationState.WalkingAndFlying;
-            }
-            else
-            {
-                currentNavState = NavigationState.Flying;
-            }
+            
+            currentNavState = NavigationState.Flying;
+            lastTimeFlying = 0.0f;
+            
         }
         else
         {
-            if ((Mathf.Abs(currentCircleSpeed - lastCircleSpeed) > threshold))
-            {
-                currentNavState = NavigationState.Walking;
-            }
-            else
-            {
-                currentNavState = NavigationState.Idle;
-            }
+            
+            currentNavState = NavigationState.Idle;
+            lastTimeIdle = 0.0f;
         }
 
         if(getCurrentRing() < rings.Length)
         {
+
+
             if (currentNavState == navStateTemp)
             {
                 dictionaryForDiscriminatedTimes["ring" + getCurrentRing()].Add(currentNavState, timestamp - lastTime2);
+            }
+            else
+            {
+                int x = 2;
+                dictionaryForDiscriminatedTimes["ring" + getCurrentRing()].Add(NavigationState.Neutral, timestamp - lastTime2);
             }
             
             lastTime2 = timestamp;
@@ -434,6 +432,7 @@ public class TestTask : MonoBehaviour
         magnitudes = new float[42];
         numberOfPathPointsPerRing = new int[42];
         optimalDiscretizedPathList = new List<Vector3>();
+        dictionaryForDiscriminatedTimes = new Dictionary<string, TimePerRing>();
 
         setSpeed(0);
 
@@ -618,10 +617,10 @@ public class TestTask : MonoBehaviour
     {
         float currentTime = Time.realtimeSinceStartup;
         if (currentRing == 0)
-            lastTime = currentTime;
+            lastRingTime = currentTime;
 
-            float ringTime = currentTime - lastTime;
-            lastTime = currentTime;
+            float ringTime = currentTime - lastRingTime;
+            lastRingTime = currentTime;
             totalTime += ringTime;
 
             testReport += string.Join(",", new string[]{
@@ -672,7 +671,7 @@ public class TestTask : MonoBehaviour
 
     private void CompleteReport()
     {
-        testReport += ("Total,,,," + "" + "," + "" + "," + ","+ totalTime + "\n");
+        testReport += ("Total,,,," + "" + "," + "" + "," + ","+ totalTime + "," + (Time.realtimeSinceStartup) +"\n");
         System.IO.File.WriteAllText(pathDirectory+ reportOutputFile, testReport);
         System.IO.File.WriteAllText(pathDirectory + pathReportOutputFile, testReportPath);
 
