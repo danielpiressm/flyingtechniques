@@ -46,9 +46,12 @@ public class TestTask : MonoBehaviour
     private string testOptimalPath = "";
     private string testCollision = "";
     private float lastTime;
+    private float lastTime2;
     private float totalTime = 0;
 
     public bool started = false;
+
+    private Dictionary<string, TimePerRing> dictionaryForDiscriminatedTimes;
 
 
     private List<Vector3> optimalDiscretizedPathList;
@@ -159,6 +162,8 @@ public class TestTask : MonoBehaviour
     public void setNavigationState(bool isFlying, float currentCircleSpeed, float lastCircleSpeed)
     {
         float threshold = 0.0001f;
+        NavigationState navStateTemp = currentNavState;
+        float timestamp = Time.realtimeSinceStartup;
         if(isFlying)
         {
             if((Mathf.Abs(currentCircleSpeed - lastCircleSpeed) > threshold))
@@ -181,6 +186,19 @@ public class TestTask : MonoBehaviour
                 currentNavState = NavigationState.Idle;
             }
         }
+
+        if(getCurrentRing() < rings.Length)
+        {
+            if (currentNavState == navStateTemp)
+            {
+                dictionaryForDiscriminatedTimes["ring" + getCurrentRing()].Add(currentNavState, timestamp - lastTime2);
+            }
+            
+            lastTime2 = timestamp;
+        }
+        
+
+
        // Debug.Log("Current Nav State +" + currentNavState.ToString() + " bla = "+ Mathf.Abs(currentCircleSpeed - lastCircleSpeed));
     }
 
@@ -501,7 +519,7 @@ public class TestTask : MonoBehaviour
 
     private void InitializeReport()
     {
-        testReport += "Ring,Hit,Time,Error,PosRingX,PosRingY,PosRingZ,RawTime,RingTime,DominantHand\n";
+        testReport += "Ring,Hit,Time,Error,PosRingX,PosRingY,PosRingZ,RawTime,RingTime,DominantHand,NavigationState,Speed\n";
         testCollision += "Joint,PosX,PosY,PosZ,RotX,RotY,RotZ,ColliderName,PosColliderX,PosColliderY,PosColliderZ,RotColliderX,RotColliderY,RotColliderZ,ErrorX,ErrorY,ErrorZ,Error2X,Error2Y,Error2Z,headPosX,headPosY,headPosZ,cameraPosX,cameraPosY,cameraPosZ,TimeElapsed,TimeStart,TimeFinish\n";
 
         /*string str = string.Join(",", new string[]
@@ -562,13 +580,13 @@ public class TestTask : MonoBehaviour
 
     private void UpdatePathReport()
     {
-        Vector3 currentPos = Camera.main.transform.position;
+        Vector3 currentPos = this.transform.position;
         Vector3 currentPosVector = currentPos - lastPos;
         if (currentPosVector.magnitude > threshold)
         {
-            lastPos = Camera.main.transform.position;
+            lastPos = this.transform.position;
             testReportPath += currentRing + "," + currentPos.x + "," + currentPos.y + "," + currentPos.z + "," + currentPosVector.x + "," + currentPosVector.y + "," +
-                              currentPosVector.z + "," + currentPosVector.magnitude + "," + Camera.main.transform.localEulerAngles.x + "," + Camera.main.transform.localEulerAngles.y + "," + Camera.main.transform.localEulerAngles.z + "\n";
+                              currentPosVector.z + "," + currentPosVector.magnitude + "," + Camera.main.transform.localEulerAngles.x + "," + Camera.main.transform.localEulerAngles.y + "," + Camera.main.transform.localEulerAngles.z + "," + getCurrentNavigationState() + ","+ getCurrentSpeed() +"\n";
             //Debug.Log("MAGNITUDE + " + currentPosVector.magnitude);
             countPointsInPath++;
             cameraPath.Add(new Vector3(currentPos.x, currentPos.y, currentPos.z));
@@ -672,6 +690,14 @@ public class TestTask : MonoBehaviour
 
         printPathToFile(optimalDiscretizedPathList, optimalPathOutputFile);
 
+        //test this
+        System.IO.File.AppendAllText(pathDirectory + reportOutputFile2, "ring,timeIdle,timeFlying,timeWalking,timeWalkingAndFlying," +
+                        "timeFlyingTotal,TimeIdleTotal\n");
+        foreach(KeyValuePair<string, TimePerRing> valuePair in dictionaryForDiscriminatedTimes)
+        {
+            System.IO.File.AppendAllText(pathDirectory + reportOutputFile2, valuePair.Key + ","+  valuePair.Value.getFormattedString());
+        }
+
     }
 
     private void CompletePathReport()
@@ -703,6 +729,7 @@ public class TestTask : MonoBehaviour
         {
             bool activated = (i == currentRing);
             rings[i].SetActive(activated);
+            dictionaryForDiscriminatedTimes.Add("ring" + i, new TimePerRing());
         }
         ringPositionsWhenCrossed = new Vector3[rings.Length + 1];
         //first we store the initial position of the guy
