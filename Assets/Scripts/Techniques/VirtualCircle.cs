@@ -51,11 +51,15 @@ public class VirtualCircle : MonoBehaviour {
     GameObject rightToe;
     GameObject leftToe;
 
+    GameObject pivotCircle;
+    GameObject pivotCircle2;
 
     // Use this for initialization
     void Start () {
-        //calibratedPos = this.transform.position;
-        //child = this.transform.GetChild(0).transform;
+
+        pivotCircle = new GameObject("pivotCircle");
+        pivotCircle2 = new GameObject("pivotCircle2");
+        pivotCircle.transform.localScale = Vector3.one;
         calibratedPos = referenceJoint.position;
         tTask = GetComponent<TestTask>();
         camera = Camera.main;
@@ -73,6 +77,16 @@ public class VirtualCircle : MonoBehaviour {
 
         rightToe = GameObject.Find("mixamorig:RightToe_End");
         leftToe = GameObject.Find("mixamorig:LeftToe_End");
+
+        pivotCircle.transform.parent = GameObject.Find("refCircle").transform;
+        pivotCircle.transform.localPosition = new Vector3(0, 0, 0);
+        pivotCircle2.transform.parent = pivotCircle.transform;
+        pivotCircle2.transform.localPosition = new Vector3(0, 0, -0.3f);
+        pivotCircle.transform.localScale = Vector3.one;
+        pivotCircle.transform.localScale = Vector3.one;
+
+        
+
 
     }
 
@@ -162,35 +176,49 @@ public class VirtualCircle : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
-        Vector2 leadingFoot = getFrontFacingFeetPos();
-        //Debug.Log("speed = " + circleSpeed + " previousSpedd = "+ previousSpeed + " diff = " + Mathf.Abs(circleSpeed - previousSpeed) + " NavState = " + tTask.getCurrentNavigationState().ToString());
-
         meshCircle.transform.localScale = new Vector3(circleSize,circleSize,1);
         
         Transform refCircle = meshCircle.transform.parent;
+        pivotCircle.transform.rotation = referenceJoint.transform.rotation;
+
+        
+
+        Vector3 cpy = refCircle.transform.TransformPoint(refCircle.transform.localPosition.x, refCircle.transform.localPosition.y, refCircle.transform.localPosition.z - 0.4f);
+
+        Vector3 cpy2 = this.transform.InverseTransformPoint(cpy);
         
 
         Vector3 transformedPoint = this.transform.InverseTransformPoint(referenceJoint.transform.position);
-        
+        Vector3 transformedPoint2 = pivotCircle.transform.InverseTransformPoint(referenceJoint.transform.position);
+
         Vector3 forwardTransformCircle = refCircle.InverseTransformDirection(referenceJoint.transform.forward);
+
+
+
+       //Debug.DrawRay(pivotCircle2.transform.position, pivotCircle2.transform.forward,Color.green);
+       
 
         refJointCopy.transform.position = new Vector3(referenceJoint.transform.position.x, refCircle.transform.position.y, referenceJoint.transform.position.z);
         Vector3 dirBetweenRefJointAndCircle = refJointCopy.transform.position - refCircle.transform.position;
 
+
+
         Vector3 right = Vector3.Cross(dirBetweenRefJointAndCircle, refCircle.up);
+        Debug.DrawRay(pivotCircle.transform.position, dirBetweenRefJointAndCircle, Color.cyan);
+        Debug.DrawRay(pivotCircle.transform.position, right, Color.yellow);
 
 
-        float angle = Vector3.Angle(dirBetweenRefJointAndCircle, referenceJoint.forward);
         float dotProduct = Vector3.Dot(dirBetweenRefJointAndCircle, referenceJoint.forward);
-        Debug.DrawRay(refCircle.transform.position, dirBetweenRefJointAndCircle ,Color.magenta);
+        Debug.Log("dotProduct = "+dotProduct);
+        //Debug.DrawRay(refCircle.transform.position, dirBetweenRefJointAndCircle ,Color.magenta);
         Color color;
         if (dotProduct > 0.0f)
             color = Color.cyan;
         else
             color = Color.green;
-        Debug.DrawRay(refCircle.transform.position, -right, color);
 
-        //Debug.Log("reference for speed={" + transformedPoint.x + "," + transformedPoint.y + "," + transformedPoint.z + "}");
+        
+
         userPosInsideCircle.Set(transformedPoint.x,
                                  transformedPoint.z);//Compensation for feet position
         //Vector2 normalized = 
@@ -226,30 +254,15 @@ public class VirtualCircle : MonoBehaviour {
             if (circleSpeed < 0.3f)
                 circleSpeed = 0.0f;
 
-            if (lRenderer != null)
-            {
-                lRenderer.enabled = true;
-                //hand.transform.eulerAngles = new Vector3(handTracker.transform.eulerAngles.x, handTracker.transform.eulerAngles.z, handTracker.transform.eulerAngles.y);
+            
 
-                //hand.transform.up = -handTracker.transform.forward;
-
-                //hand.transform.localEulerAngles = new Vector3(hand.transform.localEulerAngles.x, hand.transform.localEulerAngles.y, hand.transform.localEulerAngles.z);
-
-               
-
-                Vector3 endPosition = hand.transform.position + speed * dir * userPosInsideCircle.y;
-                lRenderer.SetPosition(0, hand.transform.position);
-                lRenderer.SetPosition(1, endPosition);
-                lRenderer.startWidth = laserWidth;
-                lRenderer.endWidth = laserWidth;
-            }
+         
 
             if (tTask.started)
             {
                 //Vector3 dir =  head.position - hand.position;
                 if(dotProduct > -0.01f && insideCircle(userPosInsideCircle))
                 {
-                    Debug.Log("entrei aqui?");
                     Vector3 desiredMove = dir * speed * Time.deltaTime * circleSpeed;// getSpeed(userPosInsideCircle);// userPosInsideCircle.y; // verificar se essa ultima variavel ta entre 0 e 1
                     this.transform.position += desiredMove;
                     if (tTask)
