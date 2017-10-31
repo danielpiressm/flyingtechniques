@@ -138,8 +138,8 @@ public class WIPSteering : MonoBehaviour {
         }
 
         //TODO: see more
-        //Vector3 dir = handTracker.transform.forward;
-        Vector3 dir = Camera.main.transform.forward;
+        Vector3 dir = handTracker.transform.forward;
+        //Vector3 dir = Camera.main.transform.forward;
         Debug.DrawRay(hand.transform.position, dir, Color.red);
 
 
