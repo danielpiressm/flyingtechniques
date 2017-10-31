@@ -168,8 +168,14 @@ public class VirtualCircle : MonoBehaviour {
 
     void recalibrateCircle()
     {
-        recalibrate = true;
-        Debug.Log("recalibrating circle");
+        Vector3 vec3 = new Vector3(0, referenceJoint.transform.localPosition.y,0);
+        vec3.Set(0, vec3.y - 0.15f, 0.0f);
+
+        GameObject reffCircle = GameObject.Find("refCircle");
+        reffCircle.transform.position = this.transform.TransformPoint(vec3);
+        Debug.Log("recalibrate");
+        /*recalibrate = true;
+        Debug.Log("recalibrating circle");*/
     }
 
 
@@ -209,7 +215,7 @@ public class VirtualCircle : MonoBehaviour {
 
 
         float dotProduct = Vector3.Dot(dirBetweenRefJointAndCircle, referenceJoint.forward);
-        Debug.Log("dotProduct = "+dotProduct);
+        //Debug.Log("dotProduct = "+dotProduct);
         //Debug.DrawRay(refCircle.transform.position, dirBetweenRefJointAndCircle ,Color.magenta);
         Color color;
         if (dotProduct > 0.0f)
@@ -324,7 +330,7 @@ public class VirtualCircle : MonoBehaviour {
 
 
 
-            refCircle.localPosition = new Vector3(0, 0, 0);
+            //refCircle.localPosition = new Vector3(0, 0, 0);
             recalibrate = false;
             Debug.Log("roger roger");
         }
