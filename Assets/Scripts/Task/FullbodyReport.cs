@@ -640,6 +640,9 @@ public class FullbodyReport : MonoBehaviour
                     colliderCenter.z.ToString(),
                     tTask.getCurrentSpeed().ToString(),
                     tTask.getCurrentNavigationState().ToString(),
+                    torso.transform.forward.x.ToString(),
+                    torso.transform.forward.y.ToString(),
+                    torso.transform.forward.z.ToString(),
                     "\n"
 
             });
