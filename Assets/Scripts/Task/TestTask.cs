@@ -178,7 +178,7 @@ public class TestTask : MonoBehaviour
             lastTimeIdle = 0.0f;
         }
 
-        if(getCurrentRing() < rings.Length)
+        if(getCurrentRing() < rings.Length && training == false)
         {
 
 
