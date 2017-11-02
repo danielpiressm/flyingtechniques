@@ -113,7 +113,6 @@ public class FullbodyReport : MonoBehaviour
         {
             lastBodyPos[(int)BodyLog.rightFoot] = rightFoot.position;
             bodyStrPath[(int)BodyLog.rightFoot] = "rightFootLog.csv";
-            Debug.Log("rightFootLog");
             //System.IO.File.WriteAllText(tTask.getPathDirectory() + "/"+ "rightFootLog.csv", "");
             //create a file for each part of the body
         }
@@ -122,7 +121,6 @@ public class FullbodyReport : MonoBehaviour
             //log this
             lastBodyPos[(int)BodyLog.leftFoot] = leftFoot.position;
             bodyStrPath[(int)BodyLog.leftFoot] = "leftFootLog.csv";
-            Debug.Log("leftFootLog");
             //System.IO.File.WriteAllText(pathDirectory  + "leftFootLog.csv", "");
         }
         if (rightHand != null)

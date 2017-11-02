@@ -114,10 +114,18 @@ public class VirtualCircle : MonoBehaviour {
 
         float result = (float)Mathf.Sqrt(xN * xN + yN* yN);
         float squareRadius = circleRadius * circleRadius;
-        if (result < (squareRadius+ tolerance))
+        if (result < 1.08f)
+        {
+         //   Debug.Log("result true " + result + " squareRadius = "+ squareRadius +  " tolerance = " + tolerance);
             return true;
+
+        }
         else
+        {
+           // Debug.Log("result false " + result + " tolerance = " + tolerance);
             return false;
+        }
+            
     }
 
     float getSpeed(Vector2 localPosition)
