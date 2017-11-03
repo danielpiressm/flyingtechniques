@@ -30,6 +30,20 @@ public class AnalogSteering : MonoBehaviour
     public Transform referenceJoint;
     float lastCircleSpeed = 0.0f;
     bool started = false;
+
+    void recalibrateCircle()
+    {
+        Vector3 vec3 = new Vector3(0, referenceJoint.transform.localPosition.y, 0);
+        vec3.Set(0, vec3.y - 0.15f, 0.0f);
+
+        GameObject reffCircle = GameObject.Find("refCircle");
+        reffCircle.transform.position = this.transform.TransformPoint(vec3);
+        Debug.Log("recalibrate");
+        /*recalibrate = true;
+        Debug.Log("recalibrating circle");*/
+    }
+
+
     float getSpeed(Vector2 localPosition)
     {
         float circleRadius = circleSize / 2;

@@ -31,10 +31,21 @@ public class WIPSteering : MonoBehaviour {
     float lastSpeed = 0;
     public float wipMultiplier = 1;
     GameObject textGO;
+    public bool debug = false;
 
     bool started = false;
 
+    void recalibrateCircle()
+    {
+        Vector3 vec3 = new Vector3(0, referenceJoint.transform.localPosition.y, 0);
+        vec3.Set(0, vec3.y - 0.15f, 0.0f);
 
+        GameObject reffCircle = GameObject.Find("refCircle");
+        reffCircle.transform.position = this.transform.TransformPoint(vec3);
+        Debug.Log("recalibrate");
+        /*recalibrate = true;
+        Debug.Log("recalibrating circle");*/
+    }
 
     float getSpeed(Vector2 localPosition)
     {
@@ -153,6 +164,22 @@ public class WIPSteering : MonoBehaviour {
         speedWIP = Mathf.Clamp(temp, 0.0f, 1.0f);
 
         tTask.wipStr = speedWIP+","+rightKnee1 + ","+leftKnee1;
+
+        if(debug)
+        {
+            if(Camera.main.GetComponentInChildren<TextMesh>())
+            {
+                Camera.main.GetComponentInChildren<MeshRenderer>().enabled = true;
+            }
+        }
+        else
+        {
+            if (Camera.main.GetComponentInChildren<TextMesh>())
+            {
+                Camera.main.GetComponentInChildren<MeshRenderer>().enabled = false;
+            }
+        }
+
 
         textGO.GetComponent<Text>().text = " SPEED WIP = " + temp + " clamp = " + speedWIP ;
         Camera.main.GetComponentInChildren<TextMesh>().text = " SPEED WIP = " + temp + " \n clamp = " + speedWIP;
