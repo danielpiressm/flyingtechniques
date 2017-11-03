@@ -143,36 +143,22 @@ public class WIPSteering : MonoBehaviour {
         Debug.DrawRay(hand.transform.position, dir, Color.red);
 
 
-        if (lRenderer != null)
-        {
-            lRenderer.enabled = true;
-            Vector3 endPosition = hand.transform.position + 3.0f * dir;
-            lRenderer.SetPosition(0, hand.transform.position);
-            lRenderer.SetPosition(1, endPosition);
-            lRenderer.startWidth = laserWidth;
-            lRenderer.endWidth = laserWidth;
-        }
+        
+       
 
         float speedWIP = wip.updateDaniel(rightDiff, leftDiff);
         float speedWIP2 = speedWIP;
         float temp = speedWIP * wipMultiplier;
+        speedWIP = temp;
         speedWIP = Mathf.Clamp(temp, 0.0f, 1.0f);
 
         textGO.GetComponent<Text>().text = " SPEED WIP = " + temp + " clamp = " + speedWIP ;
-        // Debug.Log("acc = " + outVec);
-        //Debug.Log("$$$$$ WIP WORKING ###### " + " speed=" + speedWIP + "Time = " + Time.realtimeSinceStartup + " GAit = " + wip._gait + "multiplier = "+ speedWIP*wipMultiplier);
-
-        /*if (wip._gait == KinectClient.GaitState.MOVING)
-        {
-            speedWIP = speedWIP * wipMultiplier;
-            //speedWIP = 1.0f;
-        }*/
-
-        //if (Input.GetAxis("Z Axis") > 0.002f)
+        Camera.main.GetComponentInChildren<TextMesh>().text = " SPEED WIP = " + temp + " \n clamp = " + speedWIP;
+       
         if (tTask.started)
         {
             Vector3 desiredMove = dir * speed * Time.deltaTime *speedWIP;
-            System.IO.File.AppendAllText(tTask.getPathDirectory() +  "wipDoido.csv" ,  rightDiff + "," + leftDiff + "," + speedWIP + "," + wipMultiplier +  "\n");
+            System.IO.File.AppendAllText(tTask.getPathDirectory() +  "wipDoido.csv" ,  rightDiff + "," + leftDiff + "," + speedWIP + "," + temp +  "," + wipMultiplier + ","+ Time.realtimeSinceStartup + "\n");
             if (wip._gait == KinectClient.GaitState.MOVING)
             {
                 this.transform.position += desiredMove;

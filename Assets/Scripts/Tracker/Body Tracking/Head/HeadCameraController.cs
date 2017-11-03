@@ -56,7 +56,7 @@ public class HeadCameraController : MonoBehaviour
     void LateUpdate()
     {
 
-        threshold = new Vector3(0, 0.15f, 0.3f);
+        threshold = new Vector3(0, 0.15f, 0.35f);
         //CarlHip.position = new Vector3(UnityEngine.VR.InputTracking.GetLocalPosition(UnityEngine.VR.VRNode.Head).x,
         // CarlHip.position = new Vector3(CarlHip.position.x,
         //   CarlHip.position.y,
