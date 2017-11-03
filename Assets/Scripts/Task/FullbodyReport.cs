@@ -96,6 +96,10 @@ public class FullbodyReport : MonoBehaviour
                     "colliderCenterZ",
                     "Speed",
                     "NavigationState",
+                    "torsoForwardX",
+                    "torsoForwardY",
+                    "torsoForwardZ",
+                    "wipInfo(speed-rightShin-leftShin)",
                     "\n"
 
                 });
@@ -642,6 +646,7 @@ public class FullbodyReport : MonoBehaviour
                     torso.transform.forward.y.ToString(),
                     torso.transform.forward.z.ToString(),
                     tTask.getSpeedWIP(),
+                    
                     "\n"
 
             });

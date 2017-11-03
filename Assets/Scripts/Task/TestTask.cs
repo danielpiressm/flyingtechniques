@@ -126,7 +126,7 @@ public class TestTask : MonoBehaviour
 
     private float currrentSpeed = 3.0f;
 
-    public float speedWIP =0;
+    public string wipStr ="0";
 
     private NavigationState currentNavState;
     private float lastTimeIdle;
@@ -137,7 +137,7 @@ public class TestTask : MonoBehaviour
         string str = "";
         if(getCurrentTechnique().Equals(Technique.WalkingInPlace))
         {
-            return speedWIP.ToString();
+            return wipStr.ToString();
         }
         else
         {
@@ -193,17 +193,9 @@ public class TestTask : MonoBehaviour
 
         if(getCurrentRing() < rings.Length && training == false)
         {
-
-
-            if (currentNavState == navStateTemp)
-            {
-                dictionaryForDiscriminatedTimes["ring" + getCurrentRing()].Add(currentNavState, timestamp - lastTime2);
-            }
-            else
-            {
-                int x = 2;
-                dictionaryForDiscriminatedTimes["ring" + getCurrentRing()].Add(NavigationState.Neutral, timestamp - lastTime2);
-            }
+            
+            dictionaryForDiscriminatedTimes["ring" + getCurrentRing()].Add(currentNavState, timestamp - lastTime2);
+            
             
             lastTime2 = timestamp;
         }

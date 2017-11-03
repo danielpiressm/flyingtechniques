@@ -152,7 +152,7 @@ public class WIPSteering : MonoBehaviour {
         speedWIP = temp;
         speedWIP = Mathf.Clamp(temp, 0.0f, 1.0f);
 
-        tTask.speedWIP = speedWIP;
+        tTask.wipStr = speedWIP+","+rightKnee1 + ","+leftKnee1;
 
         textGO.GetComponent<Text>().text = " SPEED WIP = " + temp + " clamp = " + speedWIP ;
         Camera.main.GetComponentInChildren<TextMesh>().text = " SPEED WIP = " + temp + " \n clamp = " + speedWIP;
