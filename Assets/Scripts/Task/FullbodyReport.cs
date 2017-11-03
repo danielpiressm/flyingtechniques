@@ -641,6 +641,7 @@ public class FullbodyReport : MonoBehaviour
                     torso.transform.forward.x.ToString(),
                     torso.transform.forward.y.ToString(),
                     torso.transform.forward.z.ToString(),
+                    tTask.getSpeedWIP(),
                     "\n"
 
             });

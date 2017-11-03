@@ -126,11 +126,24 @@ public class TestTask : MonoBehaviour
 
     private float currrentSpeed = 3.0f;
 
-    
+    public float speedWIP =0;
 
     private NavigationState currentNavState;
     private float lastTimeIdle;
     private float lastTimeFlying;
+
+    public string getSpeedWIP()
+    {
+        string str = "";
+        if(getCurrentTechnique().Equals(Technique.WalkingInPlace))
+        {
+            return speedWIP.ToString();
+        }
+        else
+        {
+            return "NOTWIP";
+        }
+    }
 
     public float getRingTolerance()
     {
