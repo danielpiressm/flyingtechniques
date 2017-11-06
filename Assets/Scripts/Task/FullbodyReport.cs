@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -878,15 +879,20 @@ public class FullbodyReport : MonoBehaviour
             }
 
             //flush the string into the file
-            if (countFullBodiesStr > 1000)
+            if (countFullBodiesStr > 500)
             {
-            /*for (int i = 0; i < 15; i++)
+            float x = 0;
+            for (int i = 0; i < 15; i++)
             {
+                
                 try
                 {
                     if (bodyStr[i] != null && bodyStrPath[i] != null)
                     {
-                        System.IO.File.AppendAllText(tTask.getPathDirectory() + "/fullbodyLog/" + bodyStrPath[i], bodyStr[i]);
+                       // Invoke("printToFile",  x);
+                        StartCoroutine(printToFile(i,x));
+                        //
+                        x += 0.5f;
                     }
 
                     //Debug.Log("&&&&&");
@@ -897,7 +903,7 @@ public class FullbodyReport : MonoBehaviour
                 }
 
                 bodyStr[i] = "";
-            }*/
+            }
             /*if (bodyStr[(int)BodyLog.torso] != null && bodyStrPath[(int)BodyLog.torso] != null)
             {
                 System.IO.File.AppendAllText(tTask.getPathDirectory() + "/fullbodyLog/" + bodyStrPath[(int)BodyLog.torso], bodyStr[(int)BodyLog.torso]);
@@ -908,7 +914,15 @@ public class FullbodyReport : MonoBehaviour
                 countFullBodiesStr++;
         }
 
+   
+    private IEnumerator printToFile(int index,float time)
+    {
+        yield return new WaitForSeconds(time);
+        System.IO.File.AppendAllText(tTask.getPathDirectory() + "/fullbodyLog/" + bodyStrPath[index], bodyStr[index]);
+        yield return null;
+    }
 
+   
 
     private void OnDisable()
     {
