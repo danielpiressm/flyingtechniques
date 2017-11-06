@@ -878,9 +878,9 @@ public class FullbodyReport : MonoBehaviour
             }
 
             //flush the string into the file
-            if (countFullBodiesStr > 3000)
+            if (countFullBodiesStr > 1000)
             {
-            for (int i = 0; i < 15; i++)
+            /*for (int i = 0; i < 15; i++)
             {
                 try
                 {
@@ -897,7 +897,7 @@ public class FullbodyReport : MonoBehaviour
                 }
 
                 bodyStr[i] = "";
-            }
+            }*/
             /*if (bodyStr[(int)BodyLog.torso] != null && bodyStrPath[(int)BodyLog.torso] != null)
             {
                 System.IO.File.AppendAllText(tTask.getPathDirectory() + "/fullbodyLog/" + bodyStrPath[(int)BodyLog.torso], bodyStr[(int)BodyLog.torso]);

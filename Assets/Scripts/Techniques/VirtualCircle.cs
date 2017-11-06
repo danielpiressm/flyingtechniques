@@ -275,7 +275,7 @@ public class VirtualCircle : MonoBehaviour {
             if (tTask.started)
             {
                 //Vector3 dir =  head.position - hand.position;
-                if(dotProduct > -0.01f && insideCircle(userPosInsideCircle))
+                if(dotProduct > -0.01f && insideCircle(userPosInsideCircle) && circleSpeed > 0.0f)
                 {
                     Vector3 desiredMove = dir * speed * Time.deltaTime * circleSpeed;// getSpeed(userPosInsideCircle);// userPosInsideCircle.y; // verificar se essa ultima variavel ta entre 0 e 1
                     this.transform.position += desiredMove;

@@ -66,7 +66,7 @@ public class TestTask : MonoBehaviour
     private string pathReportOutputFile = "reportPath.csv";
 
     [SerializeField]
-    private string optimalPathOutputFile = "optimalPath.csv";
+    private string optimalPathOutputFile = "optimalCPath.csv";
 
     [SerializeField]
     private string collisionFile = "collisionLog.csv";
@@ -131,6 +131,8 @@ public class TestTask : MonoBehaviour
     private NavigationState currentNavState;
     private float lastTimeIdle;
     private float lastTimeFlying;
+
+    private float finishTime = 0.0f;
 
     public string getSpeedWIP()
     {
@@ -287,7 +289,12 @@ public class TestTask : MonoBehaviour
 
     public void collisionEnded(string colliderName, string jointName, float time)
     {
-        if(activeCollisions.ContainsKey(colliderName))
+        if(finishTime>0.0f)
+        {
+            return;
+        }
+
+        if(activeCollisions.ContainsKey(colliderName) && finishTime == 0.0f)
         {
             List<ActiveCollision> actColList = new List<ActiveCollision>(activeCollisions[colliderName]);
             for(int i = 0; i < activeCollisions[colliderName].Count;i++)
@@ -676,7 +683,7 @@ public class TestTask : MonoBehaviour
 
     private void CompleteReport()
     {
-        testReport += ("Total,,,," + "" + "," + "" + "," + ","+ totalTime + "," + (Time.realtimeSinceStartup) +"\n");
+        testReport += ("Total,,,," + "" + "," + "" + "," + ","+ totalTime + "," + finishTime +"\n");
         System.IO.File.WriteAllText(pathDirectory+ reportOutputFile, testReport);
         System.IO.File.WriteAllText(pathDirectory + pathReportOutputFile, testReportPath);
 
@@ -774,7 +781,7 @@ public class TestTask : MonoBehaviour
             
         else
         {
-            
+            finishTime = Time.realtimeSinceStartup;
         }
 
     }
