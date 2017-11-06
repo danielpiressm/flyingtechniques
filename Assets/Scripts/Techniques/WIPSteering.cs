@@ -187,7 +187,7 @@ public class WIPSteering : MonoBehaviour {
         if (tTask.started)
         {
             Vector3 desiredMove = dir * speed * Time.deltaTime *speedWIP;
-            System.IO.File.AppendAllText(tTask.getPathDirectory() +  "wipDoido.csv" ,  rightDiff + "," + leftDiff + "," + speedWIP + "," + temp +  "," + wipMultiplier + ","+ Time.realtimeSinceStartup + "\n");
+            //System.IO.File.AppendAllText(tTask.getPathDirectory() +  "wipDoido.csv" ,  rightDiff + "," + leftDiff + "," + speedWIP + "," + temp +  "," + wipMultiplier + ","+ Time.realtimeSinceStartup + "\n");
             if (wip._gait == KinectClient.GaitState.MOVING)
             {
                 this.transform.position += desiredMove;
