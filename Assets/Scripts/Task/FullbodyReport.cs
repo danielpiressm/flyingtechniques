@@ -224,40 +224,38 @@ public class FullbodyReport : MonoBehaviour
             colliderSize = rightFootCollider.size;
 
             lastBodyPos[(int)BodyLog.rightFoot] = rightFoot.transform.position;
-            bodyStr[(int)BodyLog.rightFoot] += string.Join(",", new string[]
-            {
-                    "ring"+tTask.getCurrentRing().ToString()+","+
-                    rightFoot.transform.position.x.ToString()+","+
-                    rightFoot.transform.position.y.ToString()+","+
-                    rightFoot.transform.position.z.ToString()+","+
-                    currentPosVector.x.ToString()+","+
-                    currentPosVector.y.ToString()+","+
-                    currentPosVector.z.ToString()+","+
-                    rightFoot.transform.eulerAngles.x.ToString()+","+
-                    rightFoot.transform.eulerAngles.y.ToString()+","+
-                    rightFoot.transform.eulerAngles.z.ToString()+","+
-                    rightFoot.transform.position.magnitude.ToString()+","+
-                    head.transform.position.x.ToString()+","+
-                    head.transform.position.y.ToString()+","+
-                    head.transform.position.z.ToString()+","+
-                    Camera.main.transform.eulerAngles.x.ToString()+","+
-                    Camera.main.transform.eulerAngles.y.ToString()+","+
-                    Camera.main.transform.eulerAngles.z.ToString()+","+
-                    Time.realtimeSinceStartup.ToString()+","+
-                    tTask.getCurrentNavigationState().ToString()+","+
-                    circle.transform.position.x.ToString()+","+
-                    circle.transform.position.y.ToString()+","+
-                    circle.transform.position.z.ToString()+","+
-                    tTask.getCurrentSpeed().ToString()+","+
-                    colliderSize.x.ToString()+","+
-                    colliderSize.y.ToString()+","+
-                    colliderSize.z.ToString()+","+
-                    colliderCenter.x.ToString()+","+
-                    colliderCenter.y.ToString()+","+
-                    colliderCenter.z.ToString()+","+
-                    "\n"
-
-            });
+            bodyStr[(int)BodyLog.rightFoot] +=
+                    "ring" + tTask.getCurrentRing().ToString() + "," +
+                    rightFoot.transform.position.x.ToString() + "," +
+                    rightFoot.transform.position.y.ToString() + "," +
+                    rightFoot.transform.position.z.ToString() + "," +
+                    currentPosVector.x.ToString() + "," +
+                    currentPosVector.y.ToString() + "," +
+                    currentPosVector.z.ToString() + "," +
+                    rightFoot.transform.eulerAngles.x.ToString() + "," +
+                    rightFoot.transform.eulerAngles.y.ToString() + "," +
+                    rightFoot.transform.eulerAngles.z.ToString() + "," +
+                    rightFoot.transform.position.magnitude.ToString() + "," +
+                    head.transform.position.x.ToString() + "," +
+                    head.transform.position.y.ToString() + "," +
+                    head.transform.position.z.ToString() + "," +
+                    Camera.main.transform.eulerAngles.x.ToString() + "," +
+                    Camera.main.transform.eulerAngles.y.ToString() + "," +
+                    Camera.main.transform.eulerAngles.z.ToString() + "," +
+                    Time.realtimeSinceStartup.ToString() + "," +
+                    tTask.getCurrentNavigationState().ToString() + "," +
+                    circle.transform.position.x.ToString() + "," +
+                    circle.transform.position.y.ToString() + "," +
+                    circle.transform.position.z.ToString() + "," +
+                    tTask.getCurrentSpeed().ToString() + "," +
+                    colliderSize.x.ToString() + "," +
+                    colliderSize.y.ToString() + "," +
+                    colliderSize.z.ToString() + "," +
+                    colliderCenter.x.ToString() + "," +
+                    colliderCenter.y.ToString() + "," +
+                    colliderCenter.z.ToString() + "," +
+                    "\n";
+                    
             //System.IO.File.WriteAllText(pathDirectory +  bodyStrPath[0] , bodyStr[0]);
 
 
@@ -880,9 +878,9 @@ public class FullbodyReport : MonoBehaviour
             }
 
             //flush the string into the file
-            if (countFullBodiesStr > 100)
+            if (countFullBodiesStr > 3000)
             {
-            /*for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 15; i++)
             {
                 try
                 {
@@ -899,11 +897,11 @@ public class FullbodyReport : MonoBehaviour
                 }
 
                 bodyStr[i] = "";
-            }*/
-            if (bodyStr[(int)BodyLog.torso] != null && bodyStrPath[(int)BodyLog.torso] != null)
+            }
+            /*if (bodyStr[(int)BodyLog.torso] != null && bodyStrPath[(int)BodyLog.torso] != null)
             {
                 System.IO.File.AppendAllText(tTask.getPathDirectory() + "/fullbodyLog/" + bodyStrPath[(int)BodyLog.torso], bodyStr[(int)BodyLog.torso]);
-            }
+            }*/
             countFullBodiesStr = 0;
             }
             else
@@ -912,8 +910,28 @@ public class FullbodyReport : MonoBehaviour
 
 
 
+    private void OnDisable()
+    {
+        for (int i = 0; i < 15; i++)
+        {
+            try
+            {
+                if (bodyStr[i] != null && bodyStrPath[i] != null)
+                {
+                    System.IO.File.AppendAllText(tTask.getPathDirectory() + "/fullbodyLog/" + bodyStrPath[i], bodyStr[i]);
+                }
 
+                //Debug.Log("&&&&&");
+            }
+            catch (System.Exception ex)
+            {
+                //Debug.LogError("@@@@@@@ : " + bodyStrPath[i]);
+            }
 
-
-
+            bodyStr[i] = "";
+        }
     }
+
+
+
+}

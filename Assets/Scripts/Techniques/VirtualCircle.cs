@@ -315,7 +315,11 @@ public class VirtualCircle : MonoBehaviour {
         else
         {
             refCircle.transform.Find("warningCircle").gameObject.SetActive(true);
-
+            if (tTask)
+            {
+                tTask.setNavigationState(false, circleSpeed, previousSpeed);
+                tTask.setSpeed(0);
+            }
 
             //Debug.Log("Out of the Circle");
 

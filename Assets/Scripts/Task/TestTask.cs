@@ -774,12 +774,17 @@ public class TestTask : MonoBehaviour
             
         else
         {
-            if(training == false)
-            {
-                CompleteReport();
-                CompletePathReport();
-            }
             
+        }
+
+    }
+
+    public void OnDisable()
+    {
+        if (training == false)
+        {
+            CompleteReport();
+            CompletePathReport();
         }
 
     }
