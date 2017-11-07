@@ -889,8 +889,10 @@ public class FullbodyReport : MonoBehaviour
                 {
                     if (bodyStr[i] != null && bodyStrPath[i] != null)
                     {
-                       // Invoke("printToFile",  x);
-                        StartCoroutine(printToFile(i,x));
+                        // Invoke("printToFile",  x);
+                        // StartCoroutine(printToFile(i,x));
+                        StartCoroutine(printToFile(bodyStr[i], bodyStrPath[i], x));
+                        //  System.IO.File.AppendAllText(tTask.getPathDirectory() + "/fullbodyLog/" + bodyStrPath[i], bodyStr[i]);
                         //
                         x += 0.5f;
                     }
@@ -915,10 +917,10 @@ public class FullbodyReport : MonoBehaviour
         }
 
    
-    private IEnumerator printToFile(int index,float time)
+    private IEnumerator printToFile(string str, string path,float time)
     {
         yield return new WaitForSeconds(time);
-        System.IO.File.AppendAllText(tTask.getPathDirectory() + "/fullbodyLog/" + bodyStrPath[index], bodyStr[index]);
+        System.IO.File.AppendAllText(tTask.getPathDirectory() + "/fullbodyLog/" + path,str);
         yield return null;
     }
 

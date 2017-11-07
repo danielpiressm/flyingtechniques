@@ -153,7 +153,7 @@ public class WIPSteering : MonoBehaviour {
         //Vector3 dir = Camera.main.transform.forward;
         Debug.DrawRay(hand.transform.position, dir, Color.red);
 
-
+        wip.PositionThreshold = wipThreshold;
         
        
 
