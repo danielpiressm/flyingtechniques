@@ -14,8 +14,8 @@ public class PathLength : MonoBehaviour {
         string header = "";
         string line = "";
         string str = "";
-        string rootPath = "D:\\Dropbox\\doutorado\\papers\\vrstFlying\\somerandomtest\\";
-        string filePath = "D:\\Dropbox\\doutorado\\papers\\vrstFlying\\somerandomtest\\headLog.csv";
+        string rootPath = "F:\\Dropbox\\doutorado\\papers\\vrstFlying\\output\\2ndTest";
+        string filePath = "F:\\Dropbox\\doutorado\\papers\\vrstFlying\\output\\2ndTest\\torso.csv";
 
         System.IO.StreamReader file = new System.IO.StreamReader(filePath);
 
