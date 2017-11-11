@@ -6,11 +6,13 @@ public class SpeedData  {
 
     private float speed;
     private float time;
+    private string ring;
 
-    public SpeedData(float speed, float time)
+    public SpeedData(float speed, float time,string ring)
     {
         this.speed = speed;
         this.time = time;
+        this.ring = ring;
     }
 
     public float Speed
@@ -36,6 +38,19 @@ public class SpeedData  {
         set
         {
             time = value;
+        }
+    }
+
+    public string Ring
+    {
+        get
+        {
+            return ring;
+        }
+
+        set
+        {
+            ring = value;
         }
     }
 }

@@ -35,6 +35,7 @@ public class Speed : MonoBehaviour {
         int indexSpeed = 0;
         int indexTime = 0;
         Dictionary<string, List<string>> dictionaryFor2ndFile = new Dictionary<string, List<string>>();
+        Dictionary<string, SpeedDataPerUser> dictionaryUserSpeed = new Dictionary<string, SpeedDataPerUser>();
 
         foreach (string field in arrayHeader)
         {
@@ -60,24 +61,24 @@ public class Speed : MonoBehaviour {
             user = arrayLine[0];
             technique = arrayLine[1];
             ring = arrayLine[2];
+            string ringAux = ring;
             float time = float.Parse(arrayLine[indexTime]);
             float speed = float.Parse(arrayLine[indexSpeed]);
-            
-            //strForFirst += user.ToString() + "," + technique + "," + speed + "\n";
-            //File.AppendAllText(rootPath+"\\speedGraph.csv", user.ToString() + "," + technique + "," + speed + "\n");
-            if(ring != "ring0" || ring != "ring33")
+
+            if(ring !="ring0" && ring != "ring33")
             {
-                if (dictionaryFor2ndFile.ContainsKey(user + "," + technique))
+                if(dictionaryUserSpeed.ContainsKey(user + ","+technique))
                 {
-                    dictionaryFor2ndFile[user + "," + technique].Add(speed+","+time);
+                    SpeedDataPerUser aux = dictionaryUserSpeed[user + "," + technique];
+                    aux.AddPoint(speed, time,ring);
                 }
                 else
                 {
-                    dictionaryFor2ndFile.Add(user + "," + technique, new List<string>());
-                    dictionaryFor2ndFile[user + "," + technique].Add(speed+","+time);
+                    dictionaryUserSpeed.Add(user + "," + technique, new SpeedDataPerUser(speed, time,ring));
                 }
-
             }
+            
+            
 
             counter++;
 
@@ -87,10 +88,11 @@ public class Speed : MonoBehaviour {
         Dictionary<string, int> higherNumberOfPointsPerTechnique = new Dictionary<string, int>();
 
         string[] arrayAux;
-        string strWip = "User,Technique,Speed,Time\n";
-        string strVCircle = "User,Technique,Speed,Time\n";
-        string strAnalog = "User,Technique,Speed,Time\n";
-        foreach (KeyValuePair<string, List<string>> kPair in dictionaryFor2ndFile)
+        string strTotal = "User,Technique,Ring,Speed,Time,TimeNormalized\n";
+        string strWip = "User,Technique,Ring,Speed,Time,TimeNormalized\n";
+        string strVCircle = "User,Technique,Ring,Speed,Time,TimeNormalized\n";
+        string strAnalog = "User,Technique,Ring,Speed,Time,TimeNormalized\n";
+        foreach (KeyValuePair<string, SpeedDataPerUser> kPair in dictionaryUserSpeed)
         {
             /*
             if(kPair.Key.Contains("Walking"))
@@ -118,26 +120,41 @@ public class Speed : MonoBehaviour {
                     strAnalog += kPair.Key + "," + arrayAux[0] + "," + arrayAux[1] + "\n";
                 }
             }*/
-            foreach(string velocity in kPair.Value)
+            int pointsCount = kPair.Value.getPointsCount();
+            string first = kPair.Value.getSpeedAndTimeNormalized(0);
+            string last = kPair.Value.getSpeedAndTimeNormalized(pointsCount-1);
+
+            for (int i = 0; i < pointsCount;i++)
+            {
+                if(kPair.Key.Contains("Analog"))
+                    strAnalog += kPair.Key + "," + kPair.Value.getSpeedAndTimeNormalized(i);
+                if (kPair.Key.Contains("Walking"))
+                    strWip += kPair.Key + "," + kPair.Value.getSpeedAndTimeNormalized(i);
+                if (kPair.Key.Contains("Circle"))
+                    strVCircle += kPair.Key + "," + kPair.Value.getSpeedAndTimeNormalized(i);
+
+                //strTotal += kPair.Key + "," + kPair.Value.getSpeedAndTimeNormalized(i);
+            }
+            /*foreach(SpeedDataPerUser velocity in kPair.Value)
             {
                 arrayAux = velocity.Split(',');
                 strAnalog += kPair.Key + "," + arrayAux[0] + "," + arrayAux[1] + "\n";
-            }
+            }*/
 
             
         }
         if(File.Exists(rootPath + "\\speedVCircle.csv"))
             File.Delete(rootPath + "\\speedVCircle.csv");
-
+       
         if (File.Exists(rootPath + "\\speedWip.csv"))
             File.Delete(rootPath + "\\speedWip.csv");
 
         if (File.Exists(rootPath + "\\speedAnalog.csv"))
             File.Delete(rootPath + "\\speedAnalog.csv");
+        
 
-
-       // File.WriteAllText(rootPath + "\\speedVCircle.csv",strVCircle);
-       // File.WriteAllText(rootPath + "\\speedWip.csv", strWip);
+        File.WriteAllText(rootPath + "\\speedVCircle.csv",strVCircle);
+        File.WriteAllText(rootPath + "\\speedWip.csv", strWip);
         File.WriteAllText(rootPath + "\\speedAnalog.csv", strAnalog);
 
 
