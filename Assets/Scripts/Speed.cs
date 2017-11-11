@@ -92,6 +92,7 @@ public class Speed : MonoBehaviour {
         string strAnalog = "User,Technique,Speed,Time\n";
         foreach (KeyValuePair<string, List<string>> kPair in dictionaryFor2ndFile)
         {
+            /*
             if(kPair.Key.Contains("Walking"))
             {
                 foreach (string velocity in kPair.Value)
@@ -116,6 +117,11 @@ public class Speed : MonoBehaviour {
                     arrayAux = velocity.Split(',');
                     strAnalog += kPair.Key + "," + arrayAux[0] + "," + arrayAux[1] + "\n";
                 }
+            }*/
+            foreach(string velocity in kPair.Value)
+            {
+                arrayAux = velocity.Split(',');
+                strAnalog += kPair.Key + "," + arrayAux[0] + "," + arrayAux[1] + "\n";
             }
 
             
@@ -130,8 +136,8 @@ public class Speed : MonoBehaviour {
             File.Delete(rootPath + "\\speedAnalog.csv");
 
 
-        File.WriteAllText(rootPath + "\\speedVCircle.csv",strVCircle);
-        File.WriteAllText(rootPath + "\\speedWip.csv", strWip);
+       // File.WriteAllText(rootPath + "\\speedVCircle.csv",strVCircle);
+       // File.WriteAllText(rootPath + "\\speedWip.csv", strWip);
         File.WriteAllText(rootPath + "\\speedAnalog.csv", strAnalog);
 
 
