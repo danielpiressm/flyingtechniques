@@ -16,8 +16,8 @@ public class Speed : MonoBehaviour {
         string technique = "";
         string[] arrayLine = null;
 
-        string rootPath = "D:\\Dropbox\\doutorado\\papers\\vrstFlying\\output\\2ndTest";
-        string filePath = "D:\\Dropbox\\doutorado\\papers\\vrstFlying\\output\\2ndTest\\torso.csv";
+        string rootPath = "F:\\Dropbox\\doutorado\\papers\\vrstFlying\\output\\2ndTest";
+        string filePath = "F:\\Dropbox\\doutorado\\papers\\vrstFlying\\output\\2ndTest\\torso.csv";
 
         if(File.Exists(rootPath+"\\speedGraph.csv"))
         {
@@ -92,6 +92,7 @@ public class Speed : MonoBehaviour {
         string strWip = "User,Technique,Ring,Speed,Time,TimeNormalized\n";
         string strVCircle = "User,Technique,Ring,Speed,Time,TimeNormalized\n";
         string strAnalog = "User,Technique,Ring,Speed,Time,TimeNormalized\n";
+        string medianStr = "User,Technique,Median\n"; 
         foreach (KeyValuePair<string, SpeedDataPerUser> kPair in dictionaryUserSpeed)
         {
             /*
@@ -124,7 +125,13 @@ public class Speed : MonoBehaviour {
             string first = kPair.Value.getSpeedAndTimeNormalized(0);
             string last = kPair.Value.getSpeedAndTimeNormalized(pointsCount-1);
 
-            for (int i = 0; i < pointsCount;i++)
+            float variance = kPair.Value.GetVariance();
+            float iqr = kPair.Value.GetIqr();
+
+            medianStr += kPair.Key + "," + kPair.Value.GetSpeedMedian() + "," + kPair.Value.GetSpeedAverage() + ","+ variance + "," + iqr +"\n";
+
+            //uncomment for speed
+            /*for (int i = 0; i < pointsCount;i++)
             {
                 if(kPair.Key.Contains("Analog"))
                     strAnalog += kPair.Key + "," + kPair.Value.getSpeedAndTimeNormalized(i);
@@ -134,16 +141,19 @@ public class Speed : MonoBehaviour {
                     strVCircle += kPair.Key + "," + kPair.Value.getSpeedAndTimeNormalized(i);
 
                 //strTotal += kPair.Key + "," + kPair.Value.getSpeedAndTimeNormalized(i);
-            }
-            /*foreach(SpeedDataPerUser velocity in kPair.Value)
-            {
-                arrayAux = velocity.Split(',');
-                strAnalog += kPair.Key + "," + arrayAux[0] + "," + arrayAux[1] + "\n";
             }*/
+            
 
             
         }
-        if(File.Exists(rootPath + "\\speedVCircle.csv"))
+
+        if (File.Exists(rootPath + "\\speedMedianVariance.csv"))
+            File.Delete(rootPath + "\\speedMedianVariance.csv");
+
+        File.WriteAllText(rootPath + "\\speedMedianVariance.csv", medianStr);
+
+
+        /*if(File.Exists(rootPath + "\\speedVCircle.csv"))
             File.Delete(rootPath + "\\speedVCircle.csv");
        
         if (File.Exists(rootPath + "\\speedWip.csv"))
@@ -156,7 +166,7 @@ public class Speed : MonoBehaviour {
         File.WriteAllText(rootPath + "\\speedVCircle.csv",strVCircle);
         File.WriteAllText(rootPath + "\\speedWip.csv", strWip);
         File.WriteAllText(rootPath + "\\speedAnalog.csv", strAnalog);
-
+        */
 
 
         /*foreach (KeyValuePair<string, List<string>> kPair in dictionaryFor2ndFile)
