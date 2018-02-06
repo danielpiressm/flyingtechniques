@@ -41,8 +41,8 @@ public class CybersicknessSSQ : MonoBehaviour {
         string[] arrayLine = null;
         string line = "";
 
-        string rootPath = "D:\\Dropbox\\doutorado\\papers\\vrstFlying\\output\\2ndTest";
-        string filePath = "D:\\Dropbox\\doutorado\\papers\\vrstFlying\\output\\2ndTest\\questionariosCybersickness1.csv";
+        string rootPath = "F:\\Dropbox\\doutorado\\papers\\vrstFlying\\output\\2ndTest";
+        string filePath = "F:\\Dropbox\\doutorado\\papers\\vrstFlying\\output\\2ndTest\\questionariosCybersickness1.csv";
 
         System.IO.StreamReader file = new System.IO.StreamReader(filePath);
 
